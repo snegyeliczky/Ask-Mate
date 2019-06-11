@@ -12,7 +12,11 @@
     {% for row in questions %}
     <tr>
         {% for item in row %}
+            {% if row[item]==row['title']%}
+             <td><a href="/{{ row['id']}}"> {{ row[item] }}</a></td>
+            {% else %}
             <td style="max-width: 25em"> {{ row[item] }}</td>
+            {% endif %}
         {% endfor %}
       </tr>
     {% endfor %}
