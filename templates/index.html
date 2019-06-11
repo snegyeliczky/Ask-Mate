@@ -6,6 +6,19 @@
     
 </head>
 <body>
+<h1>Hello </h1>
+<table>
+
+    {% for row in questions %}
+    <tr>
+        {% for item in row %}
+            <td style="max-width: 25em"> {{ row[item] }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+</table>
+
+
 
 </body>
 </html>
