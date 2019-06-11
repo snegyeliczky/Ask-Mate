@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>AskMate</title>
+    </head>
+    <body>
+
+        <h1 align="center">AskMate</h1>
+
+        <table align="center">
+            <tr>
+                <th>Title</th>
+            </tr>
+            {% for row in questions %}
+                <tr>
+                    {% for item in row %}
+
+                        {% if row[item]==row['title']%}
+
+                            <td align="center">
+                                <p>
+                                    <a href="/question/{{ row['id']}}"> {{ row[item] }}</a>
+                                </p>
+                            </td>
+                        {% endif %}
+
+                    {% endfor %}
+              </tr>
+            {% endfor %}
+        </table>
+
+        <p align="center">
+            <a href="/add-a-question"><button style="font-size: 25px">Ask a question</button></a>
+        </p>
+
+
+
+    </body>
+</html>

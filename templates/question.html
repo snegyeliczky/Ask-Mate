@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Question</title>
+    </head>
+    <body>
+
+        <h1 align="center">Question</h1>
+
+        <table cellpadding="15%"  width="95%" align="center">
+            <tr >
+                <th>Id</th>
+                <th>Submission Time</th>
+                <th>View Number</th>
+                <th>Vote Number</th>
+                <th>Title</th>
+                <th width="50%">Message</th>
+                <th>Image</th>
+            </tr>
+            <tr>
+                {% for item in post %}
+
+                    <td align="center">{{ post[item] }}</td>
+
+                {% endfor %}
+            </tr>
+        </table>
+
+
+
+        <h1 align="center">Answers:</h1>
+        <table align="center">
+            {% for item in answers %}
+            <tr >
+                <td>{{ item }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p align="center">
+            <a href="/question/{{ post['id'] }}/new-answer"><button style="font-size: 25px">Add a new answer</button></a>
+        </p>
+
+
+        <p align="center">
+            <a href="/"><button style="font-size: 25px">Back</button></a>
+        </p>
+
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Give new answer</title>
+    </head>
+
+    <body>
+
+
+    <h1 align="center">Question</h1>
+
+        <table cellpadding="15%"  width="95%" align="center">
+            <tr >
+                <th>Id</th>
+                <th>Submission Time</th>
+                <th>View Number</th>
+                <th>Vote Number</th>
+                <th>Title</th>
+                <th width="50%">Message</th>
+                <th>Image</th>
+            </tr>
+            <tr>
+                {% for item in post %}
+
+                    <td align="center">{{ post[item] }}</td>
+
+                {% endfor %}
+            </tr>
+        </table>
+
+        <form action="/add-a-question" method="post">
+
+            <h1 align="center">Answer:</h1>
+
+            <p align="center">
+                <textarea name="answer" cols="60" rows="15"></textarea>
+            </p>
+
+            <p align="center">
+                <button type="submit">Submit</button>
+            </p>
+        </form>
+
+    </body>
+</html>

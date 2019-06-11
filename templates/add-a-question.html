@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ask a question</title>
+    </head>
+
+    <body>
+
+        <form action="/add-a-question" method="post">
+
+            <h1 align="center" >Title:</h1>
+            <p align="center" >
+                <input style="font-size: 40px" type="text" name="title">
+            </p>
+
+            <h1 align="center">Question:</h1>
+            <p align="center">
+                <textarea style="font-size: 25px" name="message" rows="20" cols="60"></textarea>
+            </p>
+
+            <p align="center">
+                <button style="font-size: 25px" type="submit">Submit</button>
+            </p>
+        </form>
+
+        <p align="center">
+            <a href="/"><button style="font-size: 25px">Back</button></a>
+        </p>
+
+    </body>
+</html>
