@@ -10,6 +10,12 @@ def route_list():
 
     return render_template('index.html', questions=questions)
 
+@app.route('/<id_>')
+def route_answer(id_):
+    answer=data_handler.get_answers(id_)
+
+    return render_template("answer.html", answer=answer)
+
 
 if __name__ == '__main__':
     app.run(
