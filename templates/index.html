@@ -7,20 +7,38 @@
 </head>
 <body>
 <h1>Hello </h1>
-<table>
 
+
+<table cellpadding="10%" width="100%" align="center">
+    <tr>
+        <th>Id</th>
+        <th>Submission Time</th>
+        <th>View Number</th>
+        <th>Vote Number</th>
+        <th>Title</th>
+        <th width="50%">Message</th>
+        <th>Image</th>
+    </tr>
     {% for row in questions %}
     <tr>
         {% for item in row %}
             {% if row[item]==row['title']%}
-             <td><a href="/{{ row['id']}}"> {{ row[item] }}</a></td>
+                <td align="center"><p><a href="/{{ row['id']}}"> {{ row[item] }}</a></p></td>
             {% else %}
-            <td style="max-width: 25em"> {{ row[item] }}</td>
+            <td><p align="center"> {{ row[item] }}</p></td>
             {% endif %}
         {% endfor %}
       </tr>
     {% endfor %}
 </table>
+<p align="center">
+    <button style="font-size: 120px ">
+        <details>
+            <summary>Ask a question</summary>
+            <textarea cols="60" rows="6">please provide</textarea>
+        </details>
+    </button>
+</p>
 
 
 
