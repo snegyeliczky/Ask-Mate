@@ -41,14 +41,10 @@ def route_add_a_question():
 
     if request.method == "POST":
 
-        new_question = {}
-        new_question["id"] = data_handler.generate_id('question')
-        new_question["submission_time"] = data_handler.generate_timestamp()
-        new_question["view_number"] = "0"
-        new_question["vote_number"] = "0"
-        new_question["title"] = request.form["title"]
-        new_question["message"] = request.form["message"]
-        new_question["image"] = ""
+        new_question = {"id": data_handler.generate_id('question'),
+                        "submission_time": data_handler.generate_timestamp(), "view_number": "0", "vote_number": "0",
+                        "title": request.form["title"], "message": request.form["message"], "image": ""}
+
         data_handler.write_question("", new_question)
 
         return redirect('/')
