@@ -21,19 +21,15 @@
             </tr>
             <tr>
             <td>
-            <button>up</button>
-            <button>down</button>
+            <button>UP</button>
+            <button>DOWN</button>
             </td>
                 {% for item in post %}
 
                     <td align="center">{{ post[item] }}</td>
 
                 {% endfor %}
-            <td>
-                <form action="/question/{{ post['id'] }}/delete" method="POST">
-                <button type="submit">Delet<br>Question</button>
-                </form>
-            </td>
+
 
             </tr>
         </table>
