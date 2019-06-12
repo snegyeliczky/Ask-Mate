@@ -8,33 +8,35 @@
 
         <h1 align="center">AskMate</h1>
 
-        <table align="center">
+        <table cellspacing="50px" align="left">
             <tr>
+                <th>Submission time</th>
+                <th>View number</th>
+                <th>Vote number</th>
                 <th>Title</th>
             </tr>
             {% for row in questions %}
-                <tr>
-                    {% for item in row %}
+                    <tr>
+                        {% for item in row %}
 
-                        {% if row[item]==row['title']%}
+                            {% if row[item]==row['title']%}
 
-                            <td align="center">
-                                <p>
-                                    <a href="/question/{{ row['id']}}"> {{ row[item] }}</a>
-                                </p>
-                            </td>
-                        {% endif %}
+                        <td>{{ row['submission_time'] }}</td>
+                        <td>{{ row['view_number'] }}</td>
+                        <td>{{ row['vote_number'] }}</td>
 
-                    {% endfor %}
-              </tr>
+                        <td align="left">
+                            <a href="/question/{{ row['id']}}"> {{ row[item] }}</a>
+                        </td>
+
+                            {% endif %}
+
+                        {% endfor %}
+                    </tr>
             {% endfor %}
-        </table>
+        </table><br>
 
-        <p align="center">
-            <a href="/add-a-question"><button style="font-size: 25px">Ask a question</button></a>
-        </p>
-
-
+        <a href="/add-a-question"><button style="font-size: 25px">Ask a question</button></a>
 
     </body>
 </html>

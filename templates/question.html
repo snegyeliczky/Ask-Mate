@@ -8,7 +8,7 @@
 
         <h1 align="center">Question</h1>
 
-        <table cellpadding="15%"  width="95%" align="center">
+        <table cellpadding="15%"  width="100%" align="center">
             <tr >
                 <td></td>
                 <th>Id</th>
@@ -16,17 +16,17 @@
                 <th>View Number</th>
                 <th>Vote Number</th>
                 <th>Title</th>
-                <th width="50%">Message</th>
+                <th>Message</th>
                 <th>Image</th>
             </tr>
             <tr>
             <td>
-            <button>delete</button>
-            <button>delete</button>
+            <button>UP</button>
+            <button>DOWN</button>
             </td>
                 {% for item in post %}
 
-                    <td align="center">{{ post[item] }}</td>
+                    <td style="align-content: center; max-width: 45em; white-space: pre-wrap">{{ post[item] }}</td>
 
                 {% endfor %}
 
