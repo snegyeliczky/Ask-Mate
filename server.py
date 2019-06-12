@@ -7,15 +7,16 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_handler.get_all_data()
+    questions = data_handler.get_all_data('sample_data/question.csv')
 
     return render_template('list.html', questions=questions)
+
 
 
 @app.route('/question/<id_>')
 def route_question_by_id(id_):
 
-    answers = data_handler.get_answers(id_)
+    answers = data_handler.get_answers_by_id(id_)
     post = data_handler.get_post_by_id(id_)
 
     return render_template('question.html', post=post, answers=answers)
@@ -23,7 +24,7 @@ def route_question_by_id(id_):
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
 def route_add_a_question():
-    questions = data_handler.get_all_data()
+    questions = data_handler.get_all_data('sample_data/question.csv')
     if request.method == "POST":
         title = request.form["title"]
         message = request.form["message"]
