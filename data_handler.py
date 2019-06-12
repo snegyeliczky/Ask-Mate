@@ -3,6 +3,7 @@ from datetime import datetime
 question_titles=["id","submission_time","view_number","vote_number","title","message","image"]
 answer_titles=['id','submission_time','vote_number','question_id','message','image']
 
+
 def get_all_data(filename):
 
     with open(filename, "r") as data_file:
@@ -62,6 +63,7 @@ def sandi_answer_writer(filename,to_write):
         for row in to_write:
             writer.writerow(row)
 
+
 def generate_timestamp():
 
     return int(time.time())
@@ -79,23 +81,22 @@ def generate_question_id():
     return int(list_of_questions[-1]['id']) + 1
 
 
-def make_question_row(title,message):
-    return
-
-
 def write_question(id_, new_line):
+
     field_names = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
     list_of_questions = get_all_data('sample_data/question.csv')
-    for i in list_of_questions:
-        if i["id"] == id_:
-            i["message"] = new_line["message"]
 
-    if id_ == "":
+    if id_ in [question['id'] for question in list_of_questions]:
+        for question in list_of_questions:
+            if question["id"] == id_:
+                question["message"] = new_line["message"]
+    else:
         list_of_questions.append(new_line)
 
     with open('sample_data/question.csv', "w") as data_file:
         writer = csv.DictWriter(data_file, field_names)
         writer.writeheader()
-        for row in list_of_questions:
-            writer.writerow(row)
+
+        for question in list_of_questions:
+            writer.writerow(question)
 
