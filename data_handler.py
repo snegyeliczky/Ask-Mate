@@ -52,3 +52,19 @@ def generate_question_id():
 
 def make_question_row(title,message):
     return
+
+
+def write_question(id_, new_line):
+    field_names = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
+    list_of_questions = get_all_data('sample_data/question.csv')
+    for i in list_of_questions:
+        if i["id"] == id_:
+            i["message"] = new_line["message"]
+
+
+    with open('sample_data/question.csv', "w") as data_file:
+        writer = csv.DictWriter(data_file, field_names)
+        writer.writeheader()
+        for row in list_of_questions:
+            writer.writerow(row)
+
