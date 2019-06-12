@@ -26,12 +26,12 @@
             </tr>
         </table>
 
-        <form action="/add-a-question" method="post">
+        <form action="/question/{{ post["id"] }}/edit-a-question" method="post">
 
             <h1 align="center">Edit question:</h1>
 
             <p align="center">
-                <textarea name="answer" cols="60" rows="15">{{ post["message"] }}</textarea>
+                <textarea name="message" cols="60" rows="15">{{ post["message"] }}</textarea>
             </p>
 
             <p align="center">

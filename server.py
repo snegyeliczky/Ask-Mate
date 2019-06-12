@@ -40,9 +40,10 @@ def route_edit_a_question(question_id):
     post = data_handler.get_post_by_id(question_id)
 
     if request.method == "POST":
-        title = request.form["title"]
-        message = request.form["message"]
-        return redirect('/')
+        data_handler.write_question(question_id, request.form)
+
+        return redirect(f'/question/{question_id}')
+
     return render_template('edit-a-question.html', post=post)
 
 
