@@ -29,7 +29,7 @@
             </tr>
         </table>
 
-        <form action="/add-a-question" method="post">
+        <form action="/question/{{ post['id'] }}/new-answer" method="POST">
 
             <h1 align="center">Answer:</h1>
 
@@ -38,7 +38,7 @@
             </p>
 
             <p align="center">
-                <button type="submit">Submit</button>
+                <button type="submit" style="font-size: 25px">Submit</button>
             </p>
         </form>
 

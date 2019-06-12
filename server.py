@@ -19,9 +19,16 @@ def route_list():
 def route_question_by_id(id_):
 
     answers = data_handler.get_answers_by_id(id_)
+
+    for answer in answers:
+        answer.pop('question_id', None)
+        answer['submission_time'] = data_handler.convert_timestamp(answer['submission_time'])
+
     question = data_handler.get_question_by_id(id_)
+
     question['view_number'] = str(int(question['view_number']) + 1)
     data_handler.write_question(id_, question)
+
     question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
     return render_template('question.html', question=question, answers=answers, id_=id_)
@@ -35,7 +42,7 @@ def route_add_a_question():
     if request.method == "POST":
 
         new_question = {}
-        new_question["id"] = data_handler.generate_question_id()
+        new_question["id"] = data_handler.generate_id('question')
         new_question["submission_time"] = data_handler.generate_timestamp()
         new_question["view_number"] = "0"
         new_question["vote_number"] = "0"
@@ -66,10 +73,14 @@ def route_edit_a_question(question_id):
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_new_answer(question_id):
 
-    post = data_handler.question(question_id)
+    post = data_handler.get_question_by_id(question_id)
 
     if request.method == "POST":
-        answer = request.form["answer"]
+        new_answer = {'id': data_handler.generate_id('answer'), 'submission_time': data_handler.generate_timestamp(),
+                      'vote_number': 0, 'question_id': question_id, 'message': request.form['answer'], 'image': ''}
+
+        data_handler.sandi_answer_writer(new_answer)
+
         return redirect(f"/question/{question_id}")
 
     return render_template("new-answer.html", post=post)

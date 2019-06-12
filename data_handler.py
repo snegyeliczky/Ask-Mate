@@ -17,13 +17,7 @@ def get_answers_by_id(id_):
 
     list_of_answers = get_all_data('sample_data/answer.csv')
 
-    result = [answer for answer in list_of_answers if answer['question_id'] == id_]
-
-    for answer in result:
-        answer.pop('question_id', None)
-        answer['submission_time'] = convert_timestamp(answer['submission_time'])
-
-    return result
+    return [answer for answer in list_of_answers if answer['question_id'] == id_]
 
 
 def get_question_by_id(id_):
@@ -57,12 +51,11 @@ def sandi_data_writer(filename,to_write):
         for row in to_write:
             writer.writerow(row)
 
-def sandi_answer_writer(filename,to_write):
-    with open(filename,"w") as file_to_write:
-        writer=csv.DictWriter(file_to_write,fieldnames=answer_titles)
-        writer.writeheader()
-        for row in to_write:
-            writer.writerow(row)
+def sandi_answer_writer(new_answer):
+
+    with open('sample_data/answer.csv', "a") as file_to_write:
+        writer = csv.DictWriter(file_to_write, fieldnames=answer_titles)
+        writer.writerow(new_answer)
 
 
 def generate_timestamp():
@@ -75,11 +68,11 @@ def convert_timestamp(timestamp):
     return datetime.utcfromtimestamp(int(timestamp) + 7200)
 
 
-def generate_question_id():
+def generate_id(type):
 
-    list_of_questions = get_all_data("sample_data/question.csv")
+    list_of_items = get_all_data(f"sample_data/{type}.csv")
 
-    return int(list_of_questions[-1]['id']) + 1
+    return int(list_of_items[-1]['id']) + 1
 
 
 def write_question(id_, new_line):
