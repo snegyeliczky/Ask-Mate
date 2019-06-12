@@ -1,30 +1,54 @@
-import csv
+import csv, time
+from datetime import datetime
 
-def get_all_data():
-    with open("sample_data/question.csv", "r") as data_file:
-        readed_data=csv.DictReader(data_file)
-        return [*readed_data]
 
-def get_answers(id_):
-    answer=[]
-    with open("sample_data/answer.csv", "r") as answer_file:
-        readed_answers=csv.DictReader(answer_file)
-        for row in readed_answers:
-            if row['question_id'] == id_:
-                answer.append(row['message'])
-        return answer
+def get_all_data(filename):
+
+    with open(filename, "r") as data_file:
+        reader = csv.DictReader(data_file)
+
+        return [*reader]
+
+
+def get_answers_by_id(id_):
+
+    list_of_answers = get_all_data('sample_data/answer.csv')
+
+    result = [answer for answer in list_of_answers if answer['question_id'] == id_]
+
+    for answer in result:
+        answer.pop('question_id', None)
+        answer['submission_time'] = convert_timestamp(answer['submission_time'])
+
+    return result
+
 
 def get_post_by_id(id_):
 
-    with open("sample_data/question.csv", "r") as data_file:
-        data = csv.DictReader(data_file)
-        for row in data:
-            if row['id'] == id_:
-                return row
+    list_of_questions = get_all_data("sample_data/question.csv")
+
+    for question in list_of_questions:
+        if question['id'] == id_:
+
+            return question
+
+
+def generate_timestamp():
+
+    return int(time.time())
+
+
+def convert_timestamp(timestamp):
+
+    return datetime.utcfromtimestamp(int(timestamp) + 7200)
+
+
+def generate_question_id():
+
+    list_of_questions = get_all_data("sample_data/question.csv")
+
+    return int(list_of_questions[-1]['id']) + 1
+
 
 def make_question_row(title,message):
     return
-
-
-def write_question(id_):
-    pass
