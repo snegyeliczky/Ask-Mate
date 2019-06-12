@@ -28,8 +28,15 @@ def route_question_by_id(id_):
 def route_add_a_question():
     questions = data_handler.get_all_data('sample_data/question.csv')
     if request.method == "POST":
-        title = request.form["title"]
-        message = request.form["message"]
+        new_question = {}
+        new_question["id"] = data_handler.generate_question_id()
+        new_question["submission_time"] = data_handler.generate_timestamp()
+        new_question["view_number"] = "0"
+        new_question["vote_number"] = "0"
+        new_question["title"] = request.form["title"]
+        new_question["message"] = request.form["message"]
+        new_question["image"] = ""
+        data_handler.write_question("", new_question)
         return redirect('/')
 
     return render_template('add-a-question.html', questions=questions)

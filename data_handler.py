@@ -89,7 +89,7 @@ def write_question(id_, new_line):
     for i in list_of_questions:
         if i["id"] == id_:
             i["message"] = new_line["message"]
-
+    list_of_questions.append(new_line)
 
     with open('sample_data/question.csv', "w") as data_file:
         writer = csv.DictWriter(data_file, field_names)
