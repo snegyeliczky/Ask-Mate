@@ -10,7 +10,7 @@ def get_all_data(filename):
         return [*reader]
 
 
-def get_answers_id(id_):
+def get_answers_by_id(id_):
 
     list_of_answers = get_all_data('sample_data/answer.csv')
 

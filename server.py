@@ -18,6 +18,7 @@ def route_question_by_id(id_):
 
     answers = data_handler.get_answers_by_id(id_)
     post = data_handler.get_post_by_id(id_)
+    post['submission_time'] = data_handler.convert_timestamp(post['submission_time'])
 
     return render_template('question.html', post=post, answers=answers)
 
