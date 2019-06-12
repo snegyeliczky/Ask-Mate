@@ -32,6 +32,17 @@ def route_add_a_question():
     return render_template('add-a-question.html', questions=questions)
 
 
+@app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
+def route_edit_a_question(question_id):
+    post = data_handler.get_post_by_id(question_id)
+
+    if request.method == "POST":
+        title = request.form["title"]
+        message = request.form["message"]
+        return redirect('/')
+    return render_template('edit-a-question.html', post=post)
+
+
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_new_answer(question_id):
     post = data_handler.get_post_by_id(question_id)

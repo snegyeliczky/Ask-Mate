@@ -2,12 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Give new answer</title>
+        <title>Edit a question</title>
     </head>
-
-    <body>
-
-
+<body>
     <h1 align="center">Question</h1>
 
         <table cellpadding="15%"  width="95%" align="center">
@@ -31,10 +28,10 @@
 
         <form action="/add-a-question" method="post">
 
-            <h1 align="center">Answer:</h1>
+            <h1 align="center">Edit question:</h1>
 
             <p align="center">
-                <textarea name="answer" cols="60" rows="15"></textarea>
+                <textarea name="answer" cols="60" rows="15">{{ post["message"] }}</textarea>
             </p>
 
             <p align="center">
@@ -42,8 +39,8 @@
             </p>
         </form>
 
-         <p align="center">
+        <p align="center">
             <a href="/question/{{ post["id"] }}"><button style="font-size: 25px">Back</button></a>
         </p>
-    </body>
+</body>
 </html>

@@ -24,3 +24,7 @@ def get_post_by_id(id_):
 
 def make_question_row(title,message):
     return
+
+
+def write_question(id_):
+    pass
