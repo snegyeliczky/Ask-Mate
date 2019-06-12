@@ -8,30 +8,21 @@
 
         <h1 align="center">AskMate</h1>
 
-        <table cellspacing="50px" align="center">
+        <table style="border-spacing: 30px 20px" align="center">
             <tr align="left">
+                <th>Views</th>
+                <th>Votes</th>
+                <th>Questions</th>
                 <th>Submission time</th>
-                <th>View number</th>
-                <th>Vote number</th>
-                <th>Title</th>
             </tr>
             {% for row in questions %}
                     <tr>
-                        {% for item in row %}
-
-                            {% if row[item]==row['title']%}
-
-                        <td>{{ row['submission_time'] }}</td>
                         <td>{{ row['view_number'] }}</td>
                         <td>{{ row['vote_number'] }}</td>
-
                         <td align="left">
-                            <a href="/question/{{ row['id']}}"> {{ row[item] }}</a>
+                            <a style="color: #177199; font-size: 20px" href="/question/{{ row['id']}}"> {{ row['title'] }}</a>
                         </td>
-
-                            {% endif %}
-
-                        {% endfor %}
+                        <td>{{ row['submission_time'] }}</td>
                     </tr>
             {% endfor %}
         </table>

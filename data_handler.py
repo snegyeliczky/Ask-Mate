@@ -1,7 +1,8 @@
-import csv, time
+import csv
+import time
 from datetime import datetime
-question_titles=["id","submission_time","view_number","vote_number","title","message","image"]
-answer_titles=['id','submission_time','vote_number','question_id','message','image']
+question_titles = ["id","submission_time","view_number","vote_number","title","message","image"]
+answer_titles = ['id','submission_time','vote_number','question_id','message','image']
 
 
 def get_all_data(filename):
@@ -25,7 +26,7 @@ def get_answers_by_id(id_):
     return result
 
 
-def get_post_by_id(id_):
+def get_question_by_id(id_):
 
     list_of_questions = get_all_data("sample_data/question.csv")
 
@@ -87,9 +88,10 @@ def write_question(id_, new_line):
     list_of_questions = get_all_data('sample_data/question.csv')
 
     if id_ in [question['id'] for question in list_of_questions]:
-        for question in list_of_questions:
+        for i, question in enumerate(list_of_questions):
             if question["id"] == id_:
-                question["message"] = new_line["message"]
+                list_of_questions[i] = new_line
+
     else:
         list_of_questions.append(new_line)
 

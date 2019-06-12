@@ -6,37 +6,31 @@
     </head>
     <body>
 
-        <h1 align="center">Question</h1>
+        <h1 align="left">{{ question['title'] }}</h1>
 
-        <table cellpadding="15%"  width="95%" align="center">
-            <tr >
-                <td></td>
+        <table style="border-spacing: 15px 15px"  width="70%">
+            <tr style="font-size: 20px">
                 <th>Id</th>
+                <th>Views</th>
+                <th>Votes</th>
+                <th align="left">Message</th>
                 <th>Submission Time</th>
-                <th>View Number</th>
-                <th>Vote Number</th>
-                <th>Title</th>
-                <th width="50%">Message</th>
-                <th>Image</th>
             </tr>
-            <tr>
-            <td>
-            <button>UP</button>
-            <button>DOWN</button>
-            </td>
-                {% for item in post %}
-
-                    <td align="center">{{ post[item] }}</td>
-
-                {% endfor %}
-
+            <tr align="center">
+                <td width="1%">{{ question['id'] }}</td>
+                <td width="1%"> {{ question['view_number'] }}</td>
+                <td width="5%">
+                    <p><button>UPVOTE</button></p>
+                    <p>{{ question['vote_number'] }}</p>
+                    <p><button>DOWNVOTE</button></p>
+                </td>
+                <td style="white-space: pre-line" align="left" width="30%" >{{ question['message'] }}</td>
+                <td width="8%"> {{ question['submission_time'] }}</td>
 
             </tr>
         </table>
 
-
-
-        <h2 align="center">Answers:</h2>
+        <h2 align="left">Answers:</h2>
         <table cellpadding="15%"  width="94%" align="center">
             {% for answer in answers %}
             <tr >
@@ -48,8 +42,8 @@
         </table>
 
         <p align="center">
-            <a href="/question/{{ post['id'] }}/new-answer"><button style="font-size: 25px">Add a new answer</button></a>
-            <a href="/question/{{ post['id'] }}/edit-a-question"><button style="font-size: 25px">Edit the question</button></a>
+            <a href="/question/{{ question['id'] }}/new-answer"><button style="font-size: 25px">Add a new answer</button></a>
+            <a href="/question/{{ question['id'] }}/edit-a-question"><button style="font-size: 25px">Edit the question</button></a>
         </p>
 
 

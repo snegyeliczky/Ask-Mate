@@ -7,7 +7,8 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_handler.get_all_data('sample_data/question.csv')
+    questions = sorted(data_handler.get_all_data('sample_data/question.csv'),
+                       key=lambda item: item['submission_time'], reverse=True)
     for question in questions:
         question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
@@ -18,10 +19,12 @@ def route_list():
 def route_question_by_id(id_):
 
     answers = data_handler.get_answers_by_id(id_)
-    post = data_handler.get_post_by_id(id_)
-    post['submission_time'] = data_handler.convert_timestamp(post['submission_time'])
+    question = data_handler.get_question_by_id(id_)
+    question['view_number'] = str(int(question['view_number']) + 1)
+    data_handler.write_question(id_, question)
+    question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
-    return render_template('question.html', post=post, answers=answers, id_=id_)
+    return render_template('question.html', question=question, answers=answers, id_=id_)
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
@@ -49,26 +52,28 @@ def route_add_a_question():
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
 def route_edit_a_question(question_id):
 
-    post = data_handler.get_post_by_id(question_id)
+    question = data_handler.get_question_by_id(question_id)
 
     if request.method == "POST":
-        data_handler.write_question(question_id, request.form)
+        question['message'] = request.form['message']
+        data_handler.write_question(question_id, question)
 
         return redirect(f'/question/{question_id}')
 
-    return render_template('edit-a-question.html', post=post)
+    return render_template('edit-a-question.html', post=question)
 
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_new_answer(question_id):
 
-    post = data_handler.get_post_by_id(question_id)
+    post = data_handler.question(question_id)
 
     if request.method == "POST":
         answer = request.form["answer"]
         return redirect(f"/question/{question_id}")
 
     return render_template("new-answer.html", post=post)
+
 
 @app.route('/question/<id_>/delete', methods=['GET','POST'])
 def delete_question(id_):
