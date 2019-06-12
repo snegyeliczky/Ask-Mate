@@ -1,6 +1,7 @@
 import csv, time
 from datetime import datetime
-
+question_titles=["id","submission_time","view_number","vote_number","title","message","image"]
+answer_titles=['id','submission_time','vote_number','question_id','message','image']
 
 def get_all_data(filename):
 
@@ -32,6 +33,34 @@ def get_post_by_id(id_):
 
             return question
 
+
+def delete_post_by_id(id_):
+    posts=get_all_data('sample_data/question.csv')
+    for row in posts:
+        if row['id']==id_:
+            posts.remove(row)
+    return posts
+
+def delete_answer_by_id(id_):
+    posts=get_all_data('sample_data/answer.csv')
+    for row in posts:
+        if row['question_id']==id_ :
+            posts.remove(row)
+    return posts
+
+def sandi_data_writer(filename,to_write):
+    with open(filename,"w") as file_to_write:
+        writer=csv.DictWriter(file_to_write,fieldnames=question_titles)
+        writer.writeheader()
+        for row in to_write:
+            writer.writerow(row)
+
+def sandi_answer_writer(filename,to_write):
+    with open(filename,"w") as file_to_write:
+        writer=csv.DictWriter(file_to_write,fieldnames=answer_titles)
+        writer.writeheader()
+        for row in to_write:
+            writer.writerow(row)
 
 def generate_timestamp():
 

@@ -19,7 +19,7 @@ def route_question_by_id(id_):
     post = data_handler.get_post_by_id(id_)
     post['submission_time'] = data_handler.convert_timestamp(post['submission_time'])
 
-    return render_template('question.html', post=post, answers=answers)
+    return render_template('question.html', post=post, answers=answers, id_=id_)
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
@@ -55,10 +55,18 @@ def route_new_answer(question_id):
 
     return render_template("new-answer.html", post=post)
 
+@app.route('/question/<id_>/delete', methods=['GET','POST'])
+def delet_question(id_):
+    existing_questions=data_handler.delete_post_by_id(id_)
+    print(existing_questions)
+    existing_answers=data_handler.delete_answer_by_id(id_)
+    data_handler.sandi_data_writer('sample_data/question.csv',existing_questions)
+    data_handler.sandi_answer_writer('sample_data/answer.csv',existing_answers)
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=8004,
+        port=8000,
         debug=True
     )
