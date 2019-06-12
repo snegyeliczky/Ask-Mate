@@ -14,7 +14,13 @@ def get_answers_by_id(id_):
 
     list_of_answers = get_all_data('sample_data/answer.csv')
 
-    return [answer for answer in list_of_answers if answer['question_id'] == id_]
+    result = [answer for answer in list_of_answers if answer['question_id'] == id_]
+
+    for answer in result:
+        answer.pop('question_id', None)
+        answer['submission_time'] = convert_timestamp(answer['submission_time'])
+
+    return result
 
 
 def get_post_by_id(id_):

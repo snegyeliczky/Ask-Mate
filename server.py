@@ -12,7 +12,6 @@ def route_list():
     return render_template('list.html', questions=questions)
 
 
-
 @app.route('/question/<id_>')
 def route_question_by_id(id_):
 
