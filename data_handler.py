@@ -19,11 +19,12 @@ def get_answers_id(id_):
 
 def get_post_by_id(id_):
 
-    with open("sample_data/question.csv", "r") as data_file:
-        data = csv.DictReader(data_file)
-        for row in data:
-            if row['id'] == id_:
-                return row
+    list_of_questions = get_all_data("sample_data/question.csv")
+
+    for question in list_of_questions:
+        if question['id'] == id_:
+
+            return question
 
 
 def generate_timestamp():
@@ -38,13 +39,10 @@ def convert_timestamp(timestamp):
 
 def generate_question_id():
 
-    list_of_questions = get_all_data()
+    list_of_questions = get_all_data("sample_data/question.csv")
 
     return int(list_of_questions[-1]['id']) + 1
 
 
 def make_question_row(title,message):
     return
-
-
-print(generate_question_id())
