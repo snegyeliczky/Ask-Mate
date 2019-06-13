@@ -81,7 +81,7 @@ def route_answer_vote_count(question_id, answer_id, vote):
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
-def route_add_a_question():
+def route_add_question():
 
     questions = data_handler.get_all_data('sample_data/question.csv')
 
@@ -115,8 +115,20 @@ def route_edit_a_question(question_id):
     return render_template('edit-a-question.html', question=question)
 
 
+@app.route('/question/<question_id>/delete')
+def route_delete_question(question_id):
+
+    existing_questions = data_handler.delete_data(question_id, 'sample_data/question.csv')
+    existing_answers = data_handler.delete_data(question_id, 'sample_data/answer.csv', 'question_id')
+
+    data_handler.data_writer('sample_data/question.csv', existing_questions, data_handler.QUESTION_TITLE)
+    data_handler.data_writer('sample_data/answer.csv', existing_answers, data_handler.ANSWER_TITLE)
+
+    return redirect('/')
+
+
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
-def route_new_answer(question_id):
+def route_add_answer(question_id):
     question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
 
     if request.method == "POST":
@@ -130,18 +142,6 @@ def route_new_answer(question_id):
     question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
     return render_template("new-answer.html", question=question)
-
-
-@app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
-def delete_question(question_id):
-
-    existing_questions = data_handler.delete_data(question_id, 'sample_data/question.csv')
-    existing_answers = data_handler.delete_data(question_id, 'sample_data/answer.csv', 'question_id')
-
-    data_handler.data_writer('sample_data/question.csv', existing_questions, data_handler.QUESTION_TITLE)
-    data_handler.data_writer('sample_data/answer.csv', existing_answers, data_handler.ANSWER_TITLE)
-
-    return redirect('/')
 
 
 if __name__ == '__main__':
