@@ -2,13 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Question</title>
+        <title>AskMate | {{ question['title'] }}</title>
     </head>
     <body>
 
         <h1 align="left">{{ question['title'] }}</h1>
-
-        <table style="border-spacing: 15px 15px"  width="70%">
+        <table style="border-spacing: 15px 15px" width="70%">
             <tr style="font-size: 20px">
                 <th>Id</th>
                 <th>Views</th>
@@ -20,23 +19,36 @@
                 <td width="1%">{{ question['id'] }}</td>
                 <td width="1%"> {{ question['view_number'] }}</td>
                 <td width="5%">
-                    <a><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
+                    <p><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
                     <p>{{ question['vote_number'] }}</p>
-                        <p><a href="/question/{{ question['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
+                    <p><a href="/question/{{ question['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
                 </td>
                 <td style="white-space: pre-line" align="left" width="30%" >{{ question['message'] }}</td>
                 <td width="8%"> {{ question['submission_time'] }}</td>
 
             </tr>
         </table>
-
+        {% block extension %}
         <h2 align="left">Answers:</h2>
-        <table cellpadding="15%"  width="94%" align="center">
+        <table style="border-spacing: 15px 15px" width="70%">
+            <tr style="font-size: 20px">
+                <th>Id</th>
+                <th></th>
+                <th>Votes</th>
+                <th align="left">Message</th>
+                <th>Submission Time</th>
+            </tr>
             {% for answer in answers %}
-            <tr >
-                {% for key in answer %}
-                <td>{{ answer[key] }}</td>
-                {% endfor %}
+            <tr align="center">
+                <td width="1%">{{ answer['id'] }}</td>
+                <td width="2.8%"></td>
+                <td width="5%">
+                    <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/1"><button>UPVOTE</button></a></p>
+                    <p>{{ answer['vote_number'] }}</p>
+                    <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
+                </td>
+                <td style="white-space: pre-line" align="left" width="30%">{{ answer['message'] }}</td>
+                <td width="8%"> {{ answer['submission_time'] }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -45,13 +57,10 @@
             <a href="/question/{{ question['id'] }}/new-answer"><button style="font-size: 25px">Add a new answer</button></a>
             <a href="/question/{{ question['id'] }}/edit-a-question"><button style="font-size: 25px">Edit the question</button></a>
         </p>
-
-
-
         <p align="center">
             <a href="/"><button style="font-size: 25px">Back</button></a>
             <a href="/question/{{ question['id'] }}/delete"><button style="font-size: 25px">Delete Question</button></a>
         </p>
-
+        {% endblock %}
     </body>
 </html>
