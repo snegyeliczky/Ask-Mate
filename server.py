@@ -24,43 +24,55 @@ def route_list():
     return render_template('list.html', questions=sorted_questions)
 
 
-@app.route('/question/<id_>')
-def route_question_by_id(id_):
+@app.route('/question/<question_id>')
+def route_question_by_id(question_id):
 
-    answers = data_handler.get_answers_by_id(id_)
+    answers = data_handler.get_answers_by_id(question_id)
 
     for answer in answers:
         answer.pop('question_id', None)
         answer['submission_time'] = data_handler.convert_timestamp(answer['submission_time'])
 
-    question = data_handler.get_question_by_id(id_)
+    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
 
     question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
-    return render_template('question.html', question=question, answers=answers, id_=id_)
+    return render_template('question.html', question=question, answers=answers)
 
 
-@app.route('/question/<id_>/')
-def route_question_view_count(id_):
+@app.route('/question/<question_id>/')
+def route_question_view_count(question_id):
 
-    question = data_handler.get_question_by_id(id_)
+    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
     question['view_number'] = str(int(question['view_number']) + 1)
-    final_data=data_handler.edit_data(id_, question, 'sample_data/question.csv')
-    data_handler.data_writer('sample_data/question.csv',final_data,data_handler.QUESTION_TITLE)
+    final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
+    data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
 
-    return redirect(f'/question/{id_}')
+    return redirect(f'/question/{question_id}')
 
 
-@app.route('/question/<id_>/<vote>')
-def route_question_vote_count(id_, vote):
+@app.route('/question/<question_id>/<vote>')
+def route_question_vote_count(question_id, vote):
 
-    question = data_handler.get_question_by_id(id_)
+    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
 
     question['vote_number'] = str(int(question['vote_number']) + int(vote))
-    final_data=data_handler.edit_data(id_, question, 'sample_data/question.csv')
-    data_handler.data_writer('sample_data/question.csv',final_data,data_handler.QUESTION_TITLE)
+    final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
+    data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
 
-    return redirect(f'/question/{id_}')
+    return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/<answer_id>/<vote>')
+def route_answer_vote_count(question_id, answer_id, vote):
+
+    answer = data_handler.get_data_by_id('sample_data/answer.csv', answer_id)
+
+    answer['vote_number'] = str(int(answer['vote_number']) + int(vote))
+    final_data = data_handler.edit_data(answer_id, answer, 'sample_data/answer.csv')
+    data_handler.data_writer('sample_data/answer.csv', final_data, data_handler.ANSWER_TITLE)
+
+    return redirect(f'/question/{question_id}')
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
@@ -84,34 +96,42 @@ def route_add_a_question():
 
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
 def route_edit_a_question(question_id):
-    question = data_handler.get_question_by_id(question_id)
+    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
 
     if request.method == "POST":
         question['message'] = request.form['message']
-        final_data=data_handler.edit_data(question_id,question,'sample_data/question.csv')
-        data_handler.data_writer('sample_data/question.csv',final_data,data_handler.QUESTION_TITLE)
+        final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
+        data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
+
         return redirect(f'/question/{question_id}')
 
-    return render_template('edit-a-question.html', post=question)
+    question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
+
+    return render_template('edit-a-question.html', question=question)
 
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_new_answer(question_id):
-    post = data_handler.get_question_by_id(question_id)
+    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
+
     if request.method == "POST":
         new_answer = {'id': data_handler.generate_id('answer'), 'submission_time': data_handler.generate_timestamp(),
                       'vote_number': 0, 'question_id': question_id, 'message': request.form['answer'], 'image': ''}
-        final_data=data_handler.add_data(new_answer,'sample_data/answer.csv')
-        data_handler.data_writer('sample_data/answer.csv',final_data,data_handler.ANSWER_TITLE)
+        final_data = data_handler.add_data(new_answer, 'sample_data/answer.csv')
+        data_handler.data_writer('sample_data/answer.csv', final_data, data_handler.ANSWER_TITLE)
+
         return redirect(f"/question/{question_id}")
-    return render_template("new-answer.html", post=post)
+
+    question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
+
+    return render_template("new-answer.html", question=question)
 
 
-@app.route('/question/<id_>/delete', methods=['GET','POST'])
-def delete_question(id_):
+@app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
+def delete_question(question_id):
 
-    existing_questions = data_handler.delete_by_id(id_,'sample_data/question.csv')
-    existing_answers = data_handler.delete_by_id(id_,'sample_data/answer.csv','question_id')
+    existing_questions = data_handler.delete_data(question_id, 'sample_data/question.csv')
+    existing_answers = data_handler.delete_data(question_id, 'sample_data/answer.csv', 'question_id')
 
     data_handler.data_writer('sample_data/question.csv', existing_questions, data_handler.QUESTION_TITLE)
     data_handler.data_writer('sample_data/answer.csv', existing_answers, data_handler.ANSWER_TITLE)
