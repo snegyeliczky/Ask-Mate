@@ -13,19 +13,19 @@
                 <th>Votes</th>
                 <th>Questions</th>
                 <th>Submission time</th>
-                <th>
+                <th rowspan="3">
                     <form action="/list" method="GET">
-                        <select name="sort_by">
-                            <option value="view_number">Views</option>
-                            <option value="vote_number">Votes</option>
-                            <option value="title">Title</option>
-                            <option value="submission_time">Time</option>
+                        <select style="font-size: 15px" name="sort_by">
+                            <option value="view_number" {{ 'selected' if sort_by == 'view_number' }}>Views</option>
+                            <option value="vote_number" {{ 'selected' if sort_by == 'vote_number' }}>Votes</option>
+                            <option value="title" {{ 'selected' if sort_by == 'title' }}>Title</option>
+                            <option value="submission_time" {{ 'selected' if sort_by == 'submission_time' }}>Time</option>
                         </select><br>
-                        <select name="sort_direction">
-                            <option value="0">Ascending</option>
-                            <option value="1">Descending</option>
+                        <select style="font-size: 15px" name="sort_direction">
+                            <option value="0" {{ 'selected' if sort_direction == '0' }}>Ascending</option>
+                            <option value="1" {{ 'selected' if sort_direction == '1' }}>Descending</option>
                         </select><br>
-                        <input type="submit" value="Sort">
+                        <p><input type="submit" value="Sort" style="font-size: 15px"></p>
                     </form>
                 </th>
             </tr>
