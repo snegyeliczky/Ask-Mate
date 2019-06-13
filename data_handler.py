@@ -1,8 +1,8 @@
 import csv
 import time
 from datetime import datetime
-question_titles = ["id","submission_time","view_number","vote_number","title","message","image"]
-answer_titles = ['id','submission_time','vote_number','question_id','message','image']
+QUESTION_TITLE = ["id","submission_time","view_number","vote_number","title","message","image"]
+ANSWER_TITLE= ['id','submission_time','vote_number','question_id','message','image']
 
 
 def get_all_data(filename):
@@ -30,68 +30,45 @@ def get_question_by_id(id_):
             return question
 
 
-def delete_post_by_id(id_):
-    posts=get_all_data('sample_data/question.csv')
+def delete_by_id(id_,filename,id_type='id'):
+    posts=get_all_data(filename)
+    neaded_posts=[]
     for row in posts:
-        if row['id']==id_:
-            posts.remove(row)
-    return posts
+        if row[id_type]!=id_ :
+            neaded_posts.append(row)
+    return neaded_posts
 
-def delete_answer_by_id(id_):
-    posts=get_all_data('sample_data/answer.csv')
-    for row in posts:
-        if row['question_id']==id_ :
-            posts.remove(row)
-    return posts
-
-def sandi_data_writer(filename,to_write):
+def data_writer(filename,to_write,fieldnames):
     with open(filename,"w") as file_to_write:
-        writer=csv.DictWriter(file_to_write,fieldnames=question_titles)
+        writer=csv.DictWriter(file_to_write,fieldnames)
         writer.writeheader()
         for row in to_write:
             writer.writerow(row)
 
-def sandi_answer_writer(new_answer):
+def add_data(new_data,filename):
+    list_of_data=get_all_data(filename)
+    list_of_data.append(new_data)
+    return list_of_data
 
-    with open('sample_data/answer.csv', "a") as file_to_write:
-        writer = csv.DictWriter(file_to_write, fieldnames=answer_titles)
-        writer.writerow(new_answer)
+def edit_data(id_, new_line,filename):
+
+    list_of_data = get_all_data(filename)
+
+    for i, row in enumerate(list_of_data):
+        if row["id"] == id_:
+            list_of_data[i] = new_line
+    return list_of_data
 
 
 def generate_timestamp():
-
     return int(time.time())
 
 
 def convert_timestamp(timestamp):
-
     return datetime.utcfromtimestamp(int(timestamp) + 7200)
 
 
 def generate_id(type):
-
     list_of_items = get_all_data(f"sample_data/{type}.csv")
-
     return int(list_of_items[-1]['id']) + 1
-
-
-def write_question(id_, new_line):
-
-    field_names = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
-    list_of_questions = get_all_data('sample_data/question.csv')
-
-    if id_ in [question['id'] for question in list_of_questions]:
-        for i, question in enumerate(list_of_questions):
-            if question["id"] == id_:
-                list_of_questions[i] = new_line
-
-    else:
-        list_of_questions.append(new_line)
-
-    with open('sample_data/question.csv', "w") as data_file:
-        writer = csv.DictWriter(data_file, field_names)
-        writer.writeheader()
-
-        for question in list_of_questions:
-            writer.writerow(question)
 
