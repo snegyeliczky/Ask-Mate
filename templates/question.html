@@ -20,9 +20,9 @@
                 <td width="1%">{{ question['id'] }}</td>
                 <td width="1%"> {{ question['view_number'] }}</td>
                 <td width="5%">
-                    <p><button>UPVOTE</button></p>
+                    <a><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
                     <p>{{ question['vote_number'] }}</p>
-                    <p><button>DOWNVOTE</button></p>
+                        <p><a href="/question/{{ question['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
                 </td>
                 <td style="white-space: pre-line" align="left" width="30%" >{{ question['message'] }}</td>
                 <td width="8%"> {{ question['submission_time'] }}</td>
