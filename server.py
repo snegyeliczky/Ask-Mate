@@ -42,6 +42,18 @@ def route_question_view_count(id_):
     return redirect(f'/question/{id_}')
 
 
+@app.route('/question/<id_>/<vote>')
+def route_question_vote_count(id_, vote):
+
+    question = data_handler.get_question_by_id(id_)
+
+    question['vote_number'] = str(int(question['vote_number']) + int(vote))
+    final_data=data_handler.edit_data(id_, question, 'sample_data/question.csv')
+    data_handler.data_writer('sample_data/question.csv',final_data,data_handler.QUESTION_TITLE)
+
+    return redirect(f'/question/{id_}')
+
+
 @app.route('/add-a-question', methods=['GET', 'POST'])
 def route_add_a_question():
 
