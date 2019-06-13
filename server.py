@@ -26,12 +26,19 @@ def route_question_by_id(id_):
 
     question = data_handler.get_question_by_id(id_)
 
-    question['view_number'] = str(int(question['view_number']) + 1)
-    data_handler.write_question(id_, question)
-
     question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
     return render_template('question.html', question=question, answers=answers, id_=id_)
+
+
+@app.route('/question/<id_>/')
+def route_question_view_count(id_):
+
+    question = data_handler.get_question_by_id(id_)
+    question['view_number'] = str(int(question['view_number']) + 1)
+    data_handler.write_question(id_, question)
+
+    return redirect(f'/question/{id_}')
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
