@@ -7,12 +7,21 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = sorted(data_handler.get_all_data('sample_data/question.csv'),
-                       key=lambda item: item['submission_time'], reverse=True)
-    for question in questions:
+    questions = data_handler.get_all_data('sample_data/question.csv')
+    try:
+        if request.args['sort_by'] == 'view_number' or request.args['sort_by'] == 'vote_number':
+            sorted_questions = sorted(questions, key=lambda item: int(item[request.args['sort_by']]),
+                                      reverse=bool(int(request.args['sort_direction'])))
+        else:
+            sorted_questions = sorted(questions, key=lambda item: item[request.args['sort_by']],
+                                      reverse=bool(int(request.args['sort_direction'])))
+    except KeyError:
+        sorted_questions = sorted(questions, key=lambda item: item['submission_time'], reverse=True)
+
+    for question in sorted_questions:
         question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
-    return render_template('list.html', questions=questions)
+    return render_template('list.html', questions=sorted_questions)
 
 
 @app.route('/question/<id_>')
