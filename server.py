@@ -32,12 +32,7 @@ def route_question_by_id(question_id):
 
     answers = data_handler.get_answers_by_id(question_id)
 
-    for answer in answers:
-        answer.pop('question_id', None)
-        answer['submission_time'] = data_handler.convert_timestamp(answer['submission_time'])
-
     question = data_handler.get_data_by_id(question_id, 'question')
-
     return render_template('question.html', question=question, answers=answers)
 
 
