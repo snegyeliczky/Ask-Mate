@@ -2,35 +2,37 @@ import csv
 import time
 from datetime import datetime
 import database_common
+from psycopg2 import sql
 
 QUESTION_TITLE = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_TITLE = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def get_all_data(filename):
-    with open(filename, "r") as data_file:
-        reader = csv.DictReader(data_file)
+@database_common.connection_handler
+def get_all_data(cursor, table):
+    cursor.execute(f"SELECT * FROM {table}")
+    data = cursor.fetchall()
+    return data
 
-        return [*reader]
 
-
-def get_data_by_id(filename, id_):
-    list_of_data = get_all_data(filename)
-
-    for row in list_of_data:
-        if row['id'] == id_:
-
-            return row
+@database_common.connection_handler
+def get_data_by_id(cursor, id_, table):
+    cursor.execute("""
+                    SELECT * FROM {}
+                    WHERE id = %(id)s
+                    """.format(table), {'id': id_})
+    data = cursor.fetchall()
+    return data
 
 
 def get_answers_by_id(id_):
-    list_of_answers = get_all_data('sample_data/answer.csv')
+    list_of_answers = get_all_data('answer')
 
     return [answer for answer in list_of_answers if answer['question_id'] == id_]
 
 
 def delete_data(id_, filename, id_type='id'):
-    data = get_all_data(filename)
+    data = get_all_data(cursor)
     data_kept = []
 
     for row in data:
@@ -50,7 +52,7 @@ def data_writer(filename, to_write, fieldnames):
 
 
 def add_data(new_data, filename):
-    list_of_data = get_all_data(filename)
+    list_of_data = get_all_data(cursor)
     list_of_data.append(new_data)
 
     return list_of_data
@@ -58,7 +60,7 @@ def add_data(new_data, filename):
 
 def edit_data(id_, new_line, filename):
 
-    list_of_data = get_all_data(filename)
+    list_of_data = get_all_data(cursor)
 
     for i, row in enumerate(list_of_data):
         if row["id"] == id_:
