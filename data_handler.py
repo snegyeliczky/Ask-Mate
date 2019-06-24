@@ -1,6 +1,7 @@
 import csv
 import time
 from datetime import datetime
+import database_common
 
 QUESTION_TITLE = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_TITLE = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
