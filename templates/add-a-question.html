@@ -1,30 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>AskMate | Ask a question</title>
-    </head>
-    <body>
-    <h1 align="center">Ask a question:</h1>
-    <form action="/add-a-question" method="post" >
-        <p align="center" >
-            <label style="font-size: 20px">Question title:</label><br>
-            <input style="font-size: 18px" type="text" name="title" required>
-        </p>
-        <p align="center">
-            <label style="font-size: 20px">Question details:</label><br>
-            <textarea style="font-size: 16px; resize: none" name="message" rows="10" cols="40" required></textarea>
-        </p>
+{% extends 'layout.html' %}
+{% block title %}AskMate | Ask a question{% endblock %}
+{% block content %}
+    <div id="add_question">
+        <h1>Ask a question:</h1>
+        <form action="{{ url_for('route_add_question') }}" method="post" >
+            <p>
+                <label for="title">Question title:</label><br>
+                <input type="text" name="title" id="title" required>
+            </p>
+            <p>
+                <label for="message">Question details:</label><br>
+                <textarea name="message" rows="10" cols="40" id="message" required></textarea>
+            </p>
+            <p>
+                <label for="image">Image link</label><br>
+                <input type="text" name="image" id="image">
+            </p>
+            <p>
+                <button type="submit">Submit</button>
+            </p>
+        </form>
         <p>
-            <label>Image link</label>
-            <input type="text" name="image">
+            <a href="{{ url_for('route_list') }}"><button>Back</button></a>
         </p>
-        <p align="center">
-            <button style="font-size: 20px" type="submit">Submit</button>
-        </p>
-    </form>
-    <p align="center">
-        <a href="/"><button style="font-size: 20px">Back</button></a>
-    </p>
-    </body>
-</html>
+    </div>
+{% endblock %}

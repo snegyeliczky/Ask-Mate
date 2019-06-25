@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>AskMate</title>
-    </head>
-    <body>
+{% extends 'layout.html' %}
+{% block title %}AskMate{% endblock %}
+{% block content %}
+    <div id="main_page">
         <h1 align="center">AskMate</h1>
         <table style="border-spacing: 30px 20px" align="center">
             <tr align="left">
@@ -12,33 +9,39 @@
                 <th>Votes</th>
                 <th>Questions</th>
                 <th>Submission time</th>
-                <th rowspan="3">
-                    <form action="/list" method="GET">
-                        <select style="font-size: 15px" name="sort_by">
-                            <option value="view_number" {{ 'selected' if sort_by == 'view_number' }}>Views</option>
-                            <option value="vote_number" {{ 'selected' if sort_by == 'vote_number' }}>Votes</option>
-                            <option value="title" {{ 'selected' if sort_by == 'title' }}>Title</option>
-                            <option value="submission_time" {{ 'selected' if sort_by == 'submission_time' }}>Time</option>
-                        </select><br>
-                        <select style="font-size: 15px" name="sort_direction">
-                            <option value="ASC" {{ 'selected' if sort_direction == 'ASC' }}>Ascending</option>
-                            <option value="DESC" {{ 'selected' if sort_direction == 'DESC' }}>Descending</option>
-                        </select><br>
-                        <p><input type="submit" value="Sort" style="font-size: 15px"></p>
-                    </form>
-                </th>
             </tr>
-            {% for row in questions %}
-                    <tr>
-                        <td>{{ row['view_number'] }}</td>
-                        <td>{{ row['vote_number'] }}</td>
-                        <td align="left">
-                            <a style="color: #177199; font-size: 20px" href="/question/{{ row['id']}}/"> {{ row['title'] }}</a>
-                        </td>
-                        <td>{{ row['submission_time'] }}</td>
-                    </tr>
-            {% endfor %}
+        {% for row in questions %}
+            <tr>
+                <td>{{ row['view_number'] }}</td>
+                <td>{{ row['vote_number'] }}</td>
+                <td><a style="color: #177199; font-size: 20px" href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
+                <td>{{ row['submission_time'] }}</td>
+            </tr>
+        {% endfor %}
         </table>
-        <p align="center"><a href="/add-a-question"><button style="font-size: 20px">Ask a question</button></a></p>
-    </body>
-</html>
+        <form action="{{ url_for('route_list') }}" method="GET">
+            <p>
+                <label for="sort_by"></label>
+                <select style="font-size: 15px" name="sort_by" id="sort_by">
+                    <option value="view_number" {{ 'selected' if sort_by == 'view_number' }}>Views</option>
+                    <option value="vote_number" {{ 'selected' if sort_by == 'vote_number' }}>Votes</option>
+                    <option value="title" {{ 'selected' if sort_by == 'title' }}>Title</option>
+                    <option value="submission_time" {{ 'selected' if sort_by == 'submission_time' }}>Time</option>
+                </select>
+            </p>
+            <p>
+                <label for="sort_direction"></label>
+                <select style="font-size: 15px" name="sort_direction" id="sort_direction">
+                    <option value="ASC" {{ 'selected' if sort_direction == 'ASC' }}>Ascending</option>
+                    <option value="DESC" {{ 'selected' if sort_direction == 'DESC' }}>Descending</option>
+                </select>
+            </p>
+            <p>
+                <input type="submit" value="Sort" style="font-size: 15px">
+            </p>
+        </form>
+        <p align="center">
+            <a href="{{ url_for('route_add_question') }}"><button style="font-size: 20px">Ask a question</button></a>
+        </p>
+    </div>
+{% endblock %}
