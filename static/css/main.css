@@ -1,0 +1,135 @@
+body {
+    background-color: #ffe9ac;
+    font-family: serif;
+}
+
+/* main page */
+
+#main_page h1 {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: auto;
+}
+
+#main_page form {
+    margin: auto;
+    width: fit-content;
+    display: flow;
+    position: relative;
+    left: 540px;
+    top: 120px
+}
+
+#main_page table {
+    margin: auto;
+    width: fit-content;
+    border-collapse: collapse;
+    position: relative;
+    bottom: 40px;
+}
+
+#main_page td {
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+}
+
+#main_page td:first-child {
+    border-left: 1px black solid;
+}
+
+#main_page td:last-child {
+    border-right: 1px black solid;
+}
+
+#main_page th {
+    font-size: 20px;
+    font-style: italic;
+    padding: 0 20px 25px 20px;
+}
+
+#main_page th:nth-child(3) {
+    text-align: left;
+}
+
+#main_page td {
+    line-height: 35px;
+    text-align: center;
+    font-size: 16px;
+    padding: 0 20px 0 20px;
+}
+
+#main_page td:nth-child(3) {
+    text-align: left;
+    font-size: 20px;
+    font-style: italic;
+}
+
+#main_page a {
+    color: #3168ad;
+    text-decoration: none;
+}
+
+#main_page form p:nth-child(-n+2) {
+    margin: auto;
+    height: fit-content;
+    padding: 1px;
+}
+
+#main_page form select, #main_page form input {
+    width: 100%;
+    height: 26px;
+    font-size: 16px;
+    font-style: italic;
+}
+
+#main_page button {
+    font-size: 17px;
+    font-weight: bold;
+    width: 150px;
+    height: 50px;
+}
+
+#main_page #ask_button {
+    margin: auto;
+    width: fit-content;
+    padding-top: 10px;
+}
+
+/* add-question page */
+
+#add_question {
+    margin: auto;
+    width: fit-content;
+    position: center;
+}
+
+#add_question h1, #add_question p{
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+#add_question h1 {
+    font-size: 30px;
+}
+
+#add_question label{
+    font-size: 20px;
+    font-style: italic;
+}
+
+#add_question input, #add_question textarea {
+    font-size: 16px;
+    resize: none;
+}
+
+#add_question button {
+    font-size: 17px;
+    font-weight: bold;
+    width: 80px;
+    height: 30px;
+}
+
+#add_question #back_button {
+    position: relative;
+    bottom: 20px
+}

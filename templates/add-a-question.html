@@ -13,14 +13,14 @@
                 <textarea name="message" rows="10" cols="40" id="message" required></textarea>
             </p>
             <p>
-                <label for="image">Image link</label><br>
+                <label for="image">Image link:</label><br>
                 <input type="text" name="image" id="image">
             </p>
             <p>
                 <button type="submit">Submit</button>
             </p>
         </form>
-        <p>
+        <p id="back_button">
             <a href="{{ url_for('route_list') }}"><button>Back</button></a>
         </p>
     </div>

@@ -2,27 +2,11 @@
 {% block title %}AskMate{% endblock %}
 {% block content %}
     <div id="main_page">
-        <h1 align="center">AskMate</h1>
-        <table style="border-spacing: 30px 20px" align="center">
-            <tr align="left">
-                <th>Views</th>
-                <th>Votes</th>
-                <th>Questions</th>
-                <th>Submission time</th>
-            </tr>
-        {% for row in questions %}
-            <tr>
-                <td>{{ row['view_number'] }}</td>
-                <td>{{ row['vote_number'] }}</td>
-                <td><a style="color: #177199; font-size: 20px" href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
-                <td>{{ row['submission_time'] }}</td>
-            </tr>
-        {% endfor %}
-        </table>
+        <h1>AskMate</h1>
         <form action="{{ url_for('route_list') }}" method="GET">
             <p>
                 <label for="sort_by"></label>
-                <select style="font-size: 15px" name="sort_by" id="sort_by">
+                <select name="sort_by" id="sort_by">
                     <option value="view_number" {{ 'selected' if sort_by == 'view_number' }}>Views</option>
                     <option value="vote_number" {{ 'selected' if sort_by == 'vote_number' }}>Votes</option>
                     <option value="title" {{ 'selected' if sort_by == 'title' }}>Title</option>
@@ -31,17 +15,33 @@
             </p>
             <p>
                 <label for="sort_direction"></label>
-                <select style="font-size: 15px" name="sort_direction" id="sort_direction">
+                <select name="sort_direction" id="sort_direction">
                     <option value="ASC" {{ 'selected' if sort_direction == 'ASC' }}>Ascending</option>
                     <option value="DESC" {{ 'selected' if sort_direction == 'DESC' }}>Descending</option>
                 </select>
             </p>
             <p>
-                <input type="submit" value="Sort" style="font-size: 15px">
+                <input type="submit" value="Sort">
             </p>
         </form>
-        <p align="center">
-            <a href="{{ url_for('route_add_question') }}"><button style="font-size: 20px">Ask a question</button></a>
+        <table>
+            <tr>
+                <th>Views</th>
+                <th>Votes</th>
+                <th>Questions</th>
+                <th>Submission time</th>
+            </tr>
+            {% for row in questions %}
+                <tr>
+                    <td>{{ row['view_number'] }}</td>
+                    <td>{{ row['vote_number'] }}</td>
+                    <td><a href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
+                    <td>{{ row['submission_time'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <p id="ask_button">
+            <a href="{{ url_for('route_add_question') }}"><button>Ask a question</button></a>
         </p>
     </div>
 {% endblock %}
