@@ -7,7 +7,8 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_handler.get_all_data('sample_data/question.csv')
+    questions = data_handler.get_all_data('question')
+
     try:
         if request.args['sort_by'] == 'view_number' or request.args['sort_by'] == 'vote_number':
             sorted_questions = sorted(questions, key=lambda item: int(item[request.args['sort_by']]),
@@ -23,9 +24,6 @@ def route_list():
         sort_by = 'submission_time'
         sort_direction = '1'
 
-    for question in sorted_questions:
-        question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
-
     return render_template('list.html', questions=sorted_questions, sort_by=sort_by, sort_direction=sort_direction)
 
 
@@ -34,21 +32,14 @@ def route_question_by_id(question_id):
 
     answers = data_handler.get_answers_by_id(question_id)
 
-    for answer in answers:
-        answer.pop('question_id', None)
-        answer['submission_time'] = data_handler.convert_timestamp(answer['submission_time'])
-
-    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
-
-    question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
-
+    question = data_handler.get_data_by_id(question_id, 'question')
     return render_template('question.html', question=question, answers=answers)
 
 
 @app.route('/question/<question_id>/')
 def route_question_view_count(question_id):
 
-    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
+    question = data_handler.get_data_by_id(question_id, 'question')
     question['view_number'] = str(int(question['view_number']) + 1)
     final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
     data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
