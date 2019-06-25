@@ -14,11 +14,16 @@ def get_all_data(cursor, table, order_by, direction):
 
 
 @database_common.connection_handler
-def get_data_by_id(cursor, table, column, id_):
+def get_data_by_question_id(cursor, table, item_id):
+    column = 'id'
+    if table == 'answer':
+        column = 'question_id'
+
     cursor.execute(f"""
                    SELECT * FROM {table}
                    WHERE {column} = %(id)s
-                   """, {'id': id_})
+                   ORDER BY submission_time
+                   """, {'id': item_id})
 
     data = cursor.fetchall()
     return data

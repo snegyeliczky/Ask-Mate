@@ -21,8 +21,8 @@ def route_list():
 @app.route('/question/<question_id>')
 def route_question_by_id(question_id):
 
-    question = data_handler.get_data_by_id('question', 'id', question_id)[0]
-    answers = data_handler.get_data_by_id('answer', 'question_id', question_id)
+    question = data_handler.get_data_by_question_id('question', question_id)[0]
+    answers = data_handler.get_data_by_question_id('answer', question_id)
 
     return render_template('question.html', question=question, answers=answers)
 
@@ -69,7 +69,7 @@ def route_add_question():
 
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
 def route_edit_a_question(question_id):
-    question = data_handler.get_data_by_id('question', 'id', question_id)[0]
+    question = data_handler.get_data_by_question_id('question', question_id)[0]
 
     if request.method == "POST":
 
@@ -88,7 +88,7 @@ def route_delete_question(question_id):
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_add_answer(question_id):
-    question = data_handler.get_data_by_id('question', 'id', question_id)[0]
+    question = data_handler.get_data_by_question_id('question', question_id)[0]
 
     if request.method == "POST":
 
