@@ -21,8 +21,8 @@
                             <option value="submission_time" {{ 'selected' if sort_by == 'submission_time' }}>Time</option>
                         </select><br>
                         <select style="font-size: 15px" name="sort_direction">
-                            <option value="0" {{ 'selected' if sort_direction == '0' }}>Ascending</option>
-                            <option value="1" {{ 'selected' if sort_direction == '1' }}>Descending</option>
+                            <option value="ASC" {{ 'selected' if sort_direction == 'ASC' }}>Ascending</option>
+                            <option value="DESC" {{ 'selected' if sort_direction == 'DESC' }}>Descending</option>
                         </select><br>
                         <p><input type="submit" value="Sort" style="font-size: 15px"></p>
                     </form>

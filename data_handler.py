@@ -3,8 +3,12 @@ from datetime import datetime
 
 
 @database_common.connection_handler
-def get_all_data(cursor, table):
-    cursor.execute(f"SELECT * FROM {table}")
+def get_all_data(cursor, table, order_by, direction):
+    cursor.execute(f"""
+                    SELECT * FROM {table}
+                    ORDER BY {order_by} {direction}
+                    """)
+
     data = cursor.fetchall()
     return data
 
