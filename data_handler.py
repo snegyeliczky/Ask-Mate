@@ -2,7 +2,6 @@ import csv
 import time
 from datetime import datetime
 import database_common
-from psycopg2 import sql
 
 QUESTION_TITLE = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_TITLE = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
@@ -16,11 +15,12 @@ def get_all_data(cursor, table):
 
 
 @database_common.connection_handler
-def get_data_by_id(cursor, id_, table):
-    cursor.execute("""
-                    SELECT * FROM {}
-                    WHERE id = %(id)s
-                    """.format(table), {'id': id_})
+def get_data_by_id(cursor, table, column, id_):
+    cursor.execute(f"""
+                   SELECT * FROM {table}
+                   WHERE {column} = %(id)s
+                   """, {'id': id_})
+
     data = cursor.fetchall()
     return data
 

@@ -30,9 +30,9 @@ def route_list():
 @app.route('/question/<question_id>')
 def route_question_by_id(question_id):
 
-    answers = data_handler.get_answers_by_id(question_id)
+    question = data_handler.get_data_by_id('question', 'id', question_id)[0]
+    answers = data_handler.get_data_by_id('answer', 'question_id', question_id)
 
-    question = data_handler.get_data_by_id(question_id, 'question')
     return render_template('question.html', question=question, answers=answers)
 
 

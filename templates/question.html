@@ -15,15 +15,15 @@
                 <th>Submission Time</th>
             </tr>
             <tr align="center">
-                <td width="1%">{{ question[0]['id'] }}</td>
-                <td width="1%"> {{ question[0]['view_number'] }}</td>
+                <td width="1%">{{ question['id'] }}</td>
+                <td width="1%"> {{ question['view_number'] }}</td>
                 <td width="5%">
-                    <p><a href="/question/{{ question[0]['id'] }}/1"><button>UPVOTE</button></a></p>
-                    <p>{{ question[0]['vote_number'] }}</p>
-                    <p><a href="/question/{{ question[0]['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
+                    <p><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
+                    <p>{{ question['vote_number'] }}</p>
+                    <p><a href="/question/{{ question['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
                 </td>
-                <td style="white-space: pre-line" align="left" width="30%" >{{ question[0]['message'] }}</td>
-                <td width="8%"> {{ question[0]['submission_time'] }}</td>
+                <td style="white-space: pre-line" align="left" width="30%" >{{ question['message'] }}</td>
+                <td width="8%"> {{ question['submission_time'] }}</td>
             </tr>
         </table>
         {% block extension %}
