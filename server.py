@@ -46,11 +46,7 @@ def route_question_view_count(question_id):
 @app.route('/question/<question_id>/<vote>')
 def route_question_vote_count(question_id, vote):
 
-    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
-
-    question['vote_number'] = str(int(question['vote_number']) + int(vote))
-    final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
-    data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
+    data_handler.edit_vote_number('question',question_id,vote)
 
     return redirect(f'/question/{question_id}')
 

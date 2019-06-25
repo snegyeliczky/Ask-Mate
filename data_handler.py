@@ -76,7 +76,15 @@ def edit_view_number(cursor,question_id):
                     WHERE id=%(question_id)s
                     """, {'view_number':view_number, 'question_id':question_id})
 
-
+@database_common.connection_handler
+def edit_vote_number(cursor,table,id_,vote):
+    cursor.execute(f"""
+                    
+                    
+                    UPDATE {table}
+                    SET vote_number = (SELECT vote_number  FROM {table}
+                                        WHERE id = %(id_)s)+%(vote)s 
+                    """, {'id_':id_, 'vote':vote})
 
 
 def generate_timestamp():
