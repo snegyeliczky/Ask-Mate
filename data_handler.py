@@ -31,15 +31,20 @@ def get_answers_by_id(id_):
     return [answer for answer in list_of_answers if answer['question_id'] == id_]
 
 
-def delete_data(id_, filename, id_type='id'):
-    data = get_all_data(cursor)
-    data_kept = []
-
-    for row in data:
-        if row[id_type] != id_:
-            data_kept.append(row)
-
-    return data_kept
+@database_common.connection_handler
+def delete_data(cursor, id_):
+    cursor.execute("""
+                    SELECT id FROM answer
+                    WHERE question_id=%(id)s
+                    """, {'id':id_})
+    answer_ids=cursor.fetchall()
+    print(answer_ids)
+    for id in answer_ids:
+        cursor.execute(""" DELETE FROM comment WHERE answer_id=%(id)s""",{'id':id['id']})
+    cursor.execute("""  DELETE FROM comment WHERE question_id=%(id)s""", {'id':id_})
+    cursor.execute("""  DELETE FROM answer WHERE question_id=%(id)s""", {'id': id_})
+    cursor.execute("""  DELETE FROM question_tag WHERE question_id=%(id)s""", {'id': id_})
+    cursor.execute("""  DELETE FROM question WHERE id=%(id)s""", {'id': id_})
 
 
 def data_writer(filename, to_write, fieldnames):
@@ -81,3 +86,11 @@ def generate_id(data_type):
     list_of_data = get_all_data(f"sample_data/{data_type}.csv")
 
     return int(max([item['id'] for item in list_of_data])) + 1
+
+@database_common.connection_handler
+def test(cursor):
+    cursor.execute("SELECT * FROM answer")
+    result=cursor.fetchall()
+    print(result)
+
+test()

@@ -108,15 +108,8 @@ def route_edit_a_question(question_id):
 
 @app.route('/question/<question_id>/delete')
 def route_delete_question(question_id):
-
-    existing_questions = data_handler.delete_data(question_id, 'sample_data/question.csv')
-    existing_answers = data_handler.delete_data(question_id, 'sample_data/answer.csv', 'question_id')
-
-    data_handler.data_writer('sample_data/question.csv', existing_questions, data_handler.QUESTION_TITLE)
-    data_handler.data_writer('sample_data/answer.csv', existing_answers, data_handler.ANSWER_TITLE)
-
+    data_handler.delete_data(question_id)
     return redirect('/')
-
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_add_answer(question_id):
@@ -138,6 +131,6 @@ def route_add_answer(question_id):
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=8000,
+        port=8022,
         debug=True
     )
