@@ -73,7 +73,7 @@ def edit_view_number(cursor, question_id):
     cursor.execute("""
                    UPDATE question
                    SET view_number = (SELECT view_number FROM question
-                                      WHERE id = %(question_id)s)+1
+                                      WHERE id = %(question_id)s) + 1
                    WHERE id=%(question_id)s
                    """, {'question_id': question_id})
 
@@ -83,7 +83,8 @@ def edit_vote_number(cursor, table, item_id, vote):
     cursor.execute(f"""
                     UPDATE {table}
                     SET vote_number = (SELECT vote_number  FROM {table}
-                                       WHERE id = %(item_id)s)+%(vote)s 
+                                       WHERE id = %(item_id)s) + %(vote)s 
+                    WHERE id = %(item_id)s
                     """, {'item_id': item_id, 'vote': vote})
 
 
