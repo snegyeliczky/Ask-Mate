@@ -1,9 +1,12 @@
 {% extends 'question.html' %}
 {% block extension %}
 <h1 align="center">Your Answer:</h1>
-<form action="/question/{{ question['id'] }}/new-answer" method="POST">
+<form action="{{ url_for('route_add_answer', question_id=question['id']) }}" method="POST">
     <p align="center">
-        <textarea name="answer" cols="60" rows="15"></textarea>
+        <textarea name="message" cols="60" rows="15"></textarea>
+    </p>
+    <p>
+        <input type="text" name="image">
     </p>
     <p align="center">
         <button type="submit" style="font-size: 20px">Submit</button>

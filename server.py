@@ -38,11 +38,7 @@ def route_question_by_id(question_id):
 
 @app.route('/question/<question_id>/')
 def route_question_view_count(question_id):
-
-    question = data_handler.get_data_by_id(question_id, 'question')
-    question['view_number'] = str(int(question['view_number']) + 1)
-    final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
-    data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
+    data_handler.edit_view_number(question_id)
 
     return redirect(f'/question/{question_id}')
 
@@ -90,16 +86,13 @@ def route_add_question():
 
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
 def route_edit_a_question(question_id):
-    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
+    question = data_handler.get_data_by_id('question', 'id', question_id)[0]
 
     if request.method == "POST":
-        question['message'] = request.form['message']
-        final_data = data_handler.edit_data(question_id, question, 'sample_data/question.csv')
-        data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
 
+        message = request.form['message']
+        data_handler.edit_question('question', question_id, message)
         return redirect(f'/question/{question_id}')
-
-    question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
     return render_template('edit-a-question.html', question=question)
 
@@ -112,17 +105,17 @@ def route_delete_question(question_id):
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_add_answer(question_id):
-    question = data_handler.get_data_by_id('sample_data/question.csv', question_id)
+    question = data_handler.get_data_by_id('question', 'id', question_id)[0]
 
     if request.method == "POST":
-        new_answer = {'id': data_handler.generate_id('answer'), 'submission_time': data_handler.generate_timestamp(),
-                      'vote_number': 0, 'question_id': question_id, 'message': request.form['answer'], 'image': ''}
-        final_data = data_handler.add_data(new_answer, 'sample_data/answer.csv')
-        data_handler.data_writer('sample_data/answer.csv', final_data, data_handler.ANSWER_TITLE)
 
+        message = request.form['message']
+        image = request.form['image']
+        if image == "":
+            image = None
+
+        data_handler.add_answer(question_id, message, image)
         return redirect(f"/question/{question_id}")
-
-    question['submission_time'] = data_handler.convert_timestamp(question['submission_time'])
 
     return render_template("new-answer.html", question=question)
 

@@ -1,10 +1,5 @@
-import csv
-import time
 from datetime import datetime
 import database_common
-
-QUESTION_TITLE = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
-ANSWER_TITLE = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 @database_common.connection_handler
@@ -51,41 +46,38 @@ def add_question(cursor, title, message, image):
 
 
 @database_common.connection_handler
-def add_answer(cursor, question_id, message):
+def add_answer(cursor, question_id, message, image):
     timestamp = generate_timestamp()
     cursor.execute("""
-                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                    VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, null)
-                    """, {'timestamp': timestamp, 'title': title, 'message': message})
+                    INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+                    VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s)
+                    """, {'timestamp': timestamp, 'question_id': question_id, 'message': message, 'image': image})
 
 
-def edit_data(id_, new_line, filename):
+@database_common.connection_handler
+def edit_question(cursor, table, id_, message):
+    cursor.execute(f"""
+                    UPDATE {table}
+                    SET message = %(message)s
+                    WHERE id = %(id_)s
+                    """, {'message': message, 'id_': id_})
 
-    list_of_data = get_all_data(cursor)
+@database_common.connection_handler
+def edit_view_number(cursor,question_id):
+    cursor.execute("""
+                    SELECT view_number FROM question
+                    WHERE id = %(question_id)s
+                    """, {'question_id':question_id})
+    view_number = cursor.fetchall()[0]['view_number']
+    view_number += 1
+    cursor.execute("""
+                    UPDATE question
+                    SET view_number = %(view_number)s
+                    WHERE id=%(question_id)s
+                    """, {'view_number':view_number, 'question_id':question_id})
 
-    for i, row in enumerate(list_of_data):
-        if row["id"] == id_:
-            list_of_data[i] = new_line
 
-    return list_of_data
 
 
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-def convert_timestamp(timestamp):
-    return datetime.utcfromtimestamp(int(timestamp) + 7200)
-
-
-def generate_id(data_type):
-    list_of_data = get_all_data(f"sample_data/{data_type}.csv")
-
-    return int(max([item['id'] for item in list_of_data])) + 1
-
-
-@database_common.connection_handler
-def test(cursor):
-    cursor.execute("SELECT * FROM answer")
-    result = cursor.fetchall()
-    print(result)
