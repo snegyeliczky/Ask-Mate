@@ -74,20 +74,18 @@ def route_answer_vote_count(question_id, answer_id, vote):
 @app.route('/add-a-question', methods=['GET', 'POST'])
 def route_add_question():
 
-    questions = data_handler.get_all_data('sample_data/question.csv')
-
     if request.method == "POST":
 
-        new_question = {"id": data_handler.generate_id('question'),
-                        "submission_time": data_handler.generate_timestamp(), "view_number": "0", "vote_number": "0",
-                        "title": request.form["title"], "message": request.form["message"], "image": ""}
+        title = request.form['title']
+        message = request.form['message']
+        image = request.form['image']
+        if image == "":
+            image = None
 
-        final_data = data_handler.add_data(new_question, 'sample_data/question.csv')
-        data_handler.data_writer('sample_data/question.csv', final_data, data_handler.QUESTION_TITLE)
-
+        data_handler.add_question(title, message, image)
         return redirect('/')
 
-    return render_template('add-a-question.html', questions=questions)
+    return render_template('add-a-question.html')
 
 
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
@@ -110,6 +108,7 @@ def route_edit_a_question(question_id):
 def route_delete_question(question_id):
     data_handler.delete_data(question_id)
     return redirect('/')
+
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 def route_add_answer(question_id):

@@ -25,42 +25,38 @@ def get_data_by_id(cursor, table, column, id_):
     return data
 
 
-def get_answers_by_id(id_):
-    list_of_answers = get_all_data('answer')
-
-    return [answer for answer in list_of_answers if answer['question_id'] == id_]
-
-
 @database_common.connection_handler
 def delete_data(cursor, id_):
     cursor.execute("""
                     SELECT id FROM answer
                     WHERE question_id=%(id)s
-                    """, {'id':id_})
-    answer_ids=cursor.fetchall()
+                    """, {'id': id_})
+    answer_ids = cursor.fetchall()
     print(answer_ids)
     for id in answer_ids:
-        cursor.execute(""" DELETE FROM comment WHERE answer_id=%(id)s""",{'id':id['id']})
-    cursor.execute("""  DELETE FROM comment WHERE question_id=%(id)s""", {'id':id_})
+        cursor.execute(""" DELETE FROM comment WHERE answer_id=%(id)s""", {'id': id['id']})
+    cursor.execute("""  DELETE FROM comment WHERE question_id=%(id)s""", {'id': id_})
     cursor.execute("""  DELETE FROM answer WHERE question_id=%(id)s""", {'id': id_})
     cursor.execute("""  DELETE FROM question_tag WHERE question_id=%(id)s""", {'id': id_})
     cursor.execute("""  DELETE FROM question WHERE id=%(id)s""", {'id': id_})
 
 
-def data_writer(filename, to_write, fieldnames):
-    with open(filename, "w") as file_to_write:
-        writer = csv.DictWriter(file_to_write, fieldnames)
-        writer.writeheader()
+@database_common.connection_handler
+def add_question(cursor, title, message, image):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+                    VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s)
+                    """, {'timestamp': timestamp, 'title': title, 'message': message, 'image': image})
 
-        for row in to_write:
-            writer.writerow(row)
 
-
-def add_data(new_data, filename):
-    list_of_data = get_all_data(cursor)
-    list_of_data.append(new_data)
-
-    return list_of_data
+@database_common.connection_handler
+def add_answer(cursor, question_id, message):
+    timestamp = generate_timestamp()
+    cursor.execute("""
+                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+                    VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, null)
+                    """, {'timestamp': timestamp, 'title': title, 'message': message})
 
 
 def edit_data(id_, new_line, filename):
@@ -75,7 +71,7 @@ def edit_data(id_, new_line, filename):
 
 
 def generate_timestamp():
-    return int(time.time())
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def convert_timestamp(timestamp):
@@ -87,10 +83,9 @@ def generate_id(data_type):
 
     return int(max([item['id'] for item in list_of_data])) + 1
 
+
 @database_common.connection_handler
 def test(cursor):
     cursor.execute("SELECT * FROM answer")
-    result=cursor.fetchall()
+    result = cursor.fetchall()
     print(result)
-
-test()
