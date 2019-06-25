@@ -62,29 +62,24 @@ def edit_question(cursor, table, id_, message):
                     WHERE id = %(id_)s
                     """, {'message': message, 'id_': id_})
 
-@database_common.connection_handler
-def edit_view_number(cursor,question_id):
-    cursor.execute("""
-                    SELECT view_number FROM question
-                    WHERE id = %(question_id)s
-                    """, {'question_id':question_id})
-    view_number = cursor.fetchall()[0]['view_number']
-    view_number += 1
-    cursor.execute("""
-                    UPDATE question
-                    SET view_number = %(view_number)s
-                    WHERE id=%(question_id)s
-                    """, {'view_number':view_number, 'question_id':question_id})
 
 @database_common.connection_handler
-def edit_vote_number(cursor,table,id_,vote):
+def edit_view_number(cursor, question_id):
+    cursor.execute("""
+                    UPDATE question
+                    SET view_number = (SELECT view_number FROM question
+                                       WHERE id = %(question_id)s)+1
+                    WHERE id=%(question_id)s
+                    """, {'question_id': question_id})
+
+
+@database_common.connection_handler
+def edit_vote_number(cursor, table, id_, vote):
     cursor.execute(f"""
-                    
-                    
                     UPDATE {table}
                     SET vote_number = (SELECT vote_number  FROM {table}
-                                        WHERE id = %(id_)s)+%(vote)s 
-                    """, {'id_':id_, 'vote':vote})
+                                       WHERE id = %(id_)s)+%(vote)s 
+                    """, {'id_': id_, 'vote': vote})
 
 
 def generate_timestamp():
