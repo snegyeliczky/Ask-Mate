@@ -18,8 +18,7 @@ body {
 
 #main_page form {
     margin: auto;
-    width: fit-content;
-    display: block;
+    width: 18vh;
     position: relative;
     left: 540px;
     top: 120px
@@ -27,7 +26,7 @@ body {
 
 #main_page table {
     margin: auto;
-    width: fit-content;
+    width: 155vh;
     border-collapse: collapse;
     position: relative;
     bottom: 40px;
