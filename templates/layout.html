@@ -2,10 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/try_error.css') }}">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+<header>
+    <table id="header">
+        <tr>
+            <td>
+                <h1><a href="/">AskMate</a></h1>
+            </td>
+            <td>
+                <p id="ask_button">
+                    <a href="{{ url_for('route_add_question') }}"><button>Ask a question</button></a>
+                </p>
+            </td>
+            <td>
+                <form id="search_bar" action="/search" method="get">
+                    <label for="search"></label>
+                    <input name="search" id="search">
+                    <button type="submit">Search</button>
+                </form >
+            </td>
+        </tr>
+    </table>
+</header>
 {% block content %}
 {% endblock %}
 </body>

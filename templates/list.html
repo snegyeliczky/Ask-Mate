@@ -2,7 +2,6 @@
 {% block title %}AskMate{% endblock %}
 {% block content %}
     <div id="main_page">
-        <h1>AskMate</h1>
         <form action="{{ url_for('route_list') }}" method="GET">
             <p>
                 <label for="sort_by"></label>
@@ -40,13 +39,5 @@
                 </tr>
             {% endfor %}
         </table>
-        <p id="ask_button">
-            <a href="{{ url_for('route_add_question') }}"><button>Ask a question</button></a>
-        </p>
-        <form action="/search" method="get">
-            <label for="search"> Search question</label>
-            <input name="search" id="search">
-            <button type="submit">Search</button>
-        </form >
         </div>
 {% endblock %}

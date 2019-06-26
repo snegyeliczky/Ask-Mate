@@ -26,12 +26,12 @@ body {
     margin: auto;
     border-collapse: collapse;
     position: relative;
-    bottom: 40px;
 }
 
 #main_page td {
-    border-top: 1px black solid;
-    border-bottom: 1px black solid;
+    border-top: 2px black solid;
+    border-collapse: collapse;
+    border-bottom: 2px black solid;
 }
 
 #main_page td:first-child {
