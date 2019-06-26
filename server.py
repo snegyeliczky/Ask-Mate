@@ -103,6 +103,19 @@ def route_add_answer(question_id):
     return render_template("new-answer.html", question=question)
 
 
+@app.route('/search')
+def search():
+    search_part = request.args['search']
+    questions = data_handler.search_question(search_part)
+    return render_template('list.html', questions=questions)
+
+
+@app.route('/<question_id>/<answer_id>/delete')
+def delete_answer(question_id, answer_id):
+    data_handler.delete_answer(answer_id)
+    return redirect(f'/question/{question_id}')
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

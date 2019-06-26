@@ -31,19 +31,16 @@ def get_data_by_question_id(cursor, table, item_id):
 
 @database_common.connection_handler
 def delete_data(cursor, id_):
+    cursor.execute("""  
+                   DELETE FROM question WHERE id=%(id)s
+                   """, {'id': id_})
+
+
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
     cursor.execute("""
-                    SELECT id FROM answer
-                    WHERE question_id=%(id)s
-                    """, {'id': id_})
-    answer_ids = cursor.fetchall()
-
-    for answer_id in answer_ids:
-        cursor.execute(""" DELETE FROM comment WHERE answer_id=%(id)s""", {'id': answer_id['id']})
-
-    cursor.execute("""  DELETE FROM comment WHERE question_id=%(id)s""", {'id': id_})
-    cursor.execute("""  DELETE FROM answer WHERE question_id=%(id)s""", {'id': id_})
-    cursor.execute("""  DELETE FROM question_tag WHERE question_id=%(id)s""", {'id': id_})
-    cursor.execute("""  DELETE FROM question WHERE id=%(id)s""", {'id': id_})
+                   DELETE FROM answer WHERE id=%(answer_id)s
+                   """, {'answer_id': answer_id})
 
 
 @database_common.connection_handler
@@ -91,6 +88,18 @@ def edit_vote_number(cursor, table, item_id, vote):
                                        WHERE id = %(item_id)s) + %(vote)s 
                     WHERE id = %(item_id)s
                     """, {'item_id': item_id, 'vote': vote})
+
+
+@database_common.connection_handler
+def search_question(cursor, search_part):
+    search_part = search_part.lower()
+    search_part = '%'+search_part+'%'
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE LOWER(message) LIKE %(search_part)s or LOWER(title) LIKE %(search_part)s
+                    """, {'search_part': search_part})
+    result = cursor.fetchall()
+    return result
 
 
 def generate_timestamp():

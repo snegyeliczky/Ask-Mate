@@ -43,6 +43,9 @@
                 </td>
                 <td style="white-space: pre-line" align="left" width="30%">{{ answer['message'] }}</td>
                 <td width="8%"> {{ answer['submission_time'] }}</td>
+                <td width="8%">
+                    <a href="/{{ question['id']}}/{{ answer['id'] }}/delete"><button>DELETE</button></a>
+                </td>
             </tr>
             {% endfor %}
         </table>
