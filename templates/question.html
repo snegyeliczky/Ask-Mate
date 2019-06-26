@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>AskMate | {{ question['title'] }}</title>
-    </head>
-    <body>
+{% extends 'layout.html' %}
+{% block title %}AskMate | {{ question['title'] }}{% endblock %}
+{% block content %}
         <h1 align="left">{{ question['title'] }}</h1>
         <table style="border-spacing: 15px 15px" width="70%">
             <tr style="font-size: 20px">
@@ -15,18 +11,18 @@
                 <th>Submission Time</th>
             </tr>
             <tr align="center">
-                <td width="1%">{{ question[0]['id'] }}</td>
-                <td width="1%"> {{ question[0]['view_number'] }}</td>
+                <td width="1%">{{ question['id'] }}</td>
+                <td width="1%"> {{ question['view_number'] }}</td>
                 <td width="5%">
-                    <p><a href="/question/{{ question[0]['id'] }}/1"><button>UPVOTE</button></a></p>
-                    <p>{{ question[0]['vote_number'] }}</p>
-                    <p><a href="/question/{{ question[0]['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
+                    <p><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
+                    <p>{{ question['vote_number'] }}</p>
+                    <p><a href="/question/{{ question['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
                 </td>
-                <td style="white-space: pre-line" align="left" width="30%" >{{ question[0]['message'] }}</td>
-                <td width="8%"> {{ question[0]['submission_time'] }}</td>
+                <td style="white-space: pre-line" align="left" width="30%" >{{ question['message'] }}</td>
+                <td width="8%"> {{ question['submission_time'] }}</td>
             </tr>
         </table>
-        {% block extension %}
+        {% block page_bottom %}
         <h2 align="left">Answers:</h2>
         <table style="border-spacing: 15px 15px" width="70%">
             <tr style="font-size: 20px">
@@ -59,5 +55,4 @@
             <a href="/question/{{ question['id'] }}/delete"><button style="font-size: 20px">Delete Question</button></a>
         </p>
         {% endblock %}
-    </body>
-</html>
+{% endblock %}

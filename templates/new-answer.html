@@ -1,15 +1,22 @@
 {% extends 'question.html' %}
-{% block extension %}
-<h1 align="center">Your Answer:</h1>
-<form action="/question/{{ question['id'] }}/new-answer" method="POST">
-    <p align="center">
-        <textarea name="answer" cols="60" rows="15"></textarea>
-    </p>
-    <p align="center">
-        <button type="submit" style="font-size: 20px">Submit</button>
-    </p>
-</form>
- <p align="center">
-    <a href="/question/{{ question['id'] }}"><button style="font-size: 20px">Back</button></a>
-</p>
+{% block page_bottom %}
+    <div id="new_answer">
+        <h1>Your Answer:</h1>
+        <form action="{{ url_for('route_add_answer', question_id=question['id']) }}" method="POST">
+            <p>
+                <label for="message">Your answer</label><br>
+                <textarea name="message" cols="60" rows="15" id="message" required></textarea>
+            </p>
+            <p>
+                <label for="image">Image link</label>
+                <input type="text" name="image" id="image">
+            </p>
+            <p>
+                <button type="submit">Submit</button>
+            </p>
+        </form>
+         <p>
+            <a href="{{ url_for('route_question_by_id', question_id=question['id']) }}"><button>Back</button></a>
+        </p>
+    </div>
 {% endblock %}

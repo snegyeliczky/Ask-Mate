@@ -1,15 +1,18 @@
 {% extends "question.html" %}
-{% block extension %}
-<h1 align="center">Edit question:</h1>
-<form action="/question/{{ question['id'] }}/edit-a-question" method="POST">
-    <p align="center">
-        <textarea style="font-size: 16px; resize: none" name="message" rows="10" cols="40" required>{{ question["message"] }}</textarea>
-    </p>
-    <p align="center">
-        <button type="submit" style="font-size: 20px">Submit</button>
-    </p>
-</form>
-<p align="center">
-    <a href="/question/{{ question['id'] }}"><button style="font-size: 20px">Back</button></a>
-</p>
+{% block page_bottom %}
+    <div id="edit_question">
+        <h1>Edit question:</h1>
+        <form action="{{ url_for('route_edit_a_question', question_id=question['id']) }}" method="POST">
+            <p>
+                <label for="message"></label>
+                <textarea name="message" rows="10" cols="40" id="message" required>{{ question["message"] }}</textarea>
+            </p>
+            <p>
+                <button type="submit">Submit</button>
+            </p>
+        </form>
+        <p>
+            <a href="{{ url_for('route_question_by_id', question_id=question['id']) }}"><button>Back</button></a>
+        </p>
+    </div>
 {% endblock %}
