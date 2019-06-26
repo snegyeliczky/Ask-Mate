@@ -109,6 +109,12 @@ def search():
     questions=data_handler.serch_question(search_part)
     return render_template('list.html', questions=questions)
 
+@app.route('/<question_id>/<answer_id>/delete')
+def delet_answer(question_id,answer_id):
+    print(question_id)
+    print(answer_id)
+    data_handler.delete_answer(answer_id)
+    return redirect(f'/question/{question_id}')
 
 if __name__ == '__main__':
     app.run(
