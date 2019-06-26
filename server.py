@@ -102,6 +102,13 @@ def route_add_answer(question_id):
 
     return render_template("new-answer.html", question=question)
 
+@app.route('/search')
+def search():
+    search_part=request.args['search']
+    print(search_part)
+    questions=data_handler.serch_question(search_part)
+    return render_template('list.html', questions=questions)
+
 
 if __name__ == '__main__':
     app.run(

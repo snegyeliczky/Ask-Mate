@@ -92,6 +92,16 @@ def edit_vote_number(cursor, table, item_id, vote):
                     WHERE id = %(item_id)s
                     """, {'item_id': item_id, 'vote': vote})
 
+@database_common.connection_handler
+def serch_question(cursor, search_part):
+    search_part= search_part.lower()
+    search_part= '%'+search_part+'%'
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE LOWER(message) LIKE %(search_part)s or LOWER(title) LIKE %(search_part)s
+                    """, {'search_part': search_part})
+    resulr=cursor.fetchall()
+    return resulr
 
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
