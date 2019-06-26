@@ -31,25 +31,17 @@ def get_data_by_question_id(cursor, table, item_id):
 
 @database_common.connection_handler
 def delete_data(cursor, id_):
-    cursor.execute("""
-                    SELECT id FROM answer
-                    WHERE question_id=%(id)s
-                    """, {'id': id_})
-    answer_ids = cursor.fetchall()
+    cursor.execute("""  
+                   DELETE FROM question WHERE id=%(id)s
+                   """, {'id': id_})
 
-    for answer_id in answer_ids:
-        cursor.execute(""" DELETE FROM comment WHERE answer_id=%(id)s""", {'id': answer_id['id']})
-
-    cursor.execute("""  DELETE FROM comment WHERE question_id=%(id)s""", {'id': id_})
-    cursor.execute("""  DELETE FROM answer WHERE question_id=%(id)s""", {'id': id_})
-    cursor.execute("""  DELETE FROM question_tag WHERE question_id=%(id)s""", {'id': id_})
-    cursor.execute("""  DELETE FROM question WHERE id=%(id)s""", {'id': id_})
 
 @database_common.connection_handler
-def delete_answer(cursor,answer_id):
+def delete_answer(cursor, answer_id):
     cursor.execute("""
-                    DELETE FROM answer WHERE id=%(answer_id)s
-                    """, {'answer_id':answer_id})
+                   DELETE FROM answer WHERE id=%(answer_id)s
+                   """, {'answer_id': answer_id})
+
 
 @database_common.connection_handler
 def add_question(cursor, title, message, image):
