@@ -13,20 +13,17 @@ body {
 #main_page h1 {
     font-size: 30px;
     text-align: center;
-    margin-bottom: auto;
+    padding-bottom: 30px;
 }
 
 #main_page form {
     margin: auto;
-    width: 18vh;
-    position: relative;
-    left: 540px;
-    top: 120px
+    max-width: 5%;
+    min-width: 5%;
 }
 
 #main_page table {
     margin: auto;
-    width: 155vh;
     border-collapse: collapse;
     position: relative;
     bottom: 40px;
@@ -53,6 +50,7 @@ body {
 
 #main_page th:nth-child(3) {
     text-align: left;
+    min-width: 50%;
 }
 
 #main_page td {
