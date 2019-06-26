@@ -14,7 +14,7 @@ body {
 #main_page form {
     margin: auto;
     width: fit-content;
-    display: flow;
+    display: block;
     position: relative;
     left: 540px;
     top: 120px
