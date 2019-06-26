@@ -5,6 +5,11 @@ body {
 
 /* main page */
 
+#main_page {
+    width: 300vh;
+    height: 100vh;
+}
+
 #main_page h1 {
     font-size: 30px;
     text-align: center;
