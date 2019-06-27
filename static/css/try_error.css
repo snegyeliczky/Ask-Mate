@@ -60,6 +60,7 @@ table {
     display: flex;
     align-items: center;
     max-width: 22vw;
+    margin: 0 20px;
 }
 
 #search_bar {
@@ -198,6 +199,7 @@ header a {
 
 .question-page_table td:nth-child(2) {
     max-width: 15vw;
+    min-width: 15vw;
     white-space: pre-wrap;
     text-align: justify;
 }
