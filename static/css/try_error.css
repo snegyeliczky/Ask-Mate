@@ -193,6 +193,7 @@ header a {
 .question-page_table td:first-child {
     max-width: 2vw;
     color: #474747;
+    border-left: 1px solid #c5c5b5;
 }
 
 .question-page_table td:nth-child(2) {
@@ -208,6 +209,7 @@ header a {
 
 .question-page_table td:last-child {
     max-width: 3vw;
+    border-right: 1px solid #c5c5b5;
 }
 
 .question-page_table td {
