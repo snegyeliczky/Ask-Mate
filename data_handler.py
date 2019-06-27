@@ -101,15 +101,14 @@ def edit_vote_number(cursor, table, item_id, vote):
 
 
 @database_common.connection_handler
-def search_question(cursor, search_part):
-    search_part = search_part.lower()
-    search_part = '%'+search_part+'%'
+def search_question(cursor, search_phrase):
+    search_phrase = f'%{search_phrase.lower()}%'
     cursor.execute("""
-                    SELECT * FROM question
-                    WHERE LOWER(message) LIKE %(search_part)s or LOWER(title) LIKE %(search_part)s
-                    """, {'search_part': search_part})
-    result = cursor.fetchall()
-    return result
+                   SELECT * FROM question
+                   WHERE LOWER(message) LIKE %(search_phrase)s or LOWER(title) LIKE %(search_phrase)s
+                   """, {'search_phrase': search_phrase})
+    search_result = cursor.fetchall()
+    return search_result
 
 
 def generate_timestamp():
