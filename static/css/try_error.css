@@ -127,7 +127,7 @@ header a {
 #main_page td:nth-child(3) {
     text-align: left;
     width: 50vw;
-    border-right: 1px solid #c5c5b5
+    border-right: 1px solid #c5c5b5;
 }
 
 #main_page td:nth-child(2) {
@@ -140,6 +140,11 @@ header a {
     font-size: 18px;
     color: #474747;
     border-left: 1px solid #c5c5b5;
+}
+
+#main_page td a {
+    color: #254d82;
+    text-decoration: none;
 }
 
 .question-head {
