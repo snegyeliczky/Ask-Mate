@@ -44,7 +44,9 @@
                 <td style="white-space: pre-line" align="left" width="30%">{{ answer['message'] }}</td>
                 <td width="8%"> {{ answer['submission_time'] }}</td>
                 <td width="8%">
-                    <a href="/{{ question['id']}}/{{ answer['id'] }}/delete"><button>DELETE</button></a>
+                    <a  href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Shure?')"><button>DELETE</button></a>
+                    <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button>EDIT</button></a>
+
                 </td>
             </tr>
             {% endfor %}
@@ -55,7 +57,18 @@
         </p>
         <p align="center">
             <a href="/"><button style="font-size: 20px">Back</button></a>
-            <a href="/question/{{ question['id'] }}/delete"><button style="font-size: 20px">Delete Question</button></a>
+            <button style="font-size: 20px" onclick="decide()" >Delete Question</button>
+            <script>
+                function decide(){
+
+                    var userval = confirm("Are you shure");
+                    if (userval == true)
+                    {
+                        window.location.href="/question/{{ question['id'] }}/delete";
+                    }
+
+                }
+            </script>
         </p>
         {% endblock %}
 {% endblock %}

@@ -1,5 +1,7 @@
 from flask import Flask, redirect, render_template, request
 import data_handler
+import tkinter as tk
+from tkinter import messagebox
 
 app = Flask(__name__)
 
@@ -74,7 +76,8 @@ def route_edit_a_question(question_id):
     if request.method == "POST":
 
         message = request.form['message']
-        data_handler.edit_question('question', question_id, message)
+        image=request.form['image']
+        data_handler.edit_question('question', question_id, message,image)
         return redirect(f'/question/{question_id}')
 
     return render_template('edit-a-question.html', question=question)
@@ -114,6 +117,19 @@ def search():
 def delete_answer(question_id, answer_id):
     data_handler.delete_answer(answer_id)
     return redirect(f'/question/{question_id}')
+
+@app.route('/<question_id>/<answer_id>/edit', methods=['GET', 'POST'])
+def route_edit_answer(question_id, answer_id):
+    if request.method=='GET':
+        question=data_handler.get_data_by_question_id('question', question_id)[0]
+        answer = data_handler.get_answer_by_id(answer_id)[0]
+        return render_template('edit-answer.html', question=question, answer=answer )
+
+    if request.method == 'POST':
+        message=request.form['message']
+        image=request.form['image']
+        data_handler.edit_question('answer',answer_id,message,image)
+        return redirect(f'/question/{question_id}')
 
 
 if __name__ == '__main__':

@@ -2,6 +2,7 @@ import database_common
 from datetime import datetime
 
 
+
 @database_common.connection_handler
 def get_all_data(cursor, table, order_by, direction):
     cursor.execute(f"""
@@ -27,6 +28,16 @@ def get_data_by_question_id(cursor, table, item_id):
 
     data = cursor.fetchall()
     return data
+
+
+@database_common.connection_handler
+def get_answer_by_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id=%(answer_id)s
+                    """, {'answer_id':answer_id})
+    result=cursor.fetchall()
+    return result
 
 
 @database_common.connection_handler
@@ -62,12 +73,12 @@ def add_answer(cursor, question_id, message, image):
 
 
 @database_common.connection_handler
-def edit_question(cursor, table, item_id, message):
+def edit_question(cursor, table, item_id, message, image):
     cursor.execute(f"""
                     UPDATE {table}
-                    SET message = %(message)s
+                    SET message = %(message)s, image = %(image)s
                     WHERE id = %(item_id)s
-                    """, {'message': message, 'item_id': item_id})
+                    """, {'message': message, 'item_id': item_id, 'image':image})
 
 
 @database_common.connection_handler

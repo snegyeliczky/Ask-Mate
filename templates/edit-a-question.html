@@ -5,7 +5,9 @@
         <form action="{{ url_for('route_edit_a_question', question_id=question['id']) }}" method="POST">
             <p>
                 <label for="message"></label>
-                <textarea name="message" rows="10" cols="40" id="message" required>{{ question["message"] }}</textarea>
+                <textarea name="message" rows="10" cols="40" id="message" required>{{ question["message"] }}</textarea><br>
+                <label for="image">IMAGE</label>
+                <input name="image" id="image" value="{{ question["image"] }}">
             </p>
             <p>
                 <button type="submit">Submit</button>
