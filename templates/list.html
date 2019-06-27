@@ -2,6 +2,7 @@
 {% block title %}AskMate{% endblock %}
 {% block content %}
     <div id="main_page">
+    <div id="sort">
         <form action="{{ url_for('route_list') }}" method="GET">
             <p>
                 <label for="sort_by"></label>
@@ -23,6 +24,8 @@
                 <input type="submit" value="Sort">
             </p>
         </form>
+    </div>
+    <div id="main_table">
         <table>
             {% for row in questions %}
                 <tr>
@@ -32,5 +35,6 @@
                 </tr>
             {% endfor %}
         </table>
-        </div>
+    </div>
+    </div>
 {% endblock %}

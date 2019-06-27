@@ -7,28 +7,46 @@
 </head>
 <body>
     <header>
-        <div id="header_elements">
-            <div id="ask_mate">
-                <a href="/">AskMate™</a>
-            </div>
-            <div class="header_element">
-                <a href="{{ url_for('route_add_question') }}">ASK A QUESTION</a>
-            </div>
-            <div id="login">
-                <div>
-                    <a href="/">REGISTER</a>
+        <div id="header_box">
+            <a href="/">
+                <div class="header_element" id="ask_mate">
+                    AskMate™
                 </div>
-                <div>
-                    <a href="/">LOGIN</a>
-                </div>
+            </a>
+            <div class="links">
+                <a href="{{ url_for('route_add_question') }}">
+                    <div class="header_element">
+                        ASK QUESTION
+                    </div>
+                </a>
+                <a href="/list">
+                    <div class="header_element">
+                        LIST QUESTIONS
+                    </div>
+                </a>
+                <a href="/">
+                    <div class="header_element">
+                        TAGS
+                    </div>
+                </a>
             </div>
-            <div id="placeholder">
-            </div>
-            <div id="search">
-                <form id="search_bar" action="/search" method="get">
+            <div class="search">
+                <form action="/search" method="get">
                     <label for="search"></label>
-                    <input name="search" id="search" placeholder="Search...">
+                    <input name="search" id="search_bar" placeholder="Search...">
                 </form >
+            </div>
+            <div class="login">
+                <a href="/">
+                    <div class="header_element" id="register">
+                        REGISTER
+                    </div>
+                </a>
+                <a href="/">
+                    <div class="header_element" id="login">
+                        LOGIN
+                    </div>
+                </a>
             </div>
         </div>
     </header>

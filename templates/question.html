@@ -2,58 +2,52 @@
 {% block title %}AskMate | {{ question['title'] }}{% endblock %}
 {% block content %}
     <div id="question">
-        <h1>{{ question['title'] }}</h1>
-        <table id="question_table">
-            <tr>
-                <td> {{ question['view_number'] }}<br>Views</td>
-                <td>
-                    <p><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
-                    <p>{{ question['vote_number'] }}<br>Votes</p>
-                    <p><a href="/question/{{ question['id'] }}/-1"><button>DOWNVOTE</button></a></p>
-                </td>
-                <td>{{ question['message'] }}</td>
-                <td> {{ question['submission_time'] }}</td>
-            </tr>
-        </table>
+        <div class="question-head">
+            <h1>{{ question['title'] }}</h1>
+            <p>Viewed {{ question['view_number'] }} times</p>
+        </div>
+        <div class="question-page_table">
+            <table id="question_table">
+                <tr>
+                    <td>
+                        <p><a href="/question/{{ question['id'] }}/1"><img class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="upvote"></a></p>
+                        <p>{{ question['vote_number'] }}</p>
+                        <p><a href="/question/{{ question['id'] }}/-1"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
+                    </td>
+                    <td>{{ question['message'] }}</td>
+                    <td> {{ question['submission_time'] }}</td>
+                    <td>
+                        <a href="/question/{{ question['id'] }}/edit-a-question"><button>EDIT</button></a>
+                        <a href="{{ url_for('route_delete_question', question_id=question['id']) }}"><button onclick="return confirm('Sure?')">DELETE</button></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
         {% block page_bottom %}
-        <h2>Answers</h2>
-        <table>
-            {% for answer in answers %}
-            <tr>
-                <td>
-                    <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/1"><button>UPVOTE</button></a></p>
-                    <p>{{ answer['vote_number'] }}<br>Votes</p>
-                    <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/-1"><button>DOWNVOTE</button></a></p>
-                </td>
-                <td>{{ answer['message'] }}</td>
-                <td> {{ answer['submission_time'] }}</td>
-                <td>
-                    <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Sure?')"><button>DELETE</button></a>
-                    <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button>EDIT</button></a>
-
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <p>
-            <a href="/question/{{ question['id'] }}/new-answer"><button>Add a new answer</button></a>
-            <a href="/question/{{ question['id'] }}/edit-a-question"><button>Edit the question</button></a>
-        </p>
-        <p>
-            <a href="/"><button>Back</button></a>
-            <button onclick="decide()" >Delete Question</button>
-            <script>
-                function decide(){
-
-                    var userval = confirm("Are you sure?");
-                    if (userval == true)
-                    {
-                        window.location.href="/question/{{ question['id'] }}/delete";
-                    }
-
-                }
-            </script>
-        </p>
+        <h2>{{ number_of_answers }} Answers</h2>
+            <div class="question-page_table">
+                <table id="answer_table">
+                    {% for answer in answers %}
+                    <tr>
+                        <td>
+                            <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/1"><img class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="upvote"></a></p>
+                            <p>{{ answer['vote_number'] }}</p>
+                            <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/-1"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
+                        </td>
+                        <td>{{ answer['message'] }}</td>
+                        <td> {{ answer['submission_time'] }}</td>
+                        <td>
+                            <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button>EDIT</button></a>
+                            <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Sure?')"><button>DELETE</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="question-foot">
+                <a href="/question/{{ question['id'] }}/new-answer"><button>Add a new answer</button></a>
+                <a href="/"><button>Back</button></a>
+            </div>
         {% endblock %}
     </div>
 {% endblock %}

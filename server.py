@@ -24,7 +24,7 @@ def route_question_by_id(question_id):
     question = data_handler.get_data_by_question_id('question', question_id)[0]
     answers = data_handler.get_data_by_question_id('answer', question_id)
 
-    return render_template('question.html', question=question, answers=answers)
+    return render_template('question.html', question=question, answers=answers, number_of_answers=len(answers))
 
 
 @app.route('/question/<question_id>/')
