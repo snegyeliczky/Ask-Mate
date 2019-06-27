@@ -1,67 +1,51 @@
 {% extends 'layout.html' %}
 {% block title %}AskMate | {{ question['title'] }}{% endblock %}
 {% block content %}
-        <h1 align="left">{{ question['title'] }}</h1>
-        <table style="border-spacing: 15px 15px" width="70%">
-            <tr style="font-size: 20px">
-                <th>Id</th>
-                <th>Views</th>
-                <th>Votes</th>
-                <th align="left">Question</th>
-                <th>Submission Time</th>
-            </tr>
-            <tr align="center">
-                <td width="1%">{{ question['id'] }}</td>
-                <td width="1%"> {{ question['view_number'] }}</td>
-                <td width="5%">
+    <div id="question">
+        <h1>{{ question['title'] }}</h1>
+        <table id="question_table">
+            <tr>
+                <td> {{ question['view_number'] }}<br>Views</td>
+                <td>
                     <p><a href="/question/{{ question['id'] }}/1"><button>UPVOTE</button></a></p>
-                    <p>{{ question['vote_number'] }}</p>
-                    <p><a href="/question/{{ question['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
+                    <p>{{ question['vote_number'] }}<br>Votes</p>
+                    <p><a href="/question/{{ question['id'] }}/-1"><button>DOWNVOTE</button></a></p>
                 </td>
-                <td style="white-space: pre-line" align="left" width="30%" >{{ question['message'] }}</td>
-                <td width="8%"> {{ question['submission_time'] }}</td>
+                <td>{{ question['message'] }}</td>
+                <td> {{ question['submission_time'] }}</td>
             </tr>
         </table>
         {% block page_bottom %}
-        <h2 align="left">Answers:</h2>
-        <table style="border-spacing: 15px 15px" width="70%">
-            <tr style="font-size: 20px">
-                <th>Id</th>
-                <th></th>
-                <th>Votes</th>
-                <th align="left">Answer</th>
-                <th>Submission Time</th>
-            </tr>
+        <h2>Answers</h2>
+        <table>
             {% for answer in answers %}
-            <tr align="center">
-                <td width="1%">{{ answer['id'] }}</td>
-                <td width="2.8%"></td>
-                <td width="5%">
+            <tr>
+                <td>
                     <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/1"><button>UPVOTE</button></a></p>
-                    <p>{{ answer['vote_number'] }}</p>
-                    <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/-1"> <button>DOWNVOTE</button></a></p>
+                    <p>{{ answer['vote_number'] }}<br>Votes</p>
+                    <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/-1"><button>DOWNVOTE</button></a></p>
                 </td>
-                <td style="white-space: pre-line" align="left" width="30%">{{ answer['message'] }}</td>
-                <td width="8%"> {{ answer['submission_time'] }}</td>
-                <td width="8%">
-                    <a  href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Shure?')"><button>DELETE</button></a>
+                <td>{{ answer['message'] }}</td>
+                <td> {{ answer['submission_time'] }}</td>
+                <td>
+                    <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Sure?')"><button>DELETE</button></a>
                     <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button>EDIT</button></a>
 
                 </td>
             </tr>
             {% endfor %}
         </table>
-        <p align="center">
-            <a href="/question/{{ question['id'] }}/new-answer"><button style="font-size: 20px">Add a new answer</button></a>
-            <a href="/question/{{ question['id'] }}/edit-a-question"><button style="font-size: 20px">Edit the question</button></a>
+        <p>
+            <a href="/question/{{ question['id'] }}/new-answer"><button>Add a new answer</button></a>
+            <a href="/question/{{ question['id'] }}/edit-a-question"><button>Edit the question</button></a>
         </p>
-        <p align="center">
-            <a href="/"><button style="font-size: 20px">Back</button></a>
-            <button style="font-size: 20px" onclick="decide()" >Delete Question</button>
+        <p>
+            <a href="/"><button>Back</button></a>
+            <button onclick="decide()" >Delete Question</button>
             <script>
                 function decide(){
 
-                    var userval = confirm("Are you shure");
+                    var userval = confirm("Are you sure?");
                     if (userval == true)
                     {
                         window.location.href="/question/{{ question['id'] }}/delete";
@@ -71,4 +55,5 @@
             </script>
         </p>
         {% endblock %}
+    </div>
 {% endblock %}

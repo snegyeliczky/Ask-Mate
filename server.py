@@ -1,7 +1,5 @@
 from flask import Flask, redirect, render_template, request
 import data_handler
-import tkinter as tk
-from tkinter import messagebox
 
 app = Flask(__name__)
 

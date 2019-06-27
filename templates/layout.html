@@ -9,24 +9,26 @@
     <header>
         <div id="header_elements">
             <div id="ask_mate">
-                <a href="/">AskMate</a>
+                <a href="/">AskMate™</a>
             </div>
             <div class="header_element">
-                <a href="{{ url_for('route_add_question') }}">Ask a question</a>
+                <a href="{{ url_for('route_add_question') }}">ASK A QUESTION</a>
             </div>
-            <div class="header_element">
+            <div id="login">
+                <div>
+                    <a href="/">REGISTER</a>
+                </div>
+                <div>
+                    <a href="/">LOGIN</a>
+                </div>
+            </div>
+            <div id="placeholder">
+            </div>
+            <div id="search">
                 <form id="search_bar" action="/search" method="get">
                     <label for="search"></label>
                     <input name="search" id="search" placeholder="Search...">
                 </form >
-            </div>
-            <div id="login">
-                <div class="header_element">
-                    <a href="/">Register</a>
-                </div>
-                <div class="header_element">
-                    <a href="/">Login</a>
-                </div>
             </div>
         </div>
     </header>
