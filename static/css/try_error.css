@@ -1,5 +1,5 @@
 body {
-    background-color: #0d1016;
+    background-color: #191e2a;
     margin: 0 auto;
     box-sizing: border-box;
 }
@@ -11,7 +11,7 @@ table {
 #header_box {
     width: 80vw;
     margin: auto;
-    background-color: #2d3d6d;
+    background-color: #3b486d;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
