@@ -23,7 +23,7 @@ table {
 }
 
 #content_wrapper {
-    background-image: url("../images/08.jpg");
+    background-image: url("../images/18.png");
     background-size: cover;
     background-attachment: fixed;
     margin: 0 auto;
@@ -229,14 +229,14 @@ header a {
 
 .up-arrow {
     transform: rotate(-90deg);
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
 }
 
 .down-arrow {
     transform: rotate(90deg);
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
 }
 
 .question-foot {
