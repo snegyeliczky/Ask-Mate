@@ -1,0 +1,107 @@
+body {
+    background-color: #444c58;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+#content_wrapper {
+    background-image: url("../images/08.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0 auto;
+    width: 85vw;
+    height: 100vh;
+}
+
+#main_page {
+    padding-top: 50px;
+}
+
+#content_wrapper table, #content_wrapper form {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#main_page form p{
+    display: inline-block;
+}
+
+.header_element, #ask_mate, #login{
+    text-align: center;
+    margin: 0 10px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.header_element input {
+    font-size: 18px;
+    width: 20vw;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+#ask_mate a {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#header_elements {
+    min-height: 70px;
+    width: 85vw;
+    margin: 0 auto;
+    background-color: #3f5d7f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#main_page form {
+    display: inline-block;
+    margin-left: 6.68vw;
+}
+
+#main_page select, #main_page input{
+    font-size: 17px;
+    height: 26px;
+}
+
+#main_page select {
+    width: 120px;
+}
+
+#main_page input {
+    width: 55px;
+}
+
+#main_page table {
+    border-collapse: collapse;
+}
+
+#main_page td {
+    padding: 1vw 3vw;
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.32);
+    border-top: 1px solid #c5c5b5;
+    border-bottom: 1px solid #c5c5b5;
+
+}
+
+#main_page td:nth-child(3) {
+    text-align: left;
+    width: 50vw;
+    border-right: 1px solid #c5c5b5
+}
+
+#main_page td:nth-child(2) {
+    padding-left: 0;
+}
+
+#main_page td:first-child {
+    border-left: 1px solid #c5c5b5;
+}

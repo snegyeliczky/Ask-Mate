@@ -24,18 +24,11 @@
             </p>
         </form>
         <table>
-            <tr>
-                <th>Views</th>
-                <th>Votes</th>
-                <th>Questions</th>
-                <th>Submission time</th>
-            </tr>
             {% for row in questions %}
                 <tr>
-                    <td>{{ row['view_number'] }}</td>
-                    <td>{{ row['vote_number'] }}</td>
+                    <td>{{ row['view_number'] }}<br>Views</td>
+                    <td>{{ row['vote_number'] }}<br>Votes</td>
                     <td><a href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
-                    <td>{{ row['submission_time'] }}</td>
                 </tr>
             {% endfor %}
         </table>

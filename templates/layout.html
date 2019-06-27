@@ -6,28 +6,33 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-<header>
-    <table id="header">
-        <tr>
-            <td>
-                <h1><a href="/">AskMate</a></h1>
-            </td>
-            <td>
-                <p id="ask_button">
-                    <a href="{{ url_for('route_add_question') }}"><button>Ask a question</button></a>
-                </p>
-            </td>
-            <td>
+    <header>
+        <div id="header_elements">
+            <div id="ask_mate">
+                <a href="/">AskMate</a>
+            </div>
+            <div class="header_element">
+                <a href="{{ url_for('route_add_question') }}">Ask a question</a>
+            </div>
+            <div class="header_element">
                 <form id="search_bar" action="/search" method="get">
                     <label for="search"></label>
-                    <input name="search" id="search">
-                    <button type="submit">Search</button>
+                    <input name="search" id="search" placeholder="Search...">
                 </form >
-            </td>
-        </tr>
-    </table>
-</header>
-{% block content %}
-{% endblock %}
+            </div>
+            <div id="login">
+                <div class="header_element">
+                    <a href="/">Register</a>
+                </div>
+                <div class="header_element">
+                    <a href="/">Login</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="content_wrapper">
+    {% block content %}
+    {% endblock %}
+    </div>
 </body>
 </html>
