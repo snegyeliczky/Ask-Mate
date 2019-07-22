@@ -1,5 +1,6 @@
 import database_common
 from datetime import datetime
+import bcrypt
 
 
 @database_common.connection_handler
@@ -113,3 +114,18 @@ def search_question(cursor, search_phrase):
 
 def generate_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+@database_common.connection_handler
+def get_hashed_password(cursor, username):
+    cursor.execute("""
+                    SELECT password_hash FROM users
+                    WHERE username = %(username)s
+                    """, {'username': username})
+    hashed_password = cursor.fetchone()
+    return hashed_password
