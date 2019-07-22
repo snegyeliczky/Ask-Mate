@@ -131,6 +131,7 @@ def route_edit_answer(question_id, answer_id):
         data_handler.edit_question('answer', answer_id, message, image)
         return redirect(f'/question/{question_id}')
 
+
 @app.route("/registration", methods=['GET', 'POST'])
 def register():
     if request.method=='GET':
@@ -146,7 +147,6 @@ def register():
             hash_password = data_handler.hash_password(password)
             data_handler.register_user(username,hash_password)
             return render_template("list.html", username=username)
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
