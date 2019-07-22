@@ -159,7 +159,7 @@ def route_login(invalid_login=False):
         hashed_password = data_handler.get_hashed_password(username)['password_hash']
         if data_handler.verify_password(plain_text_password, hashed_password):
             session['username'] = username
-            return redirect('/')
+            return render_template('list.html', username=username)
         else:
             return render_template('login.html', invalid_login=True)
 
