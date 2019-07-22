@@ -1,6 +1,8 @@
 import database_common
 from datetime import datetime
 import bcrypt
+from flask import url_for, session, redirect
+from functools import wraps
 
 
 @database_common.connection_handler
@@ -140,4 +142,25 @@ def get_hashed_password(cursor, username):
                     WHERE username = %(username)s
                     """, {'username': username})
     hashed_password = cursor.fetchone()
-    return hashed_password
+    return hashed_password['password_hash']
+
+
+@database_common.connection_handler
+def username_exists(cursor, username):
+    cursor.execute("""
+                    SELECT username FROM users
+                    """)
+    list_of_all_user_names = [user['username'] for user in cursor.fetchall()]
+
+    return username in list_of_all_user_names
+
+
+def login_required(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if 'username' in session:
+            return function(*args, **kwargs)
+        else:
+            return redirect(url_for('route_login'))
+    return wrapper
+

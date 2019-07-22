@@ -8,27 +8,32 @@ app.secret_key = '$2b$12$yxO3U5wrC1QSvVfL3xrLbu'
 @app.route('/')
 @app.route('/list')
 def route_list():
-    try:
+    username = None
+    if 'username' in session:
+        username = session['username']
+
+    sort_by = 'submission_time'
+    sort_direction = 'DESC'
+    if 'sort_by' in request.args and 'sort_direction' in request.args:
         sort_by = request.args['sort_by']
         sort_direction = request.args['sort_direction']
-    except KeyError:
-        sort_by = 'submission_time'
-        sort_direction = 'DESC'
-    try:
-        username = session['username']
-    except KeyError:
-        username = None
+
     questions = data_handler.get_all_data('question', sort_by, sort_direction)
-    return render_template('list.html', questions=questions, sort_by=sort_by, sort_direction=sort_direction, username=username)
+    return render_template('list.html', questions=questions, sort_by=sort_by, sort_direction=sort_direction,
+                           username=username)
 
 
 @app.route('/question/<question_id>')
 def route_question_by_id(question_id):
+    username = None
+    if 'username' in session:
+        username = session['username']
 
     question = data_handler.get_data_by_question_id('question', question_id)[0]
     answers = data_handler.get_data_by_question_id('answer', question_id)
 
-    return render_template('question.html', question=question, answers=answers, number_of_answers=len(answers))
+    return render_template('question.html', question=question, answers=answers, number_of_answers=len(answers),
+                           username=username)
 
 
 @app.route('/question/<question_id>/')
@@ -55,10 +60,13 @@ def route_answer_vote_count(question_id, answer_id, vote):
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
+@data_handler.login_required
 def route_add_question():
+    username = None
+    if 'username' in session:
+        username = session['username']
 
     if request.method == "POST":
-
         title = request.form['title']
         message = request.form['message']
         image = request.form['image']
@@ -68,7 +76,7 @@ def route_add_question():
         data_handler.add_question(title, message, image)
         return redirect('/')
 
-    return render_template('add-a-question.html')
+    return render_template('add-a-question.html', username=username)
 
 
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
@@ -136,19 +144,22 @@ def route_edit_answer(question_id, answer_id):
 
 
 @app.route("/registration", methods=['GET', 'POST'])
-def register():
-    if request.method=='GET':
+def route_register():
+    if request.method == 'GET':
         return render_template('register.html')
 
-    if request.method=='POST':
+    if request.method == 'POST':
         username = request.form["username"]
         password = request.form["password"]
         password2 = request.form["password2"]
-        if password != password2:
-            return render_template('register.html', message="Passwords don't match please fill again")
+
+        if data_handler.username_exists(username):
+            return render_template('register.html', message="The username you entered is already in use")
+        elif password != password2:
+            return render_template('register.html', message="Passwords do not match please fill again")
         else:
             hash_password = data_handler.hash_password(password)
-            data_handler.register_user(username,hash_password)
+            data_handler.register_user(username, hash_password)
             return redirect("/")
 
 
@@ -159,12 +170,19 @@ def route_login(invalid_login=False):
     elif request.method == 'POST':
         username = request.form['username']
         plain_text_password = request.form['plain_text_password']
-        hashed_password = data_handler.get_hashed_password(username)['password_hash']
-        if data_handler.verify_password(plain_text_password, hashed_password):
-            session['username'] = username
-            return redirect("/")
-        else:
-            return render_template('login.html', invalid_login=True)
+
+        if data_handler.username_exists(username):
+            hashed_password = data_handler.get_hashed_password(username)
+            if data_handler.verify_password(plain_text_password, hashed_password):
+                session['username'] = username
+                return redirect("/")
+        return render_template('login.html', invalid_login=True)
+
+
+@app.route('/logout')
+def route_logout():
+    session.pop('username', None)
+    return redirect('/')
 
 
 if __name__ == '__main__':
