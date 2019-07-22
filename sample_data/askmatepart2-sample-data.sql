@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS public.users;
 CREATE TABLE users (
     username text,
     password_hash varchar(60),
-    date_of_registration timestamp without timezone
+    date_of_registration timestamp without time zone
 );
 
 ALTER TABLE ONLY answer

@@ -130,10 +130,24 @@ def route_edit_answer(question_id, answer_id):
         data_handler.edit_question('answer', answer_id, message, image)
         return redirect(f'/question/{question_id}')
 
+@app.route("/registration", methods=['GET', 'POST'])
+def register():
+    if request.method=='GET':
+        return render_template('register.html')
+
+    if request.method=='POST':
+        username = request.form["username"]
+        password = request.form["password"]
+        password2 = request.form["password2"]
+        if password != password2:
+            return render_template('register.html', message="Passwords don't match please fill again")
+        else:
+            return redirect("/")
+
 
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=8000,
+        port=8001,
         debug=True
     )
