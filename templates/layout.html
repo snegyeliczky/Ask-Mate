@@ -36,8 +36,9 @@
                     <input name="search" id="search_bar" placeholder="Search...">
                 </form >
             </div>
+            {%  if not username  %}
             <div class="login">
-                <a href="/">
+                <a href="/registration">
                     <div class="header_element" id="register">
                         REGISTER
                     </div>
@@ -48,6 +49,18 @@
                     </div>
                 </a>
             </div>
+                {% else %}
+                <div class="login">
+                    <div>
+                        Welcome, {{ username }}!
+                    </div>
+                <a href="/">
+                    <div class="header_element" id="login">
+                        LOGOUT
+                    </div>
+                </a>
+            </div>
+            {%  endif %}
         </div>
     </header>
     <div id="content_wrapper">
