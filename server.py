@@ -145,7 +145,7 @@ def register():
         else:
             hash_password = data_handler.hash_password(password)
             data_handler.register_user(username,hash_password)
-            return redirect("/")
+            return render_template("list.html", username=username)
 
 
 
