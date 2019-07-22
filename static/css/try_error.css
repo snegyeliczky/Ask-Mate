@@ -37,14 +37,14 @@ table {
     position: relative;
 }
 
-.header_element {
+.header_element, #welcome{
     display: flex;
     align-items: center;
     height: 70px;
     padding: 0 1.5vw;
 }
 
-.header_element:hover, #ask_mate:hover, #login div:hover {
+.header_element:hover {
     background-color: crimson;
 }
 
@@ -73,6 +73,11 @@ header a {
     color: white;
     text-decoration: none;
     font-size: 20px;
+}
+
+#welcome {
+    color: white;
+    font-size: 18px;
 }
 
 #ask_mate {
