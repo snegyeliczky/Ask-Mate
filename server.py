@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, session, url_for
 import data_handler
 
 app = Flask(__name__)
@@ -129,6 +129,22 @@ def route_edit_answer(question_id, answer_id):
         image = request.form['image']
         data_handler.edit_question('answer', answer_id, message, image)
         return redirect(f'/question/{question_id}')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def route_login(invalid_login=False):
+    if request.method == 'GET':
+        return render_template('login.html', invalid_login=invalid_login)
+    elif request.method == 'POST':
+        username = request.form['username']
+        plain_text_password = request.form['plain_text_password']
+        hashed_password = data_handler.get_hashed_password(username)
+
+        if data_handler.verify_password(plain_text_password, hashed_password):
+            session['username'] = username
+            return redirect('/')
+        else:
+            return redirect(url_for('route_login', invalid_login=True))
 
 
 if __name__ == '__main__':
