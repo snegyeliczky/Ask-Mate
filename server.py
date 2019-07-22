@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 import data_handler
 
 app = Flask(__name__)
+app.secret_key = '$2b$12$yxO3U5wrC1QSvVfL3xrLbu'
 
 
 @app.route('/')
@@ -138,13 +139,12 @@ def route_login(invalid_login=False):
     elif request.method == 'POST':
         username = request.form['username']
         plain_text_password = request.form['plain_text_password']
-        hashed_password = data_handler.get_hashed_password(username)
-
+        hashed_password = data_handler.get_hashed_password(username)['password_hash']
         if data_handler.verify_password(plain_text_password, hashed_password):
             session['username'] = username
             return redirect('/')
         else:
-            return redirect(url_for('route_login', invalid_login=True))
+            return render_template('login.html', invalid_login=True)
 
 
 if __name__ == '__main__':
