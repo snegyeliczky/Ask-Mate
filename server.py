@@ -14,9 +14,12 @@ def route_list():
     except KeyError:
         sort_by = 'submission_time'
         sort_direction = 'DESC'
-
+    try:
+        username = session['username']
+    except KeyError:
+        username = None
     questions = data_handler.get_all_data('question', sort_by, sort_direction)
-    return render_template('list.html', questions=questions, sort_by=sort_by, sort_direction=sort_direction)
+    return render_template('list.html', questions=questions, sort_by=sort_by, sort_direction=sort_direction, username=username)
 
 
 @app.route('/question/<question_id>')
@@ -145,7 +148,7 @@ def register():
         else:
             hash_password = data_handler.hash_password(password)
             data_handler.register_user(username,hash_password)
-            return render_template("list.html", username=username)
+            return redirect("/")
 
 
 
@@ -159,7 +162,7 @@ def route_login(invalid_login=False):
         hashed_password = data_handler.get_hashed_password(username)['password_hash']
         if data_handler.verify_password(plain_text_password, hashed_password):
             session['username'] = username
-            return render_template('list.html', username=username)
+            return redirect("/")
         else:
             return render_template('login.html', invalid_login=True)
 
