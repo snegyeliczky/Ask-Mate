@@ -142,7 +142,10 @@ def register():
         if password != password2:
             return render_template('register.html', message="Passwords don't match please fill again")
         else:
+            hash_password = data_handler.hash_password(password)
+            data_handler.register_user(username,hash_password)
             return redirect("/")
+
 
 
 if __name__ == '__main__':

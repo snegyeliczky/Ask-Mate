@@ -1,5 +1,6 @@
 import database_common
 from datetime import datetime
+import bcrypt
 
 
 @database_common.connection_handler
@@ -28,6 +29,18 @@ def get_data_by_question_id(cursor, table, item_id):
     data = cursor.fetchall()
     return data
 
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+@database_common.connection_handler
+def register_user(cursor, username, hash_password):
+    date = generate_timestamp()
+    cursor.execute("""
+                    INSERT INTO users
+                    VALUES (%(username)s,%(hash_password)s,%(date)s) 
+                    """,{'username': username, 'hash_password': hash_password, 'date': date } )
 
 @database_common.connection_handler
 def get_answer_by_id(cursor, answer_id):
