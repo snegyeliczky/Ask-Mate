@@ -64,6 +64,11 @@ CREATE TABLE tag (
     name text
 );
 
+DROP TABLE IF EXISTS public.users;
+CREATE TABLE users (
+    username text,
+    password_hash varchar(60)
+);
 
 ALTER TABLE ONLY answer
     ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);

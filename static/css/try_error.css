@@ -163,7 +163,7 @@ header a {
     margin: 0 auto;
     font-size: 18px;
     color: #474747;
-    width: 10%;
+    min-width: 10%;
     height: fit-content;
 }
 
