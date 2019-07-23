@@ -113,7 +113,7 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id)
         ON DELETE CASCADE;
 
-INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-01 10:00:00');
+INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-18 10:00:00');
 INSERT INTO users VALUES ('admin2', '$2b$12$am269jIFG0RA1IguIEksaewHvefQ7eb2sto..o4CvzxIUJ3GLLqOy', '2017-05-01 10:00:00');
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL, 'admin2');
