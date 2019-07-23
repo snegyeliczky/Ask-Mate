@@ -76,7 +76,7 @@ def route_add_question():
         if image == "":
             image = None
 
-        data_handler.add_question(title, message, image)
+        data_handler.add_question(title, message, image, username)
         return redirect('/')
 
     return render_template('add-a-question.html', username=username)

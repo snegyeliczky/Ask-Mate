@@ -4,7 +4,10 @@
     <div id="question">
         <div class="question-head">
             <h1>{{ question['title'] }}</h1>
-            <p>Viewed {{ question['view_number'] }} times</p>
+            <div id="question_info">
+                <p>Viewed {{ question['view_number'] }} times</p>
+                <p>Submitted by {{ question['username'] }}</p>
+            </div>
         </div>
         <div class="question-page_table">
             <table id="question_table">
