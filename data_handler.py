@@ -100,7 +100,8 @@ def edit_view_number(cursor, question_id):
 
 
 @database_common.connection_handler
-def edit_vote_number(cursor, table, item_id, vote):
+def edit_vote_number(cursor, table, item_id, vote, username):
+
     cursor.execute(f"""
                     UPDATE {table}
                     SET vote_number = (SELECT vote_number  FROM {table}
