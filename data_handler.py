@@ -63,12 +63,13 @@ def delete_answer(cursor, answer_id):
 
 
 @database_common.connection_handler
-def add_question(cursor, title, message, image):
+def add_question(cursor, title, message, image, username):
     timestamp = generate_timestamp()
     cursor.execute("""
-                   INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                   VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s)
-                   """, {'timestamp': timestamp, 'title': title, 'message': message, 'image': image})
+                   INSERT INTO question (submission_time, view_number, vote_number, title, message, image, username)
+                   VALUES (%(timestamp)s, 0, 0, %(title)s, %(message)s, %(image)s, %(username)s)
+                   """, {'timestamp': timestamp, 'title': title, 'message': message, 'image': image,
+                         'username': username})
 
 
 @database_common.connection_handler

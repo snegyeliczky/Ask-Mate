@@ -25,7 +25,8 @@ CREATE TABLE question (
     vote_number integer,
     title text,
     message text,
-    image text
+    image text,
+    username text
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -66,7 +67,7 @@ CREATE TABLE tag (
 
 DROP TABLE IF EXISTS public.users;
 CREATE TABLE users (
-    username text,
+    username text NOT NULL,
     password_hash varchar(60),
     date_of_registration timestamp without time zone
 );
@@ -85,6 +86,12 @@ ALTER TABLE ONLY question_tag
 
 ALTER TABLE ONLY tag
     ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_username PRIMARY KEY (username);
+
+ALTER TABLE ONLY question
+    ADD CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users(username);
 
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id)
@@ -106,7 +113,10 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id)
         ON DELETE CASCADE;
 
-INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
+INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-01 10:00:00');
+INSERT INTO users VALUES ('admin2', '$2b$12$am269jIFG0RA1IguIEksaewHvefQ7eb2sto..o4CvzxIUJ3GLLqOy', '2017-05-01 10:00:00');
+
+INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL, 'admin2');
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
@@ -115,9 +125,9 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 
 jquery
 booklet
-app.js (bundled file with webpack, including jquery)', 'images/image1.png');
+app.js (bundled file with webpack, including jquery)', 'images/image1.png', 'admin1');
 INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
-', NULL);
+', NULL, 'admin1');
 SELECT pg_catalog.setval('question_id_seq', 2, true);
 
 INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);

@@ -163,12 +163,15 @@ header a {
     border-bottom: 1px solid #7b7b68;
 }
 
-.question-head p {
-    text-align: center;
+#question_info {
+    width: 20vw;
+}
+
+#question_info p {
+    text-align: right;
     margin: 0 auto;
     font-size: 18px;
     color: #474747;
-    min-width: 10%;
     height: fit-content;
 }
 
