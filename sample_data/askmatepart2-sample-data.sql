@@ -71,6 +71,13 @@ CREATE TABLE users (
     date_of_registration timestamp without time zone
 );
 
+DROP TABLE IF EXISTS public.votes;
+CREATE TABLE votes (
+    question_id text,
+    username text,
+    vote boolean
+);
+
 ALTER TABLE ONLY answer
     ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
 
