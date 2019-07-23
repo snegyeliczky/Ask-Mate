@@ -13,9 +13,9 @@
             <table id="question_table">
                 <tr>
                     <td>
-                        <p><a href="/question/{{ question['id'] }}/1"><img class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="upvote"></a></p>
+                        <p><a href="/question/{{ question['id'] }}/True"><img class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="upvote"></a></p>
                         <p>{{ question['vote_number'] }}</p>
-                        <p><a href="/question/{{ question['id'] }}/-1"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
+                        <p><a href="/question/{{ question['id'] }}/False"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
                     </td>
                     <td>{{ question['message'] }}</td>
                     <td> {{ question['submission_time'] }}</td>

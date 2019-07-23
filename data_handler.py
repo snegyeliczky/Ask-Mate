@@ -102,6 +102,7 @@ def edit_view_number(cursor, question_id):
 
 @database_common.connection_handler
 def edit_vote_number(cursor, table, item_id, vote):
+
     cursor.execute(f"""
                     UPDATE {table}
                     SET vote_number = (SELECT vote_number  FROM {table}
@@ -138,7 +139,6 @@ def get_all_user_attributes(cursor):
                     ''')
     users = cursor.fetchall()
 
-    return users
 
 @database_common.connection_handler
 def get_one_user_attributes(cursor, username):
