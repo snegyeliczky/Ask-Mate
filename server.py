@@ -86,7 +86,6 @@ def route_add_question():
 @functions.login_required
 def route_edit_a_question(question_id):
     question = data_handler.get_data_by_question_id('question', question_id)[0]
-
     if question['username'] != session['username']:
         return redirect(url_for('route_question_by_id', question_id=question_id))
 
@@ -102,6 +101,10 @@ def route_edit_a_question(question_id):
 @app.route('/question/<question_id>/delete')
 @functions.login_required
 def route_delete_question(question_id):
+    question = data_handler.get_data_by_question_id('question', question_id)[0]
+    if question['username'] != session['username']:
+        return redirect(url_for('route_question_by_id', question_id=question_id))
+
     data_handler.delete_data(question_id)
     return redirect('/')
 

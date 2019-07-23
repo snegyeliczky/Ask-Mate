@@ -21,7 +21,7 @@
                     <td> {{ question['submission_time'] }}</td>
                     <td>
                         <a href="/question/{{ question['id'] }}/edit-a-question"><button {{ 'disabled' if username != question['username'] }}>EDIT</button></a>
-                        <a href="{{ url_for('route_delete_question', question_id=question['id']) }}"><button onclick="return confirm('Are you sure?')">DELETE</button></a>
+                        <a href="{{ url_for('route_delete_question', question_id=question['id']) }}"><button onclick="return confirm('Are you sure?')" {{ 'disabled' if username != question['username'] }}>DELETE</button></a>
                     </td>
                 </tr>
             </table>
