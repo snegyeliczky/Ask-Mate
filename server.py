@@ -193,6 +193,16 @@ def route_logout():
     return redirect('/')
 
 
+@app.route('/users')
+def route_users():
+    users = data_handler.get_all_user_attributes()
+
+    return render_template('users.html', users=users)
+
+
+
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

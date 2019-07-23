@@ -251,3 +251,13 @@ header a {
 .question-foot {
     padding: 35px;
 }
+
+#users_table{
+    margin: 0 auto;
+    display: flex;
+    align-content: center;
+}
+
+#users_table table{
+    margin: 0 auto;
+}
