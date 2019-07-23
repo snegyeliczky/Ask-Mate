@@ -44,6 +44,7 @@ def route_question_view_count(question_id):
 
 
 @app.route('/question/<question_id>/<vote>')
+@data_handler.login_required
 def route_question_vote_count(question_id, vote):
 
     data_handler.edit_vote_number('question', question_id, vote)
@@ -52,6 +53,7 @@ def route_question_vote_count(question_id, vote):
 
 
 @app.route('/question/<question_id>/<answer_id>/<vote>')
+@data_handler.login_required
 def route_answer_vote_count(question_id, answer_id, vote):
 
     data_handler.edit_vote_number('answer', answer_id, vote)
@@ -80,6 +82,7 @@ def route_add_question():
 
 
 @app.route('/question/<question_id>/edit-a-question', methods=['GET', 'POST'])
+@data_handler.login_required
 def route_edit_a_question(question_id):
     question = data_handler.get_data_by_question_id('question', question_id)[0]
 
@@ -94,12 +97,14 @@ def route_edit_a_question(question_id):
 
 
 @app.route('/question/<question_id>/delete')
+@data_handler.login_required
 def route_delete_question(question_id):
     data_handler.delete_data(question_id)
     return redirect('/')
 
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
+@data_handler.login_required
 def route_add_answer(question_id):
     question = data_handler.get_data_by_question_id('question', question_id)[0]
 
@@ -124,12 +129,14 @@ def search():
 
 
 @app.route('/<question_id>/<answer_id>/delete')
+@data_handler.login_required
 def delete_answer(question_id, answer_id):
     data_handler.delete_answer(answer_id)
     return redirect(f'/question/{question_id}')
 
 
 @app.route('/<question_id>/<answer_id>/edit', methods=['GET', 'POST'])
+@data_handler.login_required
 def route_edit_answer(question_id, answer_id):
     if request.method == 'GET':
         question = data_handler.get_data_by_question_id('question', question_id)[0]
