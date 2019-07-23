@@ -100,7 +100,7 @@ def edit_view_number(cursor, question_id):
 
 
 @database_common.connection_handler
-def edit_vote_number(cursor, table, item_id, vote, username):
+def edit_vote_number(cursor, table, item_id, vote):
 
     cursor.execute(f"""
                     UPDATE {table}
@@ -129,5 +129,35 @@ def get_hashed_password(cursor, username):
                     """, {'username': username})
     hashed_password = cursor.fetchone()
     return hashed_password['password_hash']
+
+
+@database_common.connection_handler
+def vote_check(cursor, username, vote, question_id):
+        cursor.execute("""
+                        SELECT vote
+                        FROM votes
+                        WHERE question_id = %(question_id)s AND username = %(username)s""",
+                       {'question_id':question_id,'username':username})
+        result=cursor.fetchone()
+        print(result)
+        if result == None:
+            cursor.execute("""
+                                      INSERT INTO votes
+                                      VALUES (%(question_id)s, %(username)s, %(vote)s)
+                                          """,
+                           {'question_id': question_id, 'username': username, 'vote': vote})
+            return True
+        else:
+            if result['vote'] == vote:
+                return None
+            else:
+                cursor.execute("""
+                                    UPDATE votes
+                                    SET vote = %(vote)s
+                                    WHERE question_id = %(question_id)s AND username = %(username)s
+                                """,
+                               {'question_id': question_id, 'username': username, 'vote':vote})
+                return True
+        
 
 

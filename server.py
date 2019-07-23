@@ -47,10 +47,18 @@ def route_question_view_count(question_id):
 @app.route('/question/<question_id>/<vote>')
 @functions.login_required
 def route_question_vote_count(question_id, vote):
-
-    data_handler.edit_vote_number('question', question_id, vote)
-
-    return redirect(f'/question/{question_id}')
+    username = session['username']
+    print(vote)
+    vote_check = data_handler.vote_check(username,vote,question_id)
+    if vote_check == None:
+        return redirect(f'/question/{question_id}')
+    else:
+        if vote == 'True':
+            vote = 1
+        elif vote =='False':
+            vote = -1
+        data_handler.edit_vote_number('question', question_id, vote)
+        return redirect(f'/question/{question_id}')
 
 
 @app.route('/question/<question_id>/<answer_id>/<vote>')

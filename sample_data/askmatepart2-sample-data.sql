@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS public.votes;
 CREATE TABLE votes (
     question_id text,
     username text,
-    vote boolean
+    vote text
 );
 
 ALTER TABLE ONLY answer
