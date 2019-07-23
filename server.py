@@ -87,14 +87,16 @@ def route_add_question():
 def route_edit_a_question(question_id):
     question = data_handler.get_data_by_question_id('question', question_id)[0]
 
-    if request.method == "POST":
+    if question['username'] != session['username']:
+        return redirect(url_for('route_question_by_id', question_id=question_id))
 
-        message = request.form['message']
-        image = request.form['image']
-        data_handler.edit_question('question', question_id, message, image)
-        return redirect(f'/question/{question_id}')
+    if request.method == 'GET':
+        return render_template('edit-a-question.html', question=question)
 
-    return render_template('edit-a-question.html', question=question)
+    message = request.form['message']
+    image = request.form['image']
+    data_handler.edit_question('question', question_id, message, image)
+    return redirect(url_for('route_question_by_id', question_id=question_id))
 
 
 @app.route('/question/<question_id>/delete')
