@@ -102,7 +102,10 @@ def edit_view_number(cursor, question_id):
 
 @database_common.connection_handler
 def edit_vote_number(cursor, table, item_id, vote):
-
+    if vote == 'True':
+        vote = 1
+    else:
+        vote = -2
     cursor.execute(f"""
                     UPDATE {table}
                     SET vote_number = (SELECT vote_number  FROM {table}
@@ -149,3 +152,64 @@ def get_one_user_attributes(cursor, username):
     user = cursor.fetchall()
 
     return user
+
+
+@database_common.connection_handler
+def vote_check(cursor, username, vote, question_id):
+    cursor.execute("""
+                        SELECT vote
+                        FROM votes
+                        WHERE question_id = %(question_id)s AND username = %(username)s""",
+                   {'question_id': question_id, 'username': username})
+    result = cursor.fetchone()
+    print(result)
+    if result == None:
+        cursor.execute("""
+                                      INSERT INTO votes
+                                      VALUES (%(question_id)s, %(username)s, %(vote)s)
+                                          """,
+                       {'question_id': question_id, 'username': username, 'vote': vote})
+        return True
+    else:
+        if result['vote'] == vote:
+            return None
+        else:
+            cursor.execute("""
+                                    UPDATE votes
+                                    SET vote = %(vote)s
+                                    WHERE question_id = %(question_id)s AND username = %(username)s
+                                """,
+                           {'question_id': question_id, 'username': username, 'vote': vote})
+            return True
+
+
+
+@database_common.connection_handler
+def answer_vote_check(cursor, username, vote, question_id,answer_id):
+    cursor.execute("""
+                        SELECT vote
+                        FROM answer_votes
+                        WHERE question_id = %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s """,
+                   {'question_id': question_id, 'username': username, 'answer_id': answer_id})
+    result = cursor.fetchone()
+    print(result)
+    if result == None:
+        cursor.execute("""
+                                      INSERT INTO answer_votes
+                                      VALUES (%(question_id)s, %(answer_id)s, %(username)s, %(vote)s)
+                                          """,
+                       {'question_id': question_id, 'username': username, 'vote': vote, 'answer_id': answer_id})
+        return True
+    else:
+        if result['vote'] == vote:
+            return None
+        else:
+            cursor.execute("""
+                                    UPDATE answer_votes
+                                    SET vote = %(vote)s
+                                    WHERE question_id = %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s
+                                """,
+                           {'question_id': question_id, 'username': username, 'vote': vote, 'answer_id': answer_id})
+            return True
+
+

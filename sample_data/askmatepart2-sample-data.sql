@@ -79,6 +79,14 @@ CREATE TABLE votes (
     vote text
 );
 
+DROP TABLE IF EXISTS public.answer_votes;
+CREATE TABLE answer_votes (
+    question_id text,
+    answer_id text,
+    username text,
+    vote text
+);
+
 ALTER TABLE ONLY answer
     ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
 

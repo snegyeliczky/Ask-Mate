@@ -53,10 +53,6 @@ def route_question_vote_count(question_id, vote):
     if vote_check == None:
         return redirect(f'/question/{question_id}')
     else:
-        if vote == 'True':
-            vote = 1
-        elif vote =='False':
-            vote = -1
         data_handler.edit_vote_number('question', question_id, vote)
         return redirect(f'/question/{question_id}')
 
@@ -64,10 +60,13 @@ def route_question_vote_count(question_id, vote):
 @app.route('/question/<question_id>/<answer_id>/<vote>')
 @functions.login_required
 def route_answer_vote_count(question_id, answer_id, vote):
-
-    data_handler.edit_vote_number('answer', answer_id, vote)
-
-    return redirect(f'/question/{question_id}')
+    username = session['username']
+    vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
+    if vote_check == None:
+        return redirect(f'/question/{question_id}')
+    else:
+        data_handler.edit_vote_number('answer', answer_id, vote)
+        return redirect(f'/question/{question_id}')
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
