@@ -3,13 +3,13 @@
 {% block content %}
     <p>
     {% for row in user_attributes %}
-        {{ row['username'] }}
+        username: {{ row['username'] }}
     {% endfor %}
 
     </p>
     <p>
     {% for row in user_attributes %}
-        reputation:{{ row['reputation'] }}
+        reputation: {{ row['reputation'] }}
     {% endfor %}
 
     </p>
