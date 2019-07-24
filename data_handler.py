@@ -35,7 +35,7 @@ def register_user(cursor, username, hash_password):
     date = generate_timestamp()
     cursor.execute("""
                     INSERT INTO users
-                    VALUES (%(username)s,%(hash_password)s,%(date)s) 
+                    VALUES (%(username)s,%(hash_password)s,%(date)s, 0) 
                     """,{'username': username, 'hash_password': hash_password, 'date': date } )
 
 @database_common.connection_handler
@@ -215,6 +215,16 @@ def answer_vote_check(cursor, username, vote, question_id,answer_id):
                                     WHERE question_id = %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s
                                 """,
                            {'question_id': question_id, 'username': username, 'vote': vote, 'answer_id': answer_id})
-            return True
+            return
 
 
+@database_common.connection_handler
+def get_questions_data_by_username(cursor, username):
+    cursor.execute("""
+                    SELECT *
+                    FROM question
+                    WHERE username = %(username)s
+                    """,
+                   {'username': username})
+    data = cursor.fetchall()
+    return data

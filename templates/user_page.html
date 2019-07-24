@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block title %}AskMate{% endblock %}
+{% block content %}
+    <p>
+    {% for row in user_attributes %}
+        {{ row['username'] }}
+    {% endfor %}
+
+    </p>
+    <p>
+    {% for row in user_attributes %}
+        reputation:{{ row['reputation'] }}
+    {% endfor %}
+
+    </p>
+    <div id="main_page">
+        <div id="main_table">
+        <table>
+            {% for row in questions %}
+                <tr>
+                    <td>{{ row['view_number'] }}<br>Views</td>
+                    <td>{{ row['vote_number'] }}<br>Votes</td>
+                    <td><a href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
