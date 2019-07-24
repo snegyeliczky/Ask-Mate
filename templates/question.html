@@ -38,10 +38,13 @@
                             <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/False"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
                         </td>
                         <td>{{ answer['message'] }}</td>
-                        <td> {{ answer['submission_time'] }}</td>
                         <td>
-                            <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button>EDIT</button></a>
-                            <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Are you sure?')"><button>DELETE</button></a>
+                            <p id="answer_info">Answered by {{ answer['username'] }}</p>
+                            <p>{{ answer['submission_time'] }}</p>
+                        </td>
+                        <td>
+                            <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button {{ 'disabled' if username != answer['username'] }}>EDIT</button></a>
+                            <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Are you sure?')"><button {{ 'disabled' if username != answer['username'] }}>DELETE</button></a>
                         </td>
                     </tr>
                     {% endfor %}

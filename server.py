@@ -32,7 +32,6 @@ def route_question_by_id(question_id):
 
     question = data_handler.get_data_by_question_id('question', question_id)[0]
     answers = data_handler.get_data_by_question_id('answer', question_id)
-
     return render_template('question.html', question=question, answers=answers, number_of_answers=len(answers),
                            username=username)
 
@@ -139,8 +138,9 @@ def route_add_answer(question_id):
         image = request.form['image']
         if image == "":
             image = None
+        username = session['username']
 
-        data_handler.add_answer(question_id, message, image)
+        data_handler.add_answer(question_id, message, image, username)
         return redirect(f"/question/{question_id}")
 
     return render_template("new-answer.html", question=question)
@@ -156,6 +156,10 @@ def search():
 @app.route('/<question_id>/<answer_id>/delete')
 @functions.login_required
 def delete_answer(question_id, answer_id):
+    answer = data_handler.get_answer_by_id(answer_id)[0]
+    if answer['username'] != session['username']:
+        return redirect(url_for('route_question_by_id', question_id=question_id))
+
     data_handler.delete_answer(answer_id)
     return redirect(f'/question/{question_id}')
 
@@ -163,9 +167,12 @@ def delete_answer(question_id, answer_id):
 @app.route('/<question_id>/<answer_id>/edit', methods=['GET', 'POST'])
 @functions.login_required
 def route_edit_answer(question_id, answer_id):
+    answer = data_handler.get_answer_by_id(answer_id)[0]
+    if answer['username'] != session['username']:
+        return redirect(url_for('route_question_by_id', question_id=question_id))
+
     if request.method == 'GET':
         question = data_handler.get_data_by_question_id('question', question_id)[0]
-        answer = data_handler.get_answer_by_id(answer_id)[0]
         return render_template('edit-answer.html', question=question, answer=answer)
 
     if request.method == 'POST':

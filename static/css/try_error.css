@@ -18,8 +18,15 @@ table {
     justify-content: space-between;
 }
 
+@media screen and (max-width: 800px){
+    #header_box {
+        width: 100%;
+    }
+}
+
 .login, .links {
     display: flex;
+    align-items: center;
 }
 
 #content_wrapper {
@@ -32,20 +39,32 @@ table {
     min-height: 100vh;
 }
 
+@media screen and (max-width: 800px){
+    #content_wrapper {
+        width: 100%;
+    }
+}
+
 #main_page {
     padding-top: 50px;
     position: relative;
 }
 
-.header_element, #welcome{
+.header_element {
     display: flex;
     align-items: center;
-    height: 70px;
+    height: 3vw;
     padding: 0 1.5vw;
 }
 
 .header_element:hover {
     background-color: crimson;
+}
+
+@media screen and (max-width: 800px){
+    .header_element {
+        height: 5vh;
+    }
 }
 
 #register {
@@ -59,25 +78,30 @@ table {
 .search {
     display: flex;
     align-items: center;
-    max-width: 22vw;
-    margin: 0 20px;
+    margin: 0.5vh 20px;
 }
 
 #search_bar {
-    font-size: 18px;
-    max-width: 22vw;
-    height: 30px;
+    font-size: 1vw;
+    height: 1.7vw;
+    width: 20vw;
+}
+
+.search form {
+    display: flex;
+    align-items: center;
 }
 
 header a {
     color: white;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 1vw;
 }
 
-#ask_mate {
-    font-size: 30px;
-    font-weight: bold;
+@media screen and (max-width: 800px) {
+    header a {
+        font-size: 1.2vh;
+    }
 }
 
 #sort {
@@ -228,6 +252,10 @@ header a {
 .question-page_table p {
     margin: 0;
     height: fit-content;
+}
+
+#answer_info {
+    margin-bottom: 1vh;
 }
 
 #question_table, #answer_table {

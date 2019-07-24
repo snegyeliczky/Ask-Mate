@@ -6,7 +6,7 @@
         <form action="{{ url_for('route_add_question') }}" method="post" >
             <p>
                 <label for="title">Question title:</label><br>
-                <input type="text" name="title" id="title" required>
+                <input type="text" name="title" id="title" required maxlength="80">
             </p>
             <p>
                 <label for="message">Question details:</label><br>

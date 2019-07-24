@@ -73,12 +73,13 @@ def add_question(cursor, title, message, image, username):
 
 
 @database_common.connection_handler
-def add_answer(cursor, question_id, message, image):
+def add_answer(cursor, question_id, message, image, username):
     timestamp = generate_timestamp()
     cursor.execute("""
-                   INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-                   VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s)
-                   """, {'timestamp': timestamp, 'question_id': question_id, 'message': message, 'image': image})
+                   INSERT INTO answer (submission_time, vote_number, question_id, message, image, username)
+                   VALUES (%(timestamp)s, 0, %(question_id)s, %(message)s, %(image)s, %(username)s)
+                   """, {'timestamp': timestamp, 'question_id': question_id, 'message': message, 'image': image,
+                         'username': username})
 
 
 @database_common.connection_handler
