@@ -219,7 +219,7 @@ header a {
 }
 
 .question-page_table td:first-child {
-    max-width: 2vw;
+    max-width: 1vw;
     color: #474747;
     border-left: 1px solid #c5c5b5;
 }
@@ -229,15 +229,16 @@ header a {
     min-width: 15vw;
     white-space: pre-wrap;
     text-align: justify;
+    padding-right: 1vw;
 }
 
 .question-page_table td:nth-child(3) {
-    max-width: 4vw;
+    max-width: 3.5vw;
     color: #474747;
 }
 
 .question-page_table td:last-child {
-    max-width: 3vw;
+    max-width: 2vw;
     border-right: 1px solid #c5c5b5;
 }
 
@@ -286,4 +287,19 @@ header a {
 
 #users_table table{
     margin: 0 auto;
+}
+
+.question-button {
+    height: 5vh;
+    width: 4vw;
+    font-size: 0.7vw;
+    text-align: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px #7d7d7d solid;
+    border-radius: 4px;
+}
+
+.question-button:hover {
+    background-color: rgba(147, 147, 147, 0.19);
 }
