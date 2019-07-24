@@ -134,6 +134,7 @@ def get_hashed_password(cursor, username):
     hashed_password = cursor.fetchone()
     return hashed_password['password_hash']
 
+
 @database_common.connection_handler
 def get_all_user_attributes(cursor):
 
@@ -141,6 +142,8 @@ def get_all_user_attributes(cursor):
                     SELECT * FROM users
                     ''')
     users = cursor.fetchall()
+
+    return users
 
 
 @database_common.connection_handler
@@ -152,6 +155,7 @@ def get_one_user_attributes(cursor, username):
     user = cursor.fetchall()
 
     return user
+
 
 
 @database_common.connection_handler

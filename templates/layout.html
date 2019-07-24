@@ -19,19 +19,9 @@
                         ASK QUESTION
                     </div>
                 </a>
-                <a href="/list">
-                    <div class="header_element">
-                        LIST QUESTIONS
-                    </div>
-                </a>
                 <a href="{{ url_for('route_users') }}">
                     <div class="header_element">
                         LIST USERS
-                    </div>
-                </a>
-                <a href="/">
-                    <div class="header_element">
-                        TAGS
                     </div>
                 </a>
             </div>
@@ -56,9 +46,11 @@
                 </div>
             {% else %}
                 <div class="login">
-                    <div id="welcome">
-                        Welcome, {{ username }}!
-                    </div>
+                    <a href="{{ url_for('route_users') }}">
+                        <div class="header_element" id="user_page">
+                            USER PAGE
+                        </div>
+                    </a>
                     <a href="{{ url_for('route_logout') }}">
                         <div class="header_element" id="login">
                             LOGOUT

@@ -174,9 +174,11 @@ def route_register():
         password2 = request.form["password2"]
 
         if functions.username_exists(username):
-            return render_template('register.html', message="The username you entered is already in use")
+            message = "The username you entered is already in use"
+            return render_template('register.html', message=message)
         elif password != password2:
-            return render_template('register.html', message="Passwords do not match please fill again")
+            message = "Passwords do not match please fill again"
+            return render_template('register.html', message=message)
         else:
             hash_password = functions.hash_password(password)
             data_handler.register_user(username, hash_password)
@@ -210,9 +212,6 @@ def route_users():
     users = data_handler.get_all_user_attributes()
 
     return render_template('users.html', users=users)
-
-
-
 
 
 if __name__ == '__main__':

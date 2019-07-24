@@ -69,7 +69,8 @@ DROP TABLE IF EXISTS public.users;
 CREATE TABLE users (
     username text NOT NULL,
     password_hash varchar(60),
-    date_of_registration timestamp without time zone
+    date_of_registration timestamp without time zone,
+    reputation integer
 );
 
 DROP TABLE IF EXISTS public.votes;
@@ -128,8 +129,8 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id)
         ON DELETE CASCADE;
 
-INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-18 10:00:00');
-INSERT INTO users VALUES ('admin2', '$2b$12$am269jIFG0RA1IguIEksaewHvefQ7eb2sto..o4CvzxIUJ3GLLqOy', '2017-05-01 10:00:00');
+INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-18 10:00:00', 15);
+INSERT INTO users VALUES ('admin2', '$2b$12$am269jIFG0RA1IguIEksaewHvefQ7eb2sto..o4CvzxIUJ3GLLqOy', '2017-05-01 10:00:00', -6);
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL, 'admin2');
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
