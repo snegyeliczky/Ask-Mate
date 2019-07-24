@@ -47,8 +47,19 @@ def route_question_view_count(question_id):
 @app.route('/question/<question_id>/<vote>')
 @functions.login_required
 def route_question_vote_count(question_id, vote):
+
+    owner_user = data_handler.get_username_by_question_id(question_id)['username']
     username = session['username']
-    print(vote)
+    reputation_change= data_handler.check_reputation(vote, username, question_id)
+    if reputation_change == 'modify':
+        if vote == 'True':
+            vote = 7
+        else:
+            vote = -7
+        data_handler.edit_reputation(vote, owner_user)
+    elif reputation_change == 'GO':
+        data_handler.edit_reputation(vote, owner_user)
+
     vote_check = data_handler.vote_check(username,vote,question_id)
     if vote_check == None:
         return redirect(f'/question/{question_id}')
@@ -60,6 +71,7 @@ def route_question_vote_count(question_id, vote):
 @app.route('/question/<question_id>/<answer_id>/<vote>')
 @functions.login_required
 def route_answer_vote_count(question_id, answer_id, vote):
+
     username = session['username']
     vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
     if vote_check == None:

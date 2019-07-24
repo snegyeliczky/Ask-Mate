@@ -105,7 +105,7 @@ def edit_vote_number(cursor, table, item_id, vote):
     if vote == 'True':
         vote = 1
     else:
-        vote = -2
+        vote = -1
     cursor.execute(f"""
                     UPDATE {table}
                     SET vote_number = (SELECT vote_number  FROM {table}
@@ -215,5 +215,50 @@ def answer_vote_check(cursor, username, vote, question_id,answer_id):
                                 """,
                            {'question_id': question_id, 'username': username, 'vote': vote, 'answer_id': answer_id})
             return True
+
+
+@database_common.connection_handler
+def get_username_by_question_id(cursor, question_id):
+    cursor.execute("""
+                    SELECT username
+                    FROM question
+                    WHERE id = %(question_id)s
+                    """, {'question_id': question_id})
+    user = cursor.fetchone()
+    return user
+
+
+@database_common.connection_handler
+def edit_reputation(cursor, vote, username):
+
+    reputation = vote
+    if vote == 'False':
+        reputation = -2
+    elif vote == 'True':
+        reputation =5
+    print(reputation)
+    cursor.execute("""
+                    UPDATE users
+                    SET reputation =
+                    (SELECT reputation  FROM users WHERE username = %(username)s)+%(reputation)s
+                    WHERE username = %(username)s
+
+                    """, {'username': username, 'reputation': reputation})
+
+@database_common.connection_handler
+def check_reputation(cursor, actual_vote, username, question_id):
+    cursor.execute("""
+                    SELECT vote FROM votes
+                    WHERE username = %(username)s AND question_id = %(question_id)s
+                    """, {'username':username, 'question_id':question_id})
+    vote=cursor.fetchone()
+    if vote == None:
+        return 'GO'
+    else:
+        vote = vote['vote']
+        if vote == actual_vote:
+            return None
+        else:
+            return 'modify'
 
 
