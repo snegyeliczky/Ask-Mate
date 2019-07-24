@@ -214,6 +214,16 @@ def route_users():
     return render_template('users.html', users=users)
 
 
+@app.route('/user_page')
+def route_user_page():
+    sort_by = 'submission_time'
+    sort_direction = 'DESC'
+    username = session['username']
+    questions = data_handler.get_questions_data_by_username(username)
+    user_attributes = data_handler.get_one_user_attributes(username)
+    return render_template('user_page.html', questions=questions, user_attributes=user_attributes, username=username)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
