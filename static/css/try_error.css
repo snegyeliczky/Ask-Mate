@@ -254,6 +254,10 @@ header a {
     height: fit-content;
 }
 
+#answer_info {
+    margin-bottom: 1vh;
+}
+
 #question_table, #answer_table {
     width: 100%;
 }
