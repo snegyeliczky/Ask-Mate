@@ -250,7 +250,8 @@ def route_users():
 def route_user_page(username):
     questions = data_handler.get_questions_data_by_username(username)
     user_attributes = data_handler.get_one_user_attributes(username)
-    return render_template('user_page.html', questions=questions, user_attributes=user_attributes, username=username)
+    answers = data_handler.get_data_by_question_username('answer', username)
+    return render_template('user_page.html', questions=questions, user_attributes=user_attributes,answers=answers, username=username, number_of_answers=len(answers), number_of_questions=len(questions))
 
 
 if __name__ == '__main__':

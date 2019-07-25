@@ -1,15 +1,19 @@
 {% extends 'layout.html' %}
 {% block title %}AskMate{% endblock %}
 {% block content %}
-    <div id="question">
-    <div class="userpage-head">
-        <h1>{{ user_attributes['username'] }}</h1>
-        <div id="question_info">
-            <p>reputation: {{ user_attributes['reputation'] }}</p>
-            <p>{{ user_attributes['date_of_registration'] }}</p>
+        <div id="question">
+            <div class="userpage-head">
+                <h1>{{ user_attributes['username'] }}</h1>
+                <div id="question_info">
+                    <p>reputation: {{ user_attributes['reputation'] }}</p>
+                    <p>{{ user_attributes['date_of_registration'] }}</p>
+                </div>
+            </div>
+            {% if number_of_questions != 0 %}
+            <div class="userpage-bottom">
+                <h2>{{ number_of_questions }} Questions</h2>
+            </div>
         </div>
-    </div>
-    </div>
     <div id="main_page">
         <div id="main_table">
             <table>
@@ -23,4 +27,25 @@
             </table>
         </div>
     </div>
+    {% endif %}
+    {% if number_of_answers != 0 %}
+    <div id="question">
+        <div class="userpage-bottom">
+            <h2>{{ number_of_answers }} Answers</h2>
+        </div>
+    <div id="main_page">
+        <div id="main_table">
+            <table>
+                {% for row in answers %}
+                <tr>
+                    <td>{{ row['submission_time'] }}</td>
+                    <td></td>
+                    <td>{{ row['message'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    </div>
+    {% endif %}
 {% endblock %}
