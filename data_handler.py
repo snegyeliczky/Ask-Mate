@@ -311,3 +311,23 @@ def get_data_by_question_username(cursor, table, username):
 
     data = cursor.fetchall()
     return data
+
+def accept_answer(cursor, answer_id):
+    cursor.execute('''
+                    UPDATE answer
+                    SET accepted = TRUE
+                    WHERE id = %(answer_id)s
+                    ''', {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_accepted_answer_id(cursor, question_id):
+    cursor.execute('''
+                    SELECT id FROM answer
+                    WHERE question_id = %(question_id)s and accepted = TRUE
+                    ''', {'question_id': question_id})
+
+    accepted_ans_id = cursor.fetchone()
+
+    return accepted_ans_id
+

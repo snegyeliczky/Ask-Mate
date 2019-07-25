@@ -309,7 +309,7 @@ header a {
     margin: 0 auto;
     width: 85%;
     padding:  40px 0 10px 0 ;
-    border-bottom: 1px solid #7b7b68;
+border-bottom: 1px solid #7b7b68;
 }
 
 .userpage-bottom {
@@ -319,5 +319,9 @@ header a {
     margin: 0 auto;
     width: 90%;
     padding:  40px 0 10px 0 ;
+}
+
+#sexy_accepted {
+    width: 3.5em;
 }
 

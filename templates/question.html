@@ -45,12 +45,22 @@
                             <p id="answer_info">Answered by {{ answer['username'] }}</p>
                             <p>{{ answer['submission_time'] }}</p>
                         </td>
+                    <td>
+                        {% if accepted_answer_id['id'] == answer['id'] %}
+
+                                <img id="sexy_accepted" src="{{ url_for('static', filename='images/pipa.png') }}">
+                        {% endif %}
+                        </td>
                         <td>
                             {% if username == answer['username'] %}
                                 <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button class="question-button">EDIT</button></a><br>
                                 <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Are you sure?')"><button class="question-button">DELETE</button></a>
                             {% endif %}
+                            {% if username == question['username'] and accepted_answer_id == None %}
+                            <a href="/{{ question['id']}}/{{ answer['id'] }}/accept_answer"><button class="question-button">ACCEPT</button></a>
+                            {% endif %}
                         </td>
+
                     </tr>
                     {% endfor %}
                 </table>
