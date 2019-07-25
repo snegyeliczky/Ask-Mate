@@ -32,8 +32,6 @@ def route_question_by_id(question_id):
 
     accepted_answer_id = data_handler.get_accepted_answer_id(question_id)
 
-    print(accepted_answer_id)
-
     question = data_handler.get_data_by_question_id('question', question_id)[0]
     answers = data_handler.get_data_by_question_id('answer', question_id)
     return render_template('question.html', question=question, answers=answers, number_of_answers=len(answers),
@@ -45,71 +43,6 @@ def route_question_view_count(question_id):
     data_handler.edit_view_number(question_id)
 
     return redirect(f'/question/{question_id}')
-
-
-@app.route('/question/<question_id>/<vote>')
-@functions.login_required
-def route_question_vote_count(question_id, vote):
-    owner_user = data_handler.get_username_by_question_id(question_id)['username']
-    username = session['username']
-
-    reputation_change = data_handler.check_reputation(vote, username, question_id)
-    if reputation_change == 'modify':
-        if vote == 'True':
-            modify_vote = 7
-        else:
-            modify_vote = -7
-        data_handler.edit_reputation(modify_vote, owner_user)
-    elif reputation_change == 'GO':
-        data_handler.edit_reputation(vote, owner_user)
-
-    vote_check = data_handler.vote_check(username, vote, question_id)
-    if vote_check is None:
-        return redirect(f'/question/{question_id}')
-    elif vote_check is True:
-        data_handler.edit_vote_number('question', question_id, vote)
-        return redirect(f'/question/{question_id}')
-    else:
-        if vote == 'True':
-            modify_vote = 2
-        else:
-            modify_vote = -2
-
-        data_handler.edit_vote_number('question', question_id, modify_vote)
-        return redirect(f'/question/{question_id}')
-
-
-@app.route('/question/<question_id>/<answer_id>/<vote>')
-@functions.login_required
-def route_answer_vote_count(question_id, answer_id, vote):
-    owner_user = data_handler.get_answer_owner(answer_id)
-    username = session['username']
-
-    answer_reputation_check = data_handler.check_answer_reputation(question_id, answer_id, username, vote)
-    if answer_reputation_check == 'GO':
-        data_handler.edit_reputation(vote, owner_user)
-    elif answer_reputation_check == 'modify':
-        if vote == 'True':
-            modify_vote = 7
-        else:
-            modify_vote = -7
-
-        data_handler.edit_reputation(modify_vote, owner_user)
-
-    vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
-    if vote_check is None:
-        return redirect(f'/question/{question_id}')
-    elif vote_check is True:
-        data_handler.edit_vote_number('answer', answer_id, vote)
-        return redirect(f'/question/{question_id}')
-    else:
-        if vote == 'True':
-            modify_vote = 2
-        else:
-            modify_vote = -2
-
-        data_handler.edit_vote_number('answer', answer_id, modify_vote)
-        return redirect(f'/question/{question_id}')
 
 
 @app.route('/add-a-question', methods=['GET', 'POST'])
@@ -144,7 +77,7 @@ def route_edit_a_question(question_id):
 
     message = request.form['message']
     image = request.form['image']
-    data_handler.edit_question('question', question_id, message, image)
+    data_handler.edit_data('question', question_id, message, image)
     return redirect(url_for('route_question_by_id', question_id=question_id))
 
 
@@ -155,7 +88,7 @@ def route_delete_question(question_id):
     if question['username'] != session['username']:
         return redirect(url_for('route_question_by_id', question_id=question_id))
 
-    data_handler.delete_data(question_id)
+    data_handler.delete_question(question_id)
     return redirect('/')
 
 
@@ -176,24 +109,6 @@ def route_add_answer(question_id):
     return redirect(f"/question/{question_id}")
 
 
-@app.route('/search')
-def search():
-    search_part = request.args['search']
-    questions = data_handler.search_question(search_part)
-    return render_template('list.html', questions=questions)
-
-
-@app.route('/<question_id>/<answer_id>/delete')
-@functions.login_required
-def delete_answer(question_id, answer_id):
-    answer = data_handler.get_answer_by_id(answer_id)[0]
-    if answer['username'] != session['username']:
-        return redirect(url_for('route_question_by_id', question_id=question_id))
-
-    data_handler.delete_answer(answer_id)
-    return redirect(f'/question/{question_id}')
-
-
 @app.route('/<question_id>/<answer_id>/edit', methods=['GET', 'POST'])
 @functions.login_required
 def route_edit_answer(question_id, answer_id):
@@ -208,8 +123,95 @@ def route_edit_answer(question_id, answer_id):
     if request.method == 'POST':
         message = request.form['message']
         image = request.form['image']
-        data_handler.edit_question('answer', answer_id, message, image)
+        data_handler.edit_data('answer', answer_id, message, image)
         return redirect(f'/question/{question_id}')
+
+
+@app.route('/<question_id>/<answer_id>/delete')
+@functions.login_required
+def delete_answer(question_id, answer_id):
+    answer = data_handler.get_answer_by_id(answer_id)[0]
+    if answer['username'] != session['username']:
+        return redirect(url_for('route_question_by_id', question_id=question_id))
+
+    data_handler.delete_answer(answer_id)
+    return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/<vote>')
+@functions.login_required
+def route_question_vote_count(question_id, vote):
+    owner_user = data_handler.get_username_by_question_id(question_id)['username']
+    username = session['username']
+
+    reputation_change = data_handler.check_reputation(vote, username, question_id)
+    if reputation_change == 'modify':
+        if vote == 'True':
+            modify_vote = 7
+        else:
+            modify_vote = -7
+        data_handler.edit_reputation(modify_vote, 'question', owner_user)
+    elif reputation_change == 'GO':
+        data_handler.edit_reputation(vote, 'question', owner_user)
+
+    vote_check = data_handler.vote_check(username, vote, question_id)
+    if vote_check is None:
+        return redirect(f'/question/{question_id}')
+
+    elif vote_check is True:
+        data_handler.edit_vote_number('question', question_id, vote)
+        return redirect(f'/question/{question_id}')
+
+    else:
+        if vote == 'True':
+            modify_vote = 2
+        else:
+            modify_vote = -2
+
+        data_handler.edit_vote_number('question', question_id, modify_vote)
+        return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/<answer_id>/<vote>')
+@functions.login_required
+def route_answer_vote_count(question_id, answer_id, vote):
+    owner_user = data_handler.get_answer_owner(answer_id)
+    username = session['username']
+
+    answer_reputation_check = data_handler.check_answer_reputation(question_id, answer_id, username, vote)
+    if answer_reputation_check == 'GO':
+        data_handler.edit_reputation(vote, 'answer', owner_user)
+    elif answer_reputation_check == 'modify':
+        if vote == 'True':
+            modify_vote = 12
+        else:
+            modify_vote = -12
+
+        data_handler.edit_reputation(modify_vote, 'answer', owner_user)
+
+    vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
+    if vote_check is None:
+        return redirect(f'/question/{question_id}')
+
+    elif vote_check is True:
+        data_handler.edit_vote_number('answer', answer_id, vote)
+        return redirect(f'/question/{question_id}')
+
+    else:
+        if vote == 'True':
+            modify_vote = 2
+        else:
+            modify_vote = -2
+
+        data_handler.edit_vote_number('answer', answer_id, modify_vote)
+        return redirect(f'/question/{question_id}')
+
+
+@app.route('/search')
+def search():
+    search_part = request.args['search']
+    questions = data_handler.search_question(search_part)
+    return render_template('list.html', questions=questions)
 
 
 @app.route("/registration", methods=['GET', 'POST'])
@@ -273,15 +275,16 @@ def route_user_page(username):
     questions = data_handler.get_questions_data_by_username(username)
     user_attributes = data_handler.get_one_user_attributes(username)
     answers = data_handler.get_answer_data_by_username(username)
-    return render_template('user_page.html', questions=questions, user_attributes=user_attributes,answers=answers, username=username, number_of_answers=len(answers), number_of_questions=len(questions))
+    return render_template('user_page.html', questions=questions, user_attributes=user_attributes, answers=answers,
+                           username=username, number_of_answers=len(answers), number_of_questions=len(questions))
 
 
 @app.route('/<question_id>/<answer_id>/accept_answer')
-def route_accept_answer(question_id,answer_id):
+def route_accept_answer(question_id, answer_id):
     data_handler.accept_answer(answer_id)
 
     answer_owner = data_handler.get_answer_owner(answer_id)
-    data_handler.edit_reputation(7, answer_owner)
+    data_handler.edit_reputation(15, None, answer_owner)
 
     return redirect(url_for('route_question_by_id', question_id=question_id))
 
