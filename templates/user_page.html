@@ -1,51 +1,47 @@
 {% extends 'layout.html' %}
 {% block title %}AskMate{% endblock %}
 {% block content %}
-        <div id="question">
-            <div class="userpage-head">
-                <h1>{{ user_attributes['username'] }}</h1>
-                <div id="question_info">
-                    <p>reputation: {{ user_attributes['reputation'] }}</p>
-                    <p>{{ user_attributes['date_of_registration'] }}</p>
-                </div>
+    <div id="user_page">
+        <div class="user-page-head">
+            <h1>{{ user_attributes['username'] }}</h1>
+            <div id="question_info">
+                <p>reputation: {{ user_attributes['reputation'] }}</p>
+                <p>{{ user_attributes['date_of_registration'] }}</p>
             </div>
-            {% if number_of_questions != 0 %}
-            <div class="userpage-bottom">
+        </div>
+        {% if number_of_questions != 0 %}
+            <div class="user-page-bottom">
                 <h2>{{ number_of_questions }} Questions</h2>
             </div>
-        </div>
-    <div id="main_page">
-        <div id="main_table">
-            <table>
-                {% for row in questions %}
-                <tr>
-                    <td>{{ row['view_number'] }}<br>Views</td>
-                    <td>{{ row['vote_number'] }}<br>Votes</td>
-                    <td><a href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+            <div id="user_questions">
+                <table>
+                    {% for row in questions %}
+                    <tr>
+                        <td><a href="{{ url_for('route_question_view_count', question_id=row['id']) }}">{{ row['title'] }}</a></td>
+                        <td>{{ row['view_number'] }}<br>Views</td>
+                        <td>{{ row['vote_number'] }}<br>Votes</td>
+                        <td>{{ row['submission_time'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        {% if number_of_answers != 0 %}
+            <div class="user-page-bottom">
+                <h2>{{ number_of_answers }} Answers</h2>
+            </div>
+            <div id="user_answers">
+                <table>
+                    {% for row in answers %}
+                    <tr>
+                        <td>{{ row['message'] }}</td>
+                        <td><a href="{{ url_for('route_question_by_id', question_id=row['question_id']) }}">View Question</a></td>
+                        <td>{{ row['vote_number'] }}<br>Votes</td>
+                        <td>{{ row['submission_time'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
     </div>
-    {% endif %}
-    {% if number_of_answers != 0 %}
-    <div id="question">
-        <div class="userpage-bottom">
-            <h2>{{ number_of_answers }} Answers</h2>
-        </div>
-    <div id="main_page">
-        <div id="main_table">
-            <table>
-                {% for row in answers %}
-                <tr>
-                    <td>{{ row['submission_time'] }}</td>
-                    <td></td>
-                    <td>{{ row['message'] }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-    </div>
-    {% endif %}
 {% endblock %}

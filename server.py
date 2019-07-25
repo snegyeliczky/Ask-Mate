@@ -271,7 +271,7 @@ def route_users():
 def route_user_page(username):
     questions = data_handler.get_questions_data_by_username(username)
     user_attributes = data_handler.get_one_user_attributes(username)
-    answers = data_handler.get_data_by_question_username('answer', username)
+    answers = data_handler.get_answer_data_by_username(username)
     return render_template('user_page.html', questions=questions, user_attributes=user_attributes,answers=answers, username=username, number_of_answers=len(answers), number_of_questions=len(questions))
 
 
@@ -280,7 +280,7 @@ def route_accept_answer(question_id,answer_id):
     data_handler.accept_answer(answer_id)
 
     answer_owner = data_handler.get_answer_owner(answer_id)
-    data_handler.edit_reputation(7,answer_owner)
+    data_handler.edit_reputation(7, answer_owner)
 
     return redirect(url_for('route_question_by_id', question_id=question_id))
 

@@ -141,6 +141,7 @@ def get_all_user_attributes(cursor):
 
     cursor.execute('''
                     SELECT * FROM users
+                    ORDER BY username
                     ''')
     users = cursor.fetchall()
 
@@ -158,7 +159,6 @@ def get_one_user_attributes(cursor, username):
     return user
 
 
-
 @database_common.connection_handler
 def vote_check(cursor, username, vote, question_id):
     cursor.execute("""
@@ -168,7 +168,7 @@ def vote_check(cursor, username, vote, question_id):
                    {'question_id': question_id, 'username': username})
     result = cursor.fetchone()
     print(result)
-    if result == None:
+    if result is None:
         cursor.execute("""
                                       INSERT INTO votes
                                       VALUES (%(question_id)s, %(username)s, %(vote)s)
@@ -188,7 +188,6 @@ def vote_check(cursor, username, vote, question_id):
             return True
 
 
-
 @database_common.connection_handler
 def answer_vote_check(cursor, username, vote, question_id, answer_id):
     cursor.execute("""
@@ -197,7 +196,7 @@ def answer_vote_check(cursor, username, vote, question_id, answer_id):
                         WHERE question_id = %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s """,
                    {'question_id': question_id, 'username': username, 'answer_id': answer_id})
     result = cursor.fetchone()
-    if result == None:
+    if result is None:
         cursor.execute("""
                                       INSERT INTO answer_votes
                                       VALUES (%(question_id)s, %(answer_id)s, %(username)s, %(vote)s)
@@ -244,6 +243,7 @@ def edit_reputation(cursor, vote, username):
 
                     """, {'username': username, 'reputation': reputation})
 
+
 @database_common.connection_handler
 def check_reputation(cursor, actual_vote, username, question_id):
     cursor.execute("""
@@ -251,7 +251,7 @@ def check_reputation(cursor, actual_vote, username, question_id):
                     WHERE username = %(username)s AND question_id = %(question_id)s
                     """, {'username':username, 'question_id':question_id})
     vote=cursor.fetchone()
-    if vote == None:
+    if vote is None:
         return 'GO'
     else:
         vote = vote['vote']
@@ -259,6 +259,7 @@ def check_reputation(cursor, actual_vote, username, question_id):
             return None
         else:
             return 'modify'
+
 
 @database_common.connection_handler
 def get_answer_owner(cursor,answer_id):
@@ -278,7 +279,7 @@ def check_answer_reputation(cursor,question_id,answer_id,username, actual_vote):
                     WHERE question_id= %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s
                     """, {'question_id':question_id, 'answer_id':answer_id, 'username':username})
     vote = cursor.fetchone()
-    if vote == None:
+    if vote is None:
         return 'GO'
     else:
         vote = vote['vote']
@@ -287,27 +288,24 @@ def check_answer_reputation(cursor,question_id,answer_id,username, actual_vote):
         else:
             return 'modify'
 
+
 @database_common.connection_handler
 def get_questions_data_by_username(cursor, username):
     cursor.execute("""
-                    SELECT *
-                    FROM question
+                    SELECT * FROM question
                     WHERE username = %(username)s
-                    """,
-                   {'username': username})
+                    """, {'username': username})
     data = cursor.fetchall()
     return data
 
 
 @database_common.connection_handler
-def get_data_by_question_username(cursor, table, username):
-    column = 'username'
-
+def get_answer_data_by_username(cursor, username):
     cursor.execute(f"""
-                   SELECT * FROM {table}
-                   WHERE {column} = %(id)s
+                   SELECT * FROM answer
+                   WHERE username = %(username)s
                    ORDER BY submission_time
-                   """, {'id': username})
+                   """, {'username': username})
 
     data = cursor.fetchall()
     return data

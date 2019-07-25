@@ -6,7 +6,7 @@
             <h1>{{ question['title'] }}</h1>
             <div id="question_info">
                 <p>Viewed {{ question['view_number'] }} times</p>
-                <p>Submitted by <a href="{{ url_for('route_user_page', username=question['username']) }}">{{ question['username'] }} </a></p>
+                <p>Submitted by <a href="{{ url_for('route_user_page', username=question['username']) }}">{{ question['username'] }}</a></p>
                 <p>{{ question['submission_time'] }}</p>
             </div>
         </div>
