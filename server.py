@@ -50,10 +50,10 @@ def route_question_view_count(question_id):
 @app.route('/question/<question_id>/<vote>')
 @functions.login_required
 def route_question_vote_count(question_id, vote):
-
     owner_user = data_handler.get_username_by_question_id(question_id)['username']
     username = session['username']
-    reputation_change= data_handler.check_reputation(vote, username, question_id)
+
+    reputation_change = data_handler.check_reputation(vote, username, question_id)
     if reputation_change == 'modify':
         if vote == 'True':
             modify_vote = 7
@@ -63,11 +63,19 @@ def route_question_vote_count(question_id, vote):
     elif reputation_change == 'GO':
         data_handler.edit_reputation(vote, owner_user)
 
-    vote_check = data_handler.vote_check(username,vote,question_id)
-    if vote_check == None:
+    vote_check = data_handler.vote_check(username, vote, question_id)
+    if vote_check is None:
+        return redirect(f'/question/{question_id}')
+    elif vote_check is True:
+        data_handler.edit_vote_number('question', question_id, vote)
         return redirect(f'/question/{question_id}')
     else:
-        data_handler.edit_vote_number('question', question_id, vote)
+        if vote == 'True':
+            modify_vote = 2
+        else:
+            modify_vote = -2
+
+        data_handler.edit_vote_number('question', question_id, modify_vote)
         return redirect(f'/question/{question_id}')
 
 
@@ -76,21 +84,31 @@ def route_question_vote_count(question_id, vote):
 def route_answer_vote_count(question_id, answer_id, vote):
     owner_user = data_handler.get_answer_owner(answer_id)
     username = session['username']
-    answer_reputation_check = data_handler.check_answer_reputation(question_id,answer_id,username, vote)
+
+    answer_reputation_check = data_handler.check_answer_reputation(question_id, answer_id, username, vote)
     if answer_reputation_check == 'GO':
         data_handler.edit_reputation(vote, owner_user)
     elif answer_reputation_check == 'modify':
         if vote == 'True':
             modify_vote = 7
-        elif vote == 'False':
+        else:
             modify_vote = -7
+
         data_handler.edit_reputation(modify_vote, owner_user)
 
     vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
-    if vote_check == None:
+    if vote_check is None:
+        return redirect(f'/question/{question_id}')
+    elif vote_check is True:
+        data_handler.edit_vote_number('answer', answer_id, vote)
         return redirect(f'/question/{question_id}')
     else:
-        data_handler.edit_vote_number('answer', answer_id, vote)
+        if vote == 'True':
+            modify_vote = 2
+        else:
+            modify_vote = -2
+
+        data_handler.edit_vote_number('answer', answer_id, modify_vote)
         return redirect(f'/question/{question_id}')
 
 
@@ -156,7 +174,6 @@ def route_add_answer(question_id):
 
     data_handler.add_answer(question_id, message, image, username)
     return redirect(f"/question/{question_id}")
-
 
 
 @app.route('/search')
