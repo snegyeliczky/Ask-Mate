@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
 {% block title %}AskMate | Ask a question{% endblock %}
 {% block content %}
-    <div id="add_question">
-        <h1>Ask a question:</h1>
+    <div class="input_form">
+        <h1>Ask a question</h1>
         <form action="{{ url_for('route_add_question') }}" method="post" >
             <p>
                 <label for="title">Question title:</label><br>
@@ -20,8 +20,8 @@
                 <button type="submit">Submit</button>
             </p>
         </form>
-        <p id="back_button">
+        <div class="back_button">
             <a href="{{ url_for('route_list') }}"><button>Back</button></a>
-        </p>
+        </div>
     </div>
 {% endblock %}
