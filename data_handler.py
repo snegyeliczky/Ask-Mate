@@ -191,14 +191,12 @@ def vote_check(cursor, username, vote, question_id):
 
 @database_common.connection_handler
 def answer_vote_check(cursor, username, vote, question_id, answer_id):
-    print(vote)
     cursor.execute("""
                         SELECT vote
                         FROM answer_votes
                         WHERE question_id = %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s """,
                    {'question_id': question_id, 'username': username, 'answer_id': answer_id})
     result = cursor.fetchone()
-    print(result)
     if result == None:
         cursor.execute("""
                                       INSERT INTO answer_votes

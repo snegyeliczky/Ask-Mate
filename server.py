@@ -83,7 +83,6 @@ def route_answer_vote_count(question_id, answer_id, vote):
         data_handler.edit_reputation(modify_vote, owner_user)
 
     vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
-    print(vote_check)
     if vote_check == None:
         return redirect(f'/question/{question_id}')
     else:
