@@ -134,6 +134,18 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id)
         ON DELETE CASCADE;
 
+ALTER TABLE ONLY votes
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
+        ON DELETE CASCADE;
+
+ALTER TABLE ONLY answer_votes
+    ADD CONSTRAINT fk_tag_id FOREIGN KEY (question_id) REFERENCES question(id)
+        ON DELETE CASCADE;
+
+ALTER TABLE ONLY answer_votes
+    ADD CONSTRAINT fk_tag_id FOREIGN KEY (answer_id) REFERENCES answer(id)
+        ON DELETE CASCADE;
+
 INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-18 10:00:00', 15);
 INSERT INTO users VALUES ('admin2', '$2b$12$am269jIFG0RA1IguIEksaewHvefQ7eb2sto..o4CvzxIUJ3GLLqOy', '2017-05-01 10:00:00', -6);
 
