@@ -77,15 +77,15 @@ CREATE TABLE users (
 
 DROP TABLE IF EXISTS public.votes;
 CREATE TABLE votes (
-    question_id text,
+    question_id INTEGER,
     username text,
     vote text
 );
 
 DROP TABLE IF EXISTS public.answer_votes;
 CREATE TABLE answer_votes (
-    question_id text,
-    answer_id text,
+    question_id INTEGER,
+    answer_id INTEGER,
     username text,
     vote text
 );
@@ -139,11 +139,11 @@ ALTER TABLE ONLY votes
         ON DELETE CASCADE;
 
 ALTER TABLE ONLY answer_votes
-    ADD CONSTRAINT fk_tag_id FOREIGN KEY (question_id) REFERENCES question(id)
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
         ON DELETE CASCADE;
 
 ALTER TABLE ONLY answer_votes
-    ADD CONSTRAINT fk_tag_id FOREIGN KEY (answer_id) REFERENCES answer(id)
+    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id)
         ON DELETE CASCADE;
 
 INSERT INTO users VALUES ('admin1', '$2b$12$gAD1ffMzE.M13FMLOOVhZuFaIONArf/9U.MWC49.8RC/uhVl8bPKu', '2017-05-18 10:00:00', 15);
