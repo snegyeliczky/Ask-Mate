@@ -30,10 +30,14 @@ def route_question_by_id(question_id):
     if 'username' in session:
         username = session['username']
 
+    accepted_answer_id = data_handler.get_accepted_answer_id(question_id)
+
+    print(accepted_answer_id)
+
     question = data_handler.get_data_by_question_id('question', question_id)[0]
     answers = data_handler.get_data_by_question_id('answer', question_id)
     return render_template('question.html', question=question, answers=answers, number_of_answers=len(answers),
-                           username=username)
+                           username=username, accepted_answer_id=accepted_answer_id)
 
 
 @app.route('/question/<question_id>/')
@@ -251,6 +255,13 @@ def route_user_page(username):
     questions = data_handler.get_questions_data_by_username(username)
     user_attributes = data_handler.get_one_user_attributes(username)
     return render_template('user_page.html', questions=questions, user_attributes=user_attributes, username=username)
+
+
+@app.route('/<question_id>/<answer_id>/accept_answer')
+def route_accept_answer(question_id,answer_id):
+    data_handler.accept_answer(answer_id)
+
+    return redirect(url_for('route_question_by_id', question_id=question_id))
 
 
 if __name__ == '__main__':
