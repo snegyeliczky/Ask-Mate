@@ -280,9 +280,7 @@ header a {
 }
 
 #users_table{
-    margin: 0 auto;
-    display: flex;
-    align-content: center;
+    font-size: 1em;
 }
 
 #users_table table{
