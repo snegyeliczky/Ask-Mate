@@ -6,7 +6,7 @@
         <table>
             {% for row in users %}
                 <tr>
-                    <td>{{ row['username'] }}</td><td>{{ row['date_of_registration'] }}</td>
+                    <td><a href="{{ url_for('route_user_page', username=row['username']) }}">{{ row['username'] }}</a></td><td>{{ row['date_of_registration'] }}</td>
                 </tr>
             {% endfor %}
         </table>

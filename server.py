@@ -118,7 +118,7 @@ def route_edit_a_question(question_id):
         return redirect(url_for('route_question_by_id', question_id=question_id))
 
     if request.method == 'GET':
-        return render_template('edit-a-question.html', question=question)
+        return render_template('edit-a-question.html', question=question, username=session['username'])
 
     message = request.form['message']
     image = request.form['image']
@@ -140,20 +140,19 @@ def route_delete_question(question_id):
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
 @functions.login_required
 def route_add_answer(question_id):
-    question = data_handler.get_data_by_question_id('question', question_id)[0]
+    if request.method == 'GET':
+        question = data_handler.get_data_by_question_id('question', question_id)[0]
+        return render_template("new-answer.html", question=question, username=session['username'])
 
-    if request.method == "POST":
+    message = request.form['message']
+    image = request.form['image']
+    if image == "":
+        image = None
+    username = session['username']
 
-        message = request.form['message']
-        image = request.form['image']
-        if image == "":
-            image = None
-        username = session['username']
+    data_handler.add_answer(question_id, message, image, username)
+    return redirect(f"/question/{question_id}")
 
-        data_handler.add_answer(question_id, message, image, username)
-        return redirect(f"/question/{question_id}")
-
-    return render_template("new-answer.html", question=question)
 
 
 @app.route('/search')
@@ -183,7 +182,7 @@ def route_edit_answer(question_id, answer_id):
 
     if request.method == 'GET':
         question = data_handler.get_data_by_question_id('question', question_id)[0]
-        return render_template('edit-answer.html', question=question, answer=answer)
+        return render_template('edit-answer.html', question=question, answer=answer, username=session['username'])
 
     if request.method == 'POST':
         message = request.form['message']
@@ -238,9 +237,20 @@ def route_logout():
 
 @app.route('/users')
 def route_users():
+    username = None
+    if 'username' in session:
+        username = session['username']
+
     users = data_handler.get_all_user_attributes()
 
-    return render_template('users.html', users=users)
+    return render_template('users.html', users=users, username=username)
+
+
+@app.route('/user_page/<username>')
+def route_user_page(username):
+    questions = data_handler.get_questions_data_by_username(username)
+    user_attributes = data_handler.get_one_user_attributes(username)
+    return render_template('user_page.html', questions=questions, user_attributes=user_attributes, username=username)
 
 
 if __name__ == '__main__':

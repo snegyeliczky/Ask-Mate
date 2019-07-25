@@ -6,7 +6,8 @@
             <h1>{{ question['title'] }}</h1>
             <div id="question_info">
                 <p>Viewed {{ question['view_number'] }} times</p>
-                <p>Submitted by {{ question['username'] }}</p>
+                <p>Submitted by <a href="{{ url_for('route_user_page', username=question['username']) }}">{{ question['username'] }} </a></p>
+                <p>{{ question['submission_time'] }}</p>
             </div>
         </div>
         <div class="question-page_table">
@@ -18,11 +19,13 @@
                         <p><a href="/question/{{ question['id'] }}/False"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
                     </td>
                     <td>{{ question['message'] }}</td>
-                    <td> {{ question['submission_time'] }}</td>
                     <td>
-                        <a href="/question/{{ question['id'] }}/edit-a-question"><button {{ 'disabled' if username != question['username'] }}>EDIT</button></a>
-                        <a href="{{ url_for('route_delete_question', question_id=question['id']) }}"><button onclick="return confirm('Are you sure?')" {{ 'disabled' if username != question['username'] }}>DELETE</button></a>
+                        {% if username == question['username'] %}
+                            <a href="/question/{{ question['id'] }}/edit-a-question"><button class="question-button">EDIT</button></a><br>
+                            <a href="{{ url_for('route_delete_question', question_id=question['id']) }}" onclick="return confirm('Are you sure?')"><button class="question-button">DELETE</button></a>
+                        {% endif %}
                     </td>
+
                 </tr>
             </table>
         </div>
@@ -43,8 +46,10 @@
                             <p>{{ answer['submission_time'] }}</p>
                         </td>
                         <td>
-                            <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button {{ 'disabled' if username != answer['username'] }}>EDIT</button></a>
-                            <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Are you sure?')"><button {{ 'disabled' if username != answer['username'] }}>DELETE</button></a>
+                            {% if username == answer['username'] %}
+                                <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button class="question-button">EDIT</button></a><br>
+                                <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Are you sure?')"><button class="question-button">DELETE</button></a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
