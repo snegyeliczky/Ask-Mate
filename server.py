@@ -223,11 +223,11 @@ def route_register():
         password2 = request.form["password2"]
 
         if functions.username_exists(username):
-            message = "The username you entered is already in use"
-            return render_template('register.html', message=message)
+            error_message = "The username you entered is already in use"
+            return render_template('register.html', error_message=error_message)
         elif password != password2:
-            message = "Passwords do not match please fill again"
-            return render_template('register.html', message=message)
+            error_message = "The passwords you entered did not match"
+            return render_template('register.html', error_message=error_message)
         else:
             hash_password = functions.hash_password(password)
             data_handler.register_user(username, hash_password)
@@ -235,9 +235,9 @@ def route_register():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def route_login(invalid_login=False):
+def route_login():
     if request.method == 'GET':
-        return render_template('login.html', invalid_login=invalid_login)
+        return render_template('login.html')
     elif request.method == 'POST':
         username = request.form['username']
         plain_text_password = request.form['plain_text_password']
@@ -247,7 +247,8 @@ def route_login(invalid_login=False):
             if functions.verify_password(plain_text_password, hashed_password):
                 session['username'] = username
                 return redirect("/")
-        return render_template('login.html', invalid_login=True)
+        error_message = 'Invalid username or password'
+        return render_template('login.html', error_message=error_message)
 
 
 @app.route('/logout')
