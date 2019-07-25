@@ -243,6 +243,7 @@ header a {
 }
 
 .question-page_table td {
+    align-items: center;
     font-size: 18px;
     border-bottom: 1px solid #c5c5b5;
     border-top: 1px solid #c5c5b5;
@@ -322,6 +323,6 @@ border-bottom: 1px solid #7b7b68;
 }
 
 #sexy_accepted {
-    width: 3.5em;
+    width: 55px;
 }
 

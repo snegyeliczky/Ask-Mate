@@ -312,6 +312,8 @@ def get_data_by_question_username(cursor, table, username):
     data = cursor.fetchall()
     return data
 
+
+@database_common.connection_handler
 def accept_answer(cursor, answer_id):
     cursor.execute('''
                     UPDATE answer
