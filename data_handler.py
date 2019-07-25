@@ -35,7 +35,7 @@ def register_user(cursor, username, hash_password):
     date = generate_timestamp()
     cursor.execute("""
                     INSERT INTO users
-                    VALUES (%(username)s,%(hash_password)s,%(date)s) 
+                    VALUES (%(username)s,%(hash_password)s,%(date)s,0) 
                     """,{'username': username, 'hash_password': hash_password, 'date': date } )
 
 @database_common.connection_handler
@@ -262,4 +262,30 @@ def check_reputation(cursor, actual_vote, username, question_id):
         else:
             return 'modify'
 
+@database_common.connection_handler
+def get_answer_owner(cursor,answer_id):
+    cursor.execute(""" 
+                    SELECT username
+                    FROM answer
+                    WHERE id = %(answer_id)s
+                    """, {'answer_id':answer_id})
+    user = cursor.fetchone()['username']
+    return user
 
+@database_common.connection_handler
+def check_answer_reputation(cursor,question_id,answer_id,username, actual_vote):
+    cursor.execute("""
+                    SELECT vote
+                    FROM answer_votes
+                    WHERE question_id= %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s
+                    """, {'question_id':question_id, 'answer_id':answer_id, 'username':username})
+    vote = cursor.fetchone()
+    print(vote)
+    if vote == None:
+        return 'GO'
+    else:
+        vote = vote['vote']
+        if vote == actual_vote:
+            return None
+        else:
+            return 'modify'
