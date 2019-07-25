@@ -153,7 +153,7 @@ def get_one_user_attributes(cursor, username):
                     SELECT * FROM users
                     WHERE username = %(username)s
                     ''', {'username': username})
-    user = cursor.fetchall()
+    user = cursor.fetchone()
 
     return user
 
