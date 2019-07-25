@@ -278,6 +278,9 @@ def route_user_page(username):
 def route_accept_answer(question_id,answer_id):
     data_handler.accept_answer(answer_id)
 
+    answer_owner = data_handler.get_answer_owner(answer_id)
+    data_handler.edit_reputation(7,answer_owner)
+
     return redirect(url_for('route_question_by_id', question_id=question_id))
 
 
