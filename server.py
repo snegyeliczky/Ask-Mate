@@ -231,11 +231,11 @@ def route_login():
     username = request.form['username']
     plain_text_password = request.form['plain_text_password']
 
-    hashed_password = data_handler.get_hashed_password(username)
-    if functions.username_exists(username) and functions.verify_password(plain_text_password, hashed_password):
-        session['username'] = username
-        return redirect("/")
-
+    if functions.username_exists(username):
+        hashed_password = data_handler.get_hashed_password(username)
+        if functions.verify_password(plain_text_password, hashed_password):
+            session['username'] = username
+            return redirect("/")
     error_message = 'Invalid username or password'
     return render_template('login.html', error_message=error_message)
 
