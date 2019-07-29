@@ -19,7 +19,7 @@
                         <p><a href="{{ url_for('route_question_vote_count', question_id=question['id'], vote=1) }}"><img
                                 class="up-arrow"
                                 src="{{ url_for('static', filename='images/arrow.png') }}"
-                                alt="upvote"></a></p>
+                                alt="upvote" ></a></p>
                         <p>{{ question['vote_number'] }}</p>
                         <p><a href="{{ url_for('route_question_vote_count', question_id=question['id'], vote=-1) }}"><img
                                 class="down-arrow"

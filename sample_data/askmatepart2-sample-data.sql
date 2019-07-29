@@ -84,7 +84,6 @@ CREATE TABLE question_votes (
 
 DROP TABLE IF EXISTS public.answer_votes;
 CREATE TABLE answer_votes (
-    question_id INTEGER,
     answer_id INTEGER,
     username text,
     vote INTEGER
@@ -135,10 +134,6 @@ ALTER TABLE ONLY question_tag
         ON DELETE CASCADE;
 
 ALTER TABLE ONLY question_votes
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
-        ON DELETE CASCADE;
-
-ALTER TABLE ONLY answer_votes
     ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
         ON DELETE CASCADE;
 

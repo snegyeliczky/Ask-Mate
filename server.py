@@ -9,9 +9,7 @@ app.secret_key = '$2b$12$yxO3U5wrC1QSvVfL3xrLbu'
 @app.route('/')
 @app.route('/list')
 def route_list():
-    username = None
-    if 'username' in session:
-        username = session['username']
+    username = session['username'] if 'username' in session else None
 
     sort_by = 'submission_time'
     sort_direction = 'DESC'
@@ -26,10 +24,7 @@ def route_list():
 
 @app.route('/question/<question_id>')
 def route_question_by_id(question_id):
-    username = None
-    if 'username' in session:
-        username = session['username']
-
+    username = session['username'] if 'username' in session else None
     accepted_answer_id = data_handler.get_accepted_answer_id(question_id)
 
     question = data_handler.get_data_by_question_id('question', question_id)[0]
@@ -48,9 +43,7 @@ def route_question_view_count(question_id):
 @app.route('/add-a-question', methods=['GET', 'POST'])
 @functions.login_required
 def route_add_question():
-    username = None
-    if 'username' in session:
-        username = session['username']
+    username = session['username'] if 'username' in session else None
 
     if request.method == "POST":
         title = request.form['title']
@@ -175,8 +168,9 @@ def route_question_vote_count(question_id, vote):
 def route_answer_vote_count(question_id, answer_id, vote):
     owner_user = data_handler.get_answer_owner(answer_id)
     username = session['username']
+    vote = int(vote)
 
-    answer_reputation_check = data_handler.check_answer_reputation(question_id, answer_id, username, vote)
+    answer_reputation_check = data_handler.check_answer_reputation(answer_id, username, vote)
     if answer_reputation_check == 'GO':
         data_handler.edit_reputation(vote, 'answer', owner_user)
     elif answer_reputation_check == 'modify':
@@ -187,22 +181,19 @@ def route_answer_vote_count(question_id, answer_id, vote):
 
         data_handler.edit_reputation(modify_vote, 'answer', owner_user)
 
-    vote_check = data_handler.answer_vote_check(username, vote, question_id, answer_id)
-    if vote_check is None:
+    current_vote = data_handler.answer_check_user_vote(username, answer_id)
+
+    if current_vote is not None and current_vote == vote:
         return redirect(f'/question/{question_id}')
 
-    elif vote_check is True:
-        data_handler.edit_question_vote_number('answer', answer_id, vote)
+    elif current_vote is not None and current_vote != vote:
+        data_handler.update_answer_vote(answer_id, username, vote)
+        data_handler.edit_answer_vote_number(answer_id, vote * 2)
         return redirect(f'/question/{question_id}')
 
-    else:
-        if vote == 'True':
-            modify_vote = 2
-        else:
-            modify_vote = -2
-
-        data_handler.edit_question_vote_number('answer', answer_id, modify_vote)
-        return redirect(f'/question/{question_id}')
+    data_handler.register_answer_vote(answer_id, username, vote)
+    data_handler.edit_answer_vote_number(answer_id, vote)
+    return redirect(f'/question/{question_id}')
 
 
 @app.route('/search')

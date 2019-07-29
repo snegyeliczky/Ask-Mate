@@ -248,12 +248,11 @@ def check_reputation(cursor, actual_vote, username, question_id):
 
 
 @database_common.connection_handler
-def check_answer_reputation(cursor, question_id, answer_id, username, actual_vote):
+def check_answer_reputation(cursor, answer_id, username, actual_vote):
     cursor.execute("""
-                    SELECT vote
-                    FROM answer_votes
-                    WHERE question_id= %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s
-                    """, {'question_id': question_id, 'answer_id': answer_id, 'username': username})
+                    SELECT vote FROM answer_votes
+                    WHERE answer_id = %(answer_id)s AND username = %(username)s
+                    """, {'answer_id': answer_id, 'username': username})
     vote = cursor.fetchone()
 
     if vote is None:
@@ -307,40 +306,42 @@ def edit_question_vote_number(cursor, question_id, vote):
                     """, {'question_id': question_id, 'vote': vote})
 
 
+@database_common.connection_handler
+def answer_check_user_vote(cursor, username, answer_id):
+    cursor.execute("""
+                    SELECT vote FROM answer_votes
+                    WHERE answer_id = %(answer_id)s AND username = %(username)s
+                    """, {'answer_id': answer_id, 'username': username})
 
-
-
-
-
+    result = cursor.fetchone()
+    return result['vote'] if result else None
 
 
 @database_common.connection_handler
-def answer_vote_check(cursor, username, vote, question_id, answer_id):
+def register_answer_vote(cursor, answer_id, username, vote):
+
     cursor.execute("""
-                    SELECT vote
-                    FROM answer_votes
-                    WHERE question_id = %(question_id)s AND answer_id = %(answer_id)s AND username = %(username)s
-                    """, {'question_id': question_id, 'username': username, 'answer_id': answer_id})
-    result = cursor.fetchone()
+                   INSERT INTO answer_votes
+                   VALUES (%(answer_id)s, %(username)s, %(vote)s)
+                   """, {'answer_id': answer_id, 'username': username, 'vote': vote})
 
-    if result is None:
-        cursor.execute("""
-                        INSERT INTO answer_votes
-                        VALUES (%(question_id)s, %(answer_id)s, %(username)s, %(vote)s)
-                        """, {'question_id': question_id, 'username': username, 'vote': vote, 'answer_id': answer_id})
-        return True
 
-    else:
-        if result['vote'] == vote:
-            return None
+@database_common.connection_handler
+def update_answer_vote(cursor, answer_id, username, vote):
 
-        else:
-            cursor.execute("""
-                            UPDATE answer_votes
-                            SET vote = %(vote)s
-                            WHERE question_id = %(question_id)s 
-                                AND answer_id = %(answer_id)s 
-                                AND username = %(username)s
-                            """, {'question_id': question_id, 'username': username, 'vote': vote,
-                                  'answer_id': answer_id})
-            return False
+    cursor.execute("""
+                    UPDATE answer_votes
+                    SET vote = %(vote)s
+                    WHERE answer_id = %(answer_id)s AND username = %(username)s
+                    """, {'answer_id': answer_id, 'username': username, 'vote': vote})
+
+
+@database_common.connection_handler
+def edit_answer_vote_number(cursor, answer_id, vote):
+
+    cursor.execute("""
+                    UPDATE answer
+                    SET vote_number = (SELECT vote_number FROM answer
+                                       WHERE id = %(answer_id)s) + %(vote)s 
+                    WHERE id = %(answer_id)s
+                    """, {'answer_id': answer_id, 'vote': vote})
