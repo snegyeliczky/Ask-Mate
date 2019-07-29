@@ -208,38 +208,36 @@ def route_register():
     if request.method == 'GET':
         return render_template('register.html')
 
-    if request.method == 'POST':
-        username = request.form["username"]
-        password = request.form["password"]
-        password2 = request.form["password2"]
+    username = request.form["username"]
+    password = request.form["password"]
+    password2 = request.form["password2"]
 
-        if functions.username_exists(username):
-            error_message = "The username you entered is already in use"
-            return render_template('register.html', error_message=error_message)
-        elif password != password2:
-            error_message = "The passwords you entered did not match"
-            return render_template('register.html', error_message=error_message)
-        else:
-            hash_password = functions.hash_password(password)
-            data_handler.register_user(username, hash_password)
-            return redirect("/")
+    if functions.username_exists(username):
+        error_message = "The username you entered is already in use"
+        return render_template('register.html', error_message=error_message)
+    elif password != password2:
+        error_message = "The passwords you entered did not match"
+        return render_template('register.html', error_message=error_message)
+    hash_password = functions.hash_password(password)
+    data_handler.register_user(username, hash_password)
+    return redirect("/")
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def route_login():
     if request.method == 'GET':
         return render_template('login.html')
-    elif request.method == 'POST':
-        username = request.form['username']
-        plain_text_password = request.form['plain_text_password']
 
-        if functions.username_exists(username):
-            hashed_password = data_handler.get_hashed_password(username)
-            if functions.verify_password(plain_text_password, hashed_password):
-                session['username'] = username
-                return redirect("/")
-        error_message = 'Invalid username or password'
-        return render_template('login.html', error_message=error_message)
+    username = request.form['username']
+    plain_text_password = request.form['plain_text_password']
+
+    hashed_password = data_handler.get_hashed_password(username)
+    if functions.username_exists(username) and functions.verify_password(plain_text_password, hashed_password):
+        session['username'] = username
+        return redirect("/")
+
+    error_message = 'Invalid username or password'
+    return render_template('login.html', error_message=error_message)
 
 
 @app.route('/logout')
