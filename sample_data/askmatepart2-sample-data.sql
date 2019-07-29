@@ -75,11 +75,11 @@ CREATE TABLE users (
     reputation integer
 );
 
-DROP TABLE IF EXISTS public.votes;
-CREATE TABLE votes (
+DROP TABLE IF EXISTS public.question_votes;
+CREATE TABLE question_votes (
     question_id INTEGER,
     username text,
-    vote text
+    vote INTEGER
 );
 
 DROP TABLE IF EXISTS public.answer_votes;
@@ -87,7 +87,7 @@ CREATE TABLE answer_votes (
     question_id INTEGER,
     answer_id INTEGER,
     username text,
-    vote text
+    vote INTEGER
 );
 
 ALTER TABLE ONLY answer
@@ -134,7 +134,7 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id)
         ON DELETE CASCADE;
 
-ALTER TABLE ONLY votes
+ALTER TABLE ONLY question_votes
     ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
         ON DELETE CASCADE;
 

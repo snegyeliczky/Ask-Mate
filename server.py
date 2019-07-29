@@ -40,7 +40,7 @@ def route_question_by_id(question_id):
 
 @app.route('/question/<question_id>/')
 def route_question_view_count(question_id):
-    data_handler.edit_view_number(question_id)
+    data_handler.increment_view_number(question_id)
 
     return redirect(f'/question/{question_id}')
 
@@ -143,10 +143,11 @@ def delete_answer(question_id, answer_id):
 def route_question_vote_count(question_id, vote):
     owner_user = data_handler.get_username_by_question_id(question_id)['username']
     username = session['username']
+    vote = int(vote)
 
     reputation_change = data_handler.check_reputation(vote, username, question_id)
     if reputation_change == 'modify':
-        if vote == 'True':
+        if vote == 1:
             modify_vote = 7
         else:
             modify_vote = -7
@@ -154,22 +155,19 @@ def route_question_vote_count(question_id, vote):
     elif reputation_change == 'GO':
         data_handler.edit_reputation(vote, 'question', owner_user)
 
-    vote_check = data_handler.vote_check(username, vote, question_id)
-    if vote_check is None:
+    current_vote = data_handler.question_check_user_vote(username, question_id)
+
+    if current_vote is not None and current_vote == vote:
         return redirect(f'/question/{question_id}')
 
-    elif vote_check is True:
-        data_handler.edit_vote_number('question', question_id, vote)
+    elif current_vote is not None and current_vote != vote:
+        data_handler.update_question_vote(question_id, username, vote)
+        data_handler.edit_question_vote_number(question_id, vote*2)
         return redirect(f'/question/{question_id}')
 
-    else:
-        if vote == 'True':
-            modify_vote = 2
-        else:
-            modify_vote = -2
-
-        data_handler.edit_vote_number('question', question_id, modify_vote)
-        return redirect(f'/question/{question_id}')
+    data_handler.register_question_vote(question_id, username, vote)
+    data_handler.edit_question_vote_number(question_id, vote)
+    return redirect(f'/question/{question_id}')
 
 
 @app.route('/question/<question_id>/<answer_id>/<vote>')
@@ -194,7 +192,7 @@ def route_answer_vote_count(question_id, answer_id, vote):
         return redirect(f'/question/{question_id}')
 
     elif vote_check is True:
-        data_handler.edit_vote_number('answer', answer_id, vote)
+        data_handler.edit_question_vote_number('answer', answer_id, vote)
         return redirect(f'/question/{question_id}')
 
     else:
@@ -203,7 +201,7 @@ def route_answer_vote_count(question_id, answer_id, vote):
         else:
             modify_vote = -2
 
-        data_handler.edit_vote_number('answer', answer_id, modify_vote)
+        data_handler.edit_question_vote_number('answer', answer_id, modify_vote)
         return redirect(f'/question/{question_id}')
 
 

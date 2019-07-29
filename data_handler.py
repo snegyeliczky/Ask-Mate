@@ -83,7 +83,7 @@ def delete_answer(cursor, answer_id):
 
 
 @database_common.connection_handler
-def edit_view_number(cursor, question_id):
+def increment_view_number(cursor, question_id):
     cursor.execute("""
                    UPDATE question
                    SET view_number = (SELECT view_number FROM question
@@ -214,9 +214,9 @@ def get_answer_owner(cursor, answer_id):
 @database_common.connection_handler
 def edit_reputation(cursor, vote, vote_type, username):
     reputation = vote
-    if vote == 'False':
+    if vote == -1:
         reputation = -2
-    elif vote == 'True':
+    elif vote == 1:
         if vote_type == 'question':
             reputation = 5
         elif vote_type == 'answer':
@@ -233,7 +233,7 @@ def edit_reputation(cursor, vote, vote_type, username):
 @database_common.connection_handler
 def check_reputation(cursor, actual_vote, username, question_id):
     cursor.execute("""
-                    SELECT vote FROM votes
+                    SELECT vote FROM question_votes
                     WHERE username = %(username)s AND question_id = %(question_id)s
                     """, {'username': username, 'question_id': question_id})
     vote = cursor.fetchone()
@@ -267,46 +267,51 @@ def check_answer_reputation(cursor, question_id, answer_id, username, actual_vot
 
 
 @database_common.connection_handler
-def edit_vote_number(cursor, table, item_id, vote):
-    if vote == 'True':
-        vote = 1
-    elif vote == 'False':
-        vote = -1
-    cursor.execute(f"""
-                    UPDATE {table}
-                    SET vote_number = (SELECT vote_number  FROM {table}
-                                       WHERE id = %(item_id)s) + %(vote)s 
-                    WHERE id = %(item_id)s
-                    """, {'item_id': item_id, 'vote': vote})
+def question_check_user_vote(cursor, username, question_id):
+    cursor.execute("""
+                    SELECT vote FROM question_votes
+                    WHERE question_id = %(question_id)s AND username = %(username)s
+                    """, {'question_id': question_id, 'username': username})
+
+    result = cursor.fetchone()
+    return result['vote'] if result else None
 
 
 @database_common.connection_handler
-def vote_check(cursor, username, vote, question_id):
+def register_question_vote(cursor, question_id, username, vote):
+
     cursor.execute("""
-                    SELECT vote
-                    FROM votes
+                   INSERT INTO question_votes
+                   VALUES (%(question_id)s, %(username)s, %(vote)s)
+                   """, {'question_id': question_id, 'username': username, 'vote': vote})
+
+
+@database_common.connection_handler
+def update_question_vote(cursor, question_id, username, vote):
+
+    cursor.execute("""
+                    UPDATE question_votes
+                    SET vote = %(vote)s
                     WHERE question_id = %(question_id)s AND username = %(username)s
-                    """, {'question_id': question_id, 'username': username})
-    result = cursor.fetchone()
+                    """, {'question_id': question_id, 'username': username, 'vote': vote})
 
-    if result is None:
-        cursor.execute("""
-                       INSERT INTO votes
-                       VALUES (%(question_id)s, %(username)s, %(vote)s)
-                       """, {'question_id': question_id, 'username': username, 'vote': vote})
-        return True
 
-    else:
-        if result['vote'] == vote:
-            return None
+@database_common.connection_handler
+def edit_question_vote_number(cursor, question_id, vote):
 
-        else:
-            cursor.execute("""
-                            UPDATE votes
-                            SET vote = %(vote)s
-                            WHERE question_id = %(question_id)s AND username = %(username)s
-                            """, {'question_id': question_id, 'username': username, 'vote': vote})
-            return False
+    cursor.execute("""
+                    UPDATE question
+                    SET vote_number = (SELECT vote_number FROM question
+                                       WHERE id = %(question_id)s) + %(vote)s 
+                    WHERE id = %(question_id)s
+                    """, {'question_id': question_id, 'vote': vote})
+
+
+
+
+
+
+
 
 
 @database_common.connection_handler
