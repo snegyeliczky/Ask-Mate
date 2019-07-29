@@ -261,9 +261,7 @@ def route_logout():
 
 @app.route('/users')
 def route_users():
-    username = None
-    if 'username' in session:
-        username = session['username']
+    username = session['username'] if 'username' in session else None
 
     users = data_handler.get_all_user_attributes()
 
@@ -281,6 +279,10 @@ def route_user_page(username):
 
 @app.route('/<question_id>/<answer_id>/accept_answer')
 def route_accept_answer(question_id, answer_id):
+    question = data_handler.get_data_by_question_id('question', question_id)[0]
+    if question['username'] != session['username']:
+        return redirect(url_for('route_question_by_id', question_id=question_id))
+
     data_handler.accept_answer(answer_id)
 
     answer_owner = data_handler.get_answer_owner(answer_id)
