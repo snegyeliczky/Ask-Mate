@@ -1,20 +1,20 @@
 {% extends "question.html" %}
 {% block page_bottom %}
-    <div id="edit_question">
-        <h1>Edit question:</h1>
+    <div class="input_form">
+        <h1>Edit question</h1><br>
         <form action="{{ url_for('route_edit_a_question', question_id=question['id']) }}" method="POST">
             <p>
-                <label for="message"></label>
+                <label for="message">Question details:</label><br>
                 <textarea name="message" rows="10" cols="40" id="message" required>{{ question["message"] }}</textarea><br>
-                <label for="image">IMAGE</label>
+                <label for="image">Image link:</label><br>
                 <input name="image" id="image" value="{{ question["image"] }}">
             </p>
             <p>
                 <button type="submit">Submit</button>
             </p>
         </form>
-        <p>
+        <div class="back_button">
             <a href="{{ url_for('route_question_by_id', question_id=question['id']) }}"><button>Back</button></a>
-        </p>
+        </div>
     </div>
 {% endblock %}

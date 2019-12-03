@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %}AskMate{% endblock %}
+{% block content %}
+    <div id="users_table">
+        <table>
+            {% for row in users %}
+                <tr>
+                    <td><a href="{{ url_for('route_user_page', username=row['username']) }}">{{ row['username'] }}</a></td>
+                    <td>{{ row['reputation'] }}<br>Reputation</td>
+                    <td>{{ row['date_of_registration'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

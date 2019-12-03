@@ -4,49 +4,100 @@
     <div id="question">
         <div class="question-head">
             <h1>{{ question['title'] }}</h1>
-            <p>Viewed {{ question['view_number'] }} times</p>
+            <div id="question_info">
+                <p>Viewed {{ question['view_number'] }} times</p>
+                <p>Submitted by <a
+                        href="{{ url_for('route_user_page', username=question['username']) }}">{{ question['username'] }}</a>
+                </p>
+                <p>{{ question['submission_time'] }}</p>
+            </div>
         </div>
         <div class="question-page_table">
             <table id="question_table">
                 <tr>
                     <td>
-                        <p><a href="/question/{{ question['id'] }}/1"><img class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="upvote"></a></p>
+                        <p><a href="{{ url_for('route_question_vote_count', question_id=question['id'], vote=1) }}"><img
+                                class="up-arrow"
+                                src="{{ url_for('static', filename='images/arrow.png') }}"
+                                alt="upvote" ></a></p>
                         <p>{{ question['vote_number'] }}</p>
-                        <p><a href="/question/{{ question['id'] }}/-1"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
+                        <p><a href="{{ url_for('route_question_vote_count', question_id=question['id'], vote=-1) }}"><img
+                                class="down-arrow"
+                                src="{{ url_for('static', filename='images/arrow.png') }}"
+                                alt="downvote"></a></p>
                     </td>
                     <td>{{ question['message'] }}</td>
-                    <td> {{ question['submission_time'] }}</td>
                     <td>
-                        <a href="/question/{{ question['id'] }}/edit-a-question"><button>EDIT</button></a>
-                        <a href="{{ url_for('route_delete_question', question_id=question['id']) }}"><button onclick="return confirm('Are you sure?')">DELETE</button></a>
+                        {% if username == question['username'] %}
+                            <a href="/question/{{ question['id'] }}/edit-a-question">
+                                <button class="question-button">EDIT</button>
+                            </a>
+                            <a href="{{ url_for('route_delete_question', question_id=question['id']) }}"
+                               onclick="return confirm('Are you sure?')">
+                                <button class="question-button">DELETE</button>
+                            </a>
+                        {% endif %}
                     </td>
+
                 </tr>
             </table>
         </div>
         {% block page_bottom %}
-        <h2>{{ number_of_answers }} Answers</h2>
+            <h2>{{ number_of_answers }} Answers</h2>
             <div class="question-page_table">
                 <table id="answer_table">
                     {% for answer in answers %}
-                    <tr>
-                        <td>
-                            <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/1"><img class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="upvote"></a></p>
-                            <p>{{ answer['vote_number'] }}</p>
-                            <p><a href="/question/{{ question['id'] }}/{{ answer['id'] }}/-1"><img class="down-arrow" src="{{ url_for('static', filename='images/arrow.png') }}" alt="downvote"></a></p>
-                        </td>
-                        <td>{{ answer['message'] }}</td>
-                        <td> {{ answer['submission_time'] }}</td>
-                        <td>
-                            <a href="/{{ question['id']}}/{{ answer['id'] }}/edit"><button>EDIT</button></a>
-                            <a href="/{{ question['id']}}/{{ answer['id'] }}/delete" onclick="return confirm('Are you sure?')"><button>DELETE</button></a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    <a href="{{ url_for('route_answer_vote_count', question_id=question['id'], answer_id=answer['id'], vote=1) }}"><img
+                                            class="up-arrow" src="{{ url_for('static', filename='images/arrow.png') }}"
+                                            alt="upvote"></a></p>
+                                <p>{{ answer['vote_number'] }}</p>
+                                <p>
+                                    <a href="{{ url_for('route_answer_vote_count', question_id=question['id'], answer_id=answer['id'], vote=-1) }}"><img
+                                            class="down-arrow"
+                                            src="{{ url_for('static', filename='images/arrow.png') }}"
+                                            alt="downvote"></a></p>
+                            </td>
+                            <td>{{ answer['message'] }}</td>
+                            <td>
+                                <p id="answer_info">Answered by {{ answer['username'] }}</p>
+                                <p>{{ answer['submission_time'] }}</p>
+                            </td>
+                            <td>
+                                {% if accepted_answer_id['id'] == answer['id'] %}
+                                    <img alt="accepted" id="sexy_accepted" src="{{ url_for('static', filename='images/pipa.png') }}">
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if username == answer['username'] %}
+                                    <a href="/{{ question['id'] }}/{{ answer['id'] }}/edit">
+                                        <button class="question-button">EDIT</button>
+                                    </a>
+                                    <a href="/{{ question['id'] }}/{{ answer['id'] }}/delete"
+                                       onclick="return confirm('Are you sure?')">
+                                        <button class="question-button">DELETE</button>
+                                    </a>
+                                {% endif %}
+                                {% if username == question['username'] and accepted_answer_id == None %}
+                                    <a href="/{{ question['id'] }}/{{ answer['id'] }}/accept_answer">
+                                        <button class="question-button">ACCEPT</button>
+                                    </a>
+                                {% endif %}
+                            </td>
+
+                        </tr>
                     {% endfor %}
                 </table>
             </div>
             <div class="question-foot">
-                <a href="/question/{{ question['id'] }}/new-answer"><button>Add a new answer</button></a>
-                <a href="/"><button>Back</button></a>
+                <a href="/question/{{ question['id'] }}/new-answer">
+                    <button>Answer</button>
+                </a>
+                <a href="/">
+                    <button>Back</button>
+                </a>
             </div>
         {% endblock %}
     </div>

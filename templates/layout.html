@@ -8,36 +8,31 @@
 <body>
     <header>
         <div id="header_box">
-            <a href="/">
-                <div class="header_element" id="ask_mate">
-                    AskMate™
-                </div>
-            </a>
             <div class="links">
+                <a href="/">
+                    <div class="header_element">
+                        ASKMATE
+                    </div>
+                </a>
                 <a href="{{ url_for('route_add_question') }}">
                     <div class="header_element">
                         ASK QUESTION
                     </div>
                 </a>
-                <a href="/list">
+                <a href="{{ url_for('route_users') }}">
                     <div class="header_element">
-                        LIST QUESTIONS
-                    </div>
-                </a>
-                <a href="/">
-                    <div class="header_element">
-                        TAGS
+                        LIST USERS
                     </div>
                 </a>
             </div>
-            <div class="search">
-                <form action="/search" method="get">
-                    <label for="search"></label>
-                    <input name="search" id="search_bar" placeholder="Search...">
-                </form >
-            </div>
-            {%  if not username  %}
-                <div class="login">
+            <div class="login">
+                <div class="search">
+                    <form action="/search" method="get">
+                        <label for="search"></label>
+                        <input name="search" id="search_bar" placeholder="Search...">
+                    </form >
+                </div>
+                {%  if not username  %}
                     <a href="/registration">
                         <div class="header_element" id="register">
                             REGISTER
@@ -48,19 +43,19 @@
                             LOGIN
                         </div>
                     </a>
-                </div>
-            {% else %}
-                <div class="login">
-                    <div id="welcome">
-                        Welcome, {{ username }}!
-                    </div>
+                {% else %}
+                    <a href="{{ url_for('route_user_page', username=username) }}">
+                        <div class="header_element" id="user_page">
+                            USER PAGE
+                        </div>
+                    </a>
                     <a href="{{ url_for('route_logout') }}">
                         <div class="header_element" id="login">
                             LOGOUT
                         </div>
                     </a>
-                </div>
-            {%  endif %}
+                {%  endif %}
+            </div>
         </div>
     </header>
     <div id="content_wrapper">

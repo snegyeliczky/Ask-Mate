@@ -1,22 +1,22 @@
 {% extends 'question.html' %}
 {% block page_bottom %}
-    <div id="new_answer">
-        <h1>{% block answer_header %}Your Answer:{% endblock %}</h1>
+    <div class="input_form">
+        <h1>{% block answer_header %}Your Answer{% endblock %}</h1><br>
         <form action="{% block form_action  %}{{ url_for('route_add_answer', question_id=question['id']) }}{% endblock %}" method="POST">
             <p>
-                <label for="message">Your answer</label><br>
+                <label for="message">Your answer:</label><br>
                 <textarea name="message" cols="60" rows="15" id="message" required>{{ answer['message'] if answer }}</textarea>
             </p>
             <p>
-                <label for="image">Image link</label>
+                <label for="image">Image link:</label><br>
                 <input type="text" name="image" value="{{ answer['image'] if answer else '' }}" id="image">
             </p>
             <p>
                 <button type="submit">Submit</button>
             </p>
         </form>
-         <p>
+         <div class="back_button">
             <a href="{{ url_for('route_question_by_id', question_id=question['id']) }}"><button>Back</button></a>
-        </p>
+        </div>
     </div>
 {% endblock %}
